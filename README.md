@@ -38,20 +38,20 @@ RID IDE is a standalone desktop application that provides a complete development
 **📥 Download the latest release for your platform:**
 
 **Windows:**
-1. Download `RID-IDE-Setup.exe` from [Releases](../../releases)
+1. Download `RID IDE-1.0.0 Setup.exe` from [Releases](https://github.com/Aloy17/IDE-TEST/releases/latest)
 2. Run the installer
 3. Launch RID IDE from your Start Menu
 4. Start coding! 🎉
 
 **macOS:**
-1. Download `RID-IDE.dmg` from [Releases](../../releases)
+1. Download `RID-IDE.dmg` from [Releases](https://github.com/Aloy17/IDE-TEST/releases/latest)
 2. Open the DMG file
 3. Drag RID IDE to your Applications folder
 4. Launch from Applications
 5. Start coding! 🎉
 
 **Linux:**
-1. Download `RID-IDE.AppImage` from [Releases](../../releases)
+1. Download `RID-IDE.AppImage` from [Releases](https://github.com/Aloy17/IDE-TEST/releases/latest)
 2. Make it executable: `chmod +x RID-IDE.AppImage`
 3. Run: `./RID-IDE.AppImage`
 4. Start coding! 🎉
@@ -432,15 +432,13 @@ Copyright (c) 2025 Ryane Bose
 
 For issues or questions:
 
-- **GitHub Issues**: [github.com/ryanebose/rid/issues](https://github.com/ryanebose/rid/issues)
-- **Email**: your.email@example.com
+- **GitHub Issues**: [github.com/Aloy17/IDE-TEST/issues](https://github.com/Aloy17/IDE-TEST/issues)
+- **Email**: ryaneb2004@gmail.com
 
 ---
 
 <div align="center">
 
 **Made with 💜 by Ryane Bose**
-
-*RID - Where Hindi meets programming*
 
 </div>
