@@ -3,58 +3,47 @@
 <div align="center">
 
 ![RID IDE](https://img.shields.io/badge/RID-IDE-a855f7?style=for-the-badge&logo=electron)
-![Version](https://img.shields.io/badge/version-1.2.0-brightgreen?style=for-the-badge)
-![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-1.0.0-brightgreen?style=for-the-badge)
+![Platform](https://img.shields.io/badge/platform-Windows-blue?style=for-the-badge)
 
 **A standalone desktop IDE for the RID programming language**
 
-*Zero setup • Retro aesthetic • Complete learning environment*
+*Windows Only - Zero setup - Retro aesthetic - Complete learning environment*
 
 </div>
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
-- [Quick Start (End Users)](#-quick-start-end-users)
-- [For Developers](#-for-developers)
-- [Features](#-features)
-- [Building Installers](#-building-installers)
-- [Usage](#-usage)
-- [Troubleshooting](#-troubleshooting)
-
----
-
-## 🎯 Overview
-
-RID IDE is a standalone desktop application that provides a complete development environment for the RID programming language. It features a retro pixel-art aesthetic with modern functionality, allowing users to learn, write, and execute RID code without any external dependencies.
+- [Quick Start (End Users)](#quick-start-end-users)
+- [For Developers](#for-developers)
+- [Features](#features)
+- [Building Installers](#building-installers)
+- [Usage](#usage)
+- [Troubleshooting](#troubleshooting)
 
 ---
 
-## ⚡ Quick Start (End Users)
+## Overview
+
+RID IDE is a standalone desktop application for Windows that provides a complete development environment for the RID programming language. It features a retro pixel-art aesthetic with modern functionality, allowing users to learn, write, and execute RID code without any external dependencies.
+
+**Platform Support: Windows Only**
+
+---
+
+## Quick Start (End Users)
 
 ### Option 1: Download Pre-built Installer (Recommended)
 
-**📥 Download the latest release for your platform:**
+**Download the latest Windows release:**
 
-**Windows:**
+**Windows (64-bit):**
 1. Download `RID IDE-1.0.0 Setup.exe` from [Releases](https://github.com/Aloy17/IDE-TEST/releases/latest)
 2. Run the installer
 3. Launch RID IDE from your Start Menu
-4. Start coding! 🎉
-
-**macOS:**
-1. Download `RID-IDE.dmg` from [Releases](https://github.com/Aloy17/IDE-TEST/releases/latest)
-2. Open the DMG file
-3. Drag RID IDE to your Applications folder
-4. Launch from Applications
-5. Start coding! 🎉
-
-**Linux:**
-1. Download `RID-IDE.AppImage` from [Releases](https://github.com/Aloy17/IDE-TEST/releases/latest)
-2. Make it executable: `chmod +x RID-IDE.AppImage`
-3. Run: `./RID-IDE.AppImage`
-4. Start coding! 🎉
+4. Start coding!
 
 **No Node.js, Python, or npm required!** Everything is bundled.
 
@@ -66,8 +55,8 @@ If you want to run from source or contribute:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/YOUR_USERNAME/RID-IDE.git
-cd RID-IDE
+git clone https://github.com/Aloy17/IDE-TEST.git
+cd IDE-TEST
 
 # 2. Install dependencies (one-time only)
 npm install
@@ -82,34 +71,34 @@ npm start
 
 ---
 
-## ✨ Features
+## Features
 
-- **Windows**: `RID-IDE-Setup.exe` (~180 MB)
-- **macOS**: `RID-IDE.dmg` (~200 MB)
-- **Linux**: `RID-IDE.AppImage` (~180 MB)
+**Windows Installer:**
+- `RID-IDE-Setup.exe` (Approximately 100 MB)
 
 ### Installation Steps
 
-1. Download the installer for your platform
+1. Download the installer
 2. Run the installer
-3. Launch RID IDE from your applications menu
+3. Launch RID IDE from your Start Menu
 4. Start coding!
 
 ---
 
-## 🛠️ Development Setup
+## Development Setup
 
 ### Prerequisites
 
 - **Node.js** 16+ and npm
 - **Python** 3.7+
 - **Git**
+- **Windows OS** (Primary platform)
 
 ### Clone Repository
 
 ```bash
-cd "c:\Users\Ryane\Desktop\TEST - RID"
-cd RID-IDE
+git clone https://github.com/Aloy17/IDE-TEST.git
+cd IDE-TEST
 ```
 
 ### Install Dependencies
@@ -137,7 +126,7 @@ This will:
 
 ---
 
-## 📖 Usage
+## Usage
 
 ### 1. **Home Page**
 
@@ -190,9 +179,9 @@ Click **IDE** to start coding:
 
 ---
 
-## 📦 Building
+## Building
 
-### Build for Current Platform
+### Build for Windows
 
 ```bash
 npm run make
@@ -200,21 +189,11 @@ npm run make
 
 This creates installers in the `out/make` directory.
 
-### Output Locations
+### Output Location
 
 **Windows:**
 ```
 out/make/squirrel.windows/x64/RID-IDE-1.0.0 Setup.exe
-```
-
-**macOS:**
-```
-out/make/RID-IDE.dmg
-```
-
-**Linux:**
-```
-out/make/deb/x64/rid-ide_1.0.0_amd64.deb
 ```
 
 ### Package Only (No Installer)
@@ -227,10 +206,10 @@ This creates a packaged app in `out/` without building installers.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
-RID-IDE/
+IDE-TEST/
 ├── backend/
 │   ├── examples/              # Example .rid files
 │   │   ├── hello.rid
@@ -266,7 +245,7 @@ RID-IDE/
 
 ---
 
-## 🎨 Design System
+## Design System
 
 ### Colors (Purple Cyberpunk)
 
@@ -295,7 +274,7 @@ RID-IDE/
 
 ---
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Application won't start
 
@@ -330,8 +309,6 @@ npm start
 **Solution:**
 1. Check file permissions in projects folder
 2. Windows: `%APPDATA%/RID-IDE/projects/`
-3. macOS: `~/Library/Application Support/RID-IDE/projects/`
-4. Linux: `~/.config/RID-IDE/projects/`
 
 ### Binary rain not showing
 
@@ -348,7 +325,7 @@ npm start
 
 ---
 
-## 📝 Example Code
+## Example Code
 
 ### Hello World
 
@@ -399,7 +376,7 @@ line
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please follow these steps:
 
@@ -411,7 +388,7 @@ Contributions are welcome! Please follow these steps:
 
 ---
 
-## 📄 License
+## License
 
 MIT License
 
@@ -419,7 +396,7 @@ Copyright (c) 2025 Ryane Bose
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **Electron** - Desktop app framework
 - **Press Start 2P** - Pixel font by CodeMan38
@@ -428,7 +405,7 @@ Copyright (c) 2025 Ryane Bose
 
 ---
 
-## 📞 Support
+## Support
 
 For issues or questions:
 
@@ -439,6 +416,6 @@ For issues or questions:
 
 <div align="center">
 
-**Made with 💜 by Ryane Bose**
+**Made with love by Ryane Bose**
 
 </div>
