@@ -2,7 +2,6 @@ module.exports = {
   packagerConfig: {
     name: 'RID IDE',
     executableName: 'rid-ide',
-    icon: './src/assets/icon',
     extraResource: ['./backend'],
     asar: true
   },
@@ -10,16 +9,12 @@ module.exports = {
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-        name: 'RID-IDE',
-        setupIcon: './src/assets/icon.ico',
-        iconUrl: 'https://example.com/icon.ico',
-        loadingGif: './src/assets/loading.gif'
+        name: 'RID-IDE'
       }
     },
     {
       name: '@electron-forge/maker-dmg',
       config: {
-        icon: './src/assets/icon.icns',
         name: 'RID-IDE'
       }
     },
@@ -27,9 +22,8 @@ module.exports = {
       name: '@electron-forge/maker-deb',
       config: {
         options: {
-          icon: './src/assets/icon.png',
           maintainer: 'Ryane Bose',
-          homepage: 'https://github.com/ryanebose/rid'
+          homepage: 'https://github.com/Aloy17/IDE-TEST'
         }
       }
     },
