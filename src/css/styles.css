@@ -1,20 +1,24 @@
 /* ===================================
-   RID IDE - Complete Stylesheet
-   Purple Cyberpunk Theme
+   RIDLEY IDE - Complete Stylesheet
+   Neon Violet Theme
    =================================== */
 
 /* CSS Variables */
 :root {
-    --black: #0a0014;
-    --dark-purple: #1a0a2e;
-    --purple: #a855f7;
-    --light-purple: #c084fc;
-    --bright-purple: #e879f9;
-    --text: #f3e8ff;
+    --color-bg: #10002b;           /* Deep Space - Background */
+    --color-panel: #240046;        /* Midnight Violet - Panels/Sidebar */
+    --color-toolbar: #3c096c;      /* Royal Purple - Toolbar/Buttons */
+    --color-accent1: #5a189a;      /* Deep Orchid - Accent 1 */
+    --color-accent2: #7b2cbf;      /* Violet Flame - Accent 2 */
+    --color-highlight: #9d4edd;    /* Light Purple - Highlights */
+    --color-hover: #c77dff;        /* Soft Lilac - Hover Glow */
+    --color-text: #e0aaff;         /* Pale Lavender - Text/Foreground */
     --green: #10b981;
     --red: #ef4444;
     --cyan: #06b6d4;
     --gray: #6b7280;
+    --font-ui: 'Inter', sans-serif;
+    --font-code: 'Roboto Mono', monospace;
 }
 
 /* Reset & Base Styles */
@@ -25,12 +29,13 @@
 }
 
 body {
-    font-family: 'VT323', monospace;
-    background-color: var(--black);
-    color: var(--text);
+    font-family: var(--font-ui);
+    background-color: var(--color-bg);
+    color: var(--color-text);
     overflow: hidden;
     width: 100vw;
     height: 100vh;
+    transition: background 0.3s ease;
 }
 
 /* Particle Background */
@@ -48,7 +53,7 @@ body {
     position: absolute;
     width: 4px;
     height: 4px;
-    background-color: var(--purple);
+    background-color: var(--color-highlight);
     opacity: 0;
     animation: float-up 15s infinite;
 }
@@ -95,7 +100,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--black);
+    background-color: var(--color-bg);
 }
 
 .loading-content {
@@ -115,14 +120,15 @@ body {
 }
 
 .loading-logo {
-    font-family: 'Press Start 2P', cursive;
-    font-size: 120px;
-    color: var(--bright-purple);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 72px;
+    font-weight: 700;
+    color: var(--color-text);
     text-shadow: 
-        0 0 40px var(--bright-purple),
-        0 0 80px var(--purple),
-        0 0 120px var(--purple);
+        0 0 20px var(--color-highlight),
+        0 0 40px var(--color-accent2);
     margin-bottom: 60px;
+    letter-spacing: 3px;
     animation: pulse-glow 2s ease-in-out infinite;
     position: relative;
     z-index: 10;
@@ -131,21 +137,22 @@ body {
 @keyframes pulse-glow {
     0%, 100% {
         text-shadow: 
-            0 0 40px var(--bright-purple),
-            0 0 80px var(--purple);
+            0 0 20px var(--color-highlight),
+            0 0 40px var(--color-accent2);
     }
     50% {
         text-shadow: 
-            0 0 60px var(--bright-purple),
-            0 0 120px var(--purple),
-            0 0 160px var(--purple);
+            0 0 30px var(--color-highlight),
+            0 0 60px var(--color-accent2),
+            0 0 90px var(--color-accent1);
     }
 }
 
 .loading-text {
-    font-family: 'Press Start 2P', cursive;
+    font-family: var(--font-ui);
     font-size: 16px;
-    color: var(--purple);
+    font-weight: 400;
+    color: var(--color-highlight);
     margin-bottom: 30px;
     position: relative;
     z-index: 10;
@@ -154,8 +161,9 @@ body {
 .progress-bar {
     width: 400px;
     height: 8px;
-    background-color: var(--dark-purple);
-    border: 3px solid var(--purple);
+    background-color: var(--color-panel);
+    border: 2px solid var(--color-highlight);
+    border-radius: 4px;
     margin: 0 auto;
     overflow: hidden;
     position: relative;
@@ -164,10 +172,10 @@ body {
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--purple), var(--bright-purple));
+    background: linear-gradient(90deg, var(--color-accent1), var(--color-accent2));
     width: 0%;
     animation: fill-bar 2s ease-in-out forwards;
-    box-shadow: 0 0 20px var(--bright-purple);
+    box-shadow: 0 0 20px var(--color-hover);
 }
 
 @keyframes fill-bar {
@@ -191,11 +199,13 @@ body {
 }
 
 .home-logo {
-    font-family: 'Press Start 2P', cursive;
-    font-size: 120px;
-    color: var(--bright-purple);
-    text-shadow: 0 0 40px var(--purple);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 72px;
+    font-weight: 700;
+    color: var(--color-text);
+    text-shadow: 0 0 20px var(--color-highlight), 0 0 40px var(--color-accent2);
     margin-bottom: 80px;
+    letter-spacing: 3px;
     animation: float 3s ease-in-out infinite;
 }
 
@@ -215,29 +225,27 @@ body {
 }
 
 .pixel-button {
-    font-family: 'Press Start 2P', cursive;
+    font-family: var(--font-ui);
     font-size: 16px;
-    padding: 25px 50px;
-    background-color: transparent;
-    color: var(--bright-purple);
-    border: 4px solid var(--purple);
+    font-weight: 600;
+    padding: 12px 32px;
+    background: linear-gradient(90deg, var(--color-accent1), var(--color-accent2));
+    color: #fff;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     text-transform: uppercase;
     position: relative;
 }
 
 .pixel-button:hover {
-    background-color: var(--purple);
-    color: var(--black);
-    transform: translateY(-5px);
-    box-shadow: 
-        0 10px 30px rgba(168, 85, 247, 0.5),
-        0 0 40px var(--purple);
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px var(--color-highlight);
 }
 
 .pixel-button:active {
-    transform: translateY(-2px);
+    transform: translateY(0);
 }
 
 /* ===================================
@@ -253,18 +261,20 @@ body {
 .tutorial-header {
     padding: 40px 0;
     text-align: center;
-    background-color: rgba(26, 10, 46, 0.5);
-    border-bottom: 4px solid var(--purple);
+    background-color: var(--color-panel);
+    border-bottom: 3px solid var(--color-highlight);
     position: sticky;
     top: 0;
     z-index: 100;
 }
 
 .tutorial-title {
-    font-family: 'Press Start 2P', cursive;
-    font-size: 48px;
-    color: var(--bright-purple);
-    text-shadow: 0 0 30px var(--purple);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--color-text);
+    text-shadow: 0 0 20px var(--color-highlight);
+    letter-spacing: 2px;
 }
 
 .tutorial-content {
@@ -283,47 +293,53 @@ body {
 }
 
 .tutorial-card {
-    background-color: var(--dark-purple);
-    border: 4px solid var(--purple);
+    background-color: var(--color-panel);
+    border: 2px solid var(--color-highlight);
+    border-radius: 12px;
     padding: 30px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .tutorial-card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-5px);
     box-shadow: 
-        0 15px 40px rgba(168, 85, 247, 0.4),
-        0 0 60px rgba(168, 85, 247, 0.3);
-    border-color: var(--bright-purple);
+        0 10px 30px rgba(157, 78, 221, 0.4),
+        0 0 40px rgba(199, 125, 255, 0.3);
+    border-color: var(--color-hover);
 }
 
 .card-number {
-    font-family: 'Press Start 2P', cursive;
+    font-family: var(--font-ui);
     font-size: 12px;
-    color: var(--purple);
+    font-weight: 600;
+    color: var(--color-highlight);
     margin-bottom: 15px;
+    text-transform: uppercase;
 }
 
 .card-title {
-    font-family: 'Press Start 2P', cursive;
+    font-family: var(--font-ui);
     font-size: 20px;
-    color: var(--bright-purple);
+    font-weight: 600;
+    color: var(--color-text);
     margin-bottom: 15px;
 }
 
 .card-description {
-    font-family: 'VT323', monospace;
-    font-size: 20px;
-    color: var(--text);
+    font-family: var(--font-ui);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--color-text);
     line-height: 1.6;
+    opacity: 0.9;
 }
 
 .back-btn {
     position: fixed;
     bottom: 30px;
     left: 30px;
-    padding: 15px 30px;
+    padding: 10px 24px;
     font-size: 14px;
     z-index: 1000;
 }
@@ -343,8 +359,8 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 30px 50px;
-    border-bottom: 3px solid var(--purple);
-    background: rgba(26, 10, 46, 0.8);
+    border-bottom: 2px solid var(--color-highlight);
+    background: var(--color-panel);
 }
 
 .tutorial-detail-header .tutorial-title {
@@ -372,61 +388,66 @@ body {
 }
 
 .lesson-title {
-    font-family: 'Press Start 2P', cursive;
+    font-family: var(--font-ui);
     font-size: 32px;
-    color: var(--bright-purple);
+    font-weight: 600;
+    color: var(--color-text);
     text-align: center;
     margin-bottom: 40px;
-    text-shadow: 0 0 20px var(--bright-purple);
+    text-shadow: 0 0 15px var(--color-highlight);
 }
 
 .lesson-body {
-    font-family: 'VT323', monospace;
-    font-size: 24px;
+    font-family: var(--font-ui);
+    font-size: 18px;
+    font-weight: 400;
     line-height: 1.8;
-    color: var(--text);
+    color: var(--color-text);
     margin-bottom: 40px;
     white-space: pre-wrap;
 }
 
 .lesson-body strong {
-    color: var(--bright-purple);
+    color: var(--color-hover);
+    font-weight: 600;
 }
 
 .lesson-body code {
-    font-family: 'JetBrains Mono', monospace;
-    background-color: rgba(168, 85, 247, 0.2);
+    font-family: var(--font-code);
+    background-color: rgba(157, 78, 221, 0.2);
     padding: 2px 8px;
-    border-radius: 3px;
+    border-radius: 4px;
     color: var(--cyan);
 }
 
 .code-block-container,
 .code-output-container {
     margin-bottom: 30px;
-    border: 3px solid var(--purple);
-    border-radius: 8px;
+    border: 2px solid var(--color-highlight);
+    border-radius: 12px;
     overflow: hidden;
-    background: rgba(26, 10, 46, 0.5);
+    background: var(--color-panel);
 }
 
 .code-block-header,
 .code-output-header {
-    font-family: 'Press Start 2P', cursive;
+    font-family: var(--font-ui);
     font-size: 12px;
-    background-color: var(--purple);
-    color: var(--black);
+    font-weight: 600;
+    background-color: var(--color-highlight);
+    color: #fff;
     padding: 10px 20px;
+    text-transform: uppercase;
 }
 
 .code-block,
 .code-output {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-code);
     font-size: 16px;
     padding: 20px;
     margin: 0;
-    background-color: rgba(10, 0, 20, 0.8);
-    color: var(--text);
+    background-color: var(--color-bg);
+    color: var(--color-text);
     overflow-x: auto;
     line-height: 1.6;
 }
@@ -445,13 +466,13 @@ body {
     gap: 20px;
     margin-top: 50px;
     padding-top: 30px;
-    border-top: 2px solid var(--purple);
+    border-top: 2px solid var(--color-highlight);
 }
 
 .lesson-nav-btn {
     flex: 1;
     max-width: 250px;
-    padding: 15px 25px;
+    padding: 10px 24px;
     font-size: 14px;
 }
 
@@ -472,226 +493,411 @@ body {
 
 #ide-page {
     display: flex;
-}
-
-.ide-layout {
-    display: flex;
+    flex-direction: column;
     width: 100%;
     height: 100vh;
 }
 
-/* Sidebar */
-.sidebar {
-    width: 250px;
-    background-color: var(--dark-purple);
-    border-right: 4px solid var(--purple);
-    display: flex;
-    flex-direction: column;
-}
-
-.nav-section {
-    padding: 20px 0;
-    border-bottom: 3px solid var(--purple);
-}
-
-.nav-item {
-    font-family: 'VT323', monospace;
-    font-size: 18px;
-    padding: 15px 20px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.nav-item .nav-icon {
-    width: 18px;
-    height: 18px;
-    stroke: var(--purple);
-    filter: drop-shadow(0 0 4px var(--bright-purple));
-    transition: all 0.2s ease;
-}
-
-.nav-item:hover {
-    background-color: rgba(168, 85, 247, 0.2);
-    color: var(--bright-purple);
-}
-
-.nav-item:hover .nav-icon {
-    stroke: var(--bright-purple);
-    filter: drop-shadow(0 0 8px var(--bright-purple));
-    transform: translateX(3px);
-}
-
-.nav-item.active {
-    background-color: var(--purple);
-    color: var(--black);
-}
-
-.nav-item.active .nav-icon {
-    stroke: var(--black);
-    filter: drop-shadow(0 0 6px var(--bright-purple));
-}
-
-.files-section {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px 0;
-}
-
-.files-header {
-    font-family: 'Press Start 2P', cursive;
-    font-size: 12px;
-    color: var(--purple);
-    padding: 0 20px 15px;
-    border-bottom: 2px solid var(--purple);
-    margin-bottom: 10px;
-}
-
-.files-list {
-    padding: 0 10px;
-}
-
-.file-item {
-    font-family: 'VT323', monospace;
-    font-size: 16px;
-    padding: 10px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border-radius: 4px;
-}
-
-.file-item:hover {
-    background-color: rgba(168, 85, 247, 0.2);
-    color: var(--bright-purple);
-}
-
-.file-item.active {
-    background-color: var(--purple);
-    color: var(--black);
-}
-
-/* Main Area */
-.main-area {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Toolbar */
-.toolbar {
-    height: 60px;
-    background-color: var(--dark-purple);
-    border-bottom: 4px solid var(--purple);
+/* IDE Header Bar */
+.ide-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 60px;
     padding: 0 20px;
+    background: linear-gradient(135deg, var(--color-highlight), var(--color-hover));
+    border-bottom: 2px solid var(--color-highlight);
+    flex-shrink: 0;
+    box-sizing: border-box;
 }
 
-.toolbar-buttons {
+.ide-title {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(224, 170, 255, 0.6);
+    line-height: 1;
     display: flex;
-    gap: 15px;
+    align-items: center;
+    height: 100%;
 }
 
-.toolbar-btn {
-    font-family: 'Press Start 2P', cursive;
+/* Global Controls (In Header) */
+.global-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+}
+
+.control-btn {
+    font-family: var(--font-ui);
     font-size: 11px;
-    padding: 12px 20px;
-    background-color: transparent;
-    color: var(--purple);
-    border: 3px solid var(--purple);
+    font-weight: 600;
+    padding: 0;
+    background: linear-gradient(90deg, var(--color-accent1), var(--color-accent2));
+    color: #fff;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
 }
 
-.toolbar-btn .icon {
+.control-btn .icon {
     width: 20px;
     height: 20px;
-    stroke: var(--purple);
-    filter: drop-shadow(0 0 4px var(--bright-purple));
+    stroke: #fff;
+    filter: drop-shadow(0 0 4px var(--color-hover));
     transition: all 0.2s ease;
 }
 
-.toolbar-btn:hover {
-    background-color: var(--purple);
-    color: var(--black);
-    box-shadow: 0 0 20px var(--purple);
+.control-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px var(--color-highlight);
 }
 
-.toolbar-btn:hover .icon {
-    stroke: var(--black);
-    filter: drop-shadow(0 0 8px var(--bright-purple));
-    transform: scale(1.1);
+.control-btn.run-btn {
+    background: linear-gradient(90deg, #059669, var(--green));
 }
 
-.run-btn {
-    background-color: var(--green);
-    color: var(--black);
-    border-color: var(--green);
-}
-
-.run-btn .icon {
-    stroke: var(--black);
-    filter: drop-shadow(0 0 4px var(--green));
-}
-
-.run-btn:hover {
-    background-color: #059669;
+.control-btn.run-btn:hover {
     box-shadow: 0 0 20px var(--green);
 }
 
-.run-btn:hover .icon {
-    filter: drop-shadow(0 0 8px var(--green));
-    transform: scale(1.1);
+.ide-layout {
+    display: flex;
+    width: 100%;
+    flex: 1;
+    overflow: hidden;
 }
 
-.file-tabs {
+/* Left Sidebar (File Explorer Only) */
+.sidebar {
+    width: 200px;
+    min-width: 150px;
+    max-width: 400px;
+    background-color: var(--color-panel);
+    border-right: 2px solid var(--color-highlight);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.sidebar-header {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-text);
+    padding: 8px 12px;
+    height: auto;
+    border-bottom: none;
+    text-transform: uppercase;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-title {
+    flex: 1;
+}
+
+.sidebar-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.sidebar-action-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-text);
+    cursor: pointer;
+    padding: 3px;
+    border-radius: 3px;
+    transition: background-color 0.1s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    opacity: 0.8;
+}
+
+.sidebar-action-btn:hover {
+    background-color: rgba(157, 78, 221, 0.25);
+    opacity: 1;
+}
+
+.sidebar-action-btn svg {
+    stroke: currentColor;
+    width: 14px;
+    height: 14px;
+}
+
+/* Resizable Divider */
+.resizer {
+    width: 4px;
+    background-color: var(--color-highlight);
+    cursor: col-resize;
+    transition: background-color 0.2s ease;
+    position: relative;
+}
+
+.resizer:hover {
+    background-color: var(--color-hover);
+}
+
+.resizer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -3px;
+    right: -3px;
+    bottom: 0;
+}
+
+.files-list {
+    flex: 1;
+    padding: 0;
+    overflow-y: auto;
+    user-select: none;
+}
+
+.file-item {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 400;
+    padding: 3px 8px;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 22px;
+    line-height: 22px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file-item:hover {
+    background-color: rgba(157, 78, 221, 0.15);
+}
+
+.file-item.active {
+    background-color: rgba(157, 78, 221, 0.25);
+    color: var(--color-text);
+}
+
+.file-item.folder {
+    font-weight: 400;
+    color: var(--color-text);
+}
+
+.file-item.folder:hover {
+    background-color: rgba(157, 78, 221, 0.15);
+}
+
+.file-item.drag-over {
+    background-color: rgba(224, 170, 255, 0.3);
+    border: 1px dashed var(--color-hover);
+}
+
+.file-item.dragging {
+    opacity: 0.4;
+}
+
+.folder-arrow {
+    display: inline-block;
+    font-size: 9px;
+    color: var(--color-text);
+    user-select: none;
+    transition: transform 0.15s ease;
+    width: 12px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.file-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+}
+
+.file-icon svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--color-text);
+    opacity: 0.8;
+}
+
+.file-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.file-item.editing {
+    background-color: rgba(157, 78, 221, 0.1);
+    display: flex;
+    align-items: center;
+    padding: 6px 10px;
+}
+
+.inline-rename-input {
+    flex: 1;
+    background-color: var(--color-bg);
+    border: 2px solid var(--color-highlight);
+    color: var(--color-text);
+    font-family: var(--font-ui);
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.inline-rename-input:focus {
+    border-color: var(--color-hover);
+    box-shadow: 0 0 8px rgba(157, 78, 221, 0.3);
+}
+
+/* Main Content Area */
+.main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Panel Headers */
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    height: 44px;
+    background-color: var(--color-toolbar);
+    border-bottom: 2px solid var(--color-highlight);
+}
+
+.panel-title {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Editor Panel (Top) */
+.editor-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 200px;
+}
+
+/* Horizontal Resizer */
+.horizontal-resizer {
+    height: 4px;
+    background-color: var(--color-highlight);
+    cursor: row-resize;
+    transition: background-color 0.2s ease;
+    position: relative;
+}
+
+.horizontal-resizer:hover {
+    background-color: var(--color-hover);
+}
+
+.horizontal-resizer::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    bottom: -3px;
+    left: 0;
+    right: 0;
+}
+
+/* File Tabs */
+.panel-header .file-tabs {
     display: flex;
     gap: 5px;
+    flex: 1;
+    margin-left: 20px;
 }
 
 .file-tab {
-    font-family: 'VT323', monospace;
-    font-size: 14px;
-    padding: 8px 15px;
-    background-color: rgba(168, 85, 247, 0.1);
-    border: 2px solid var(--purple);
+    font-family: var(--font-ui);
+    font-size: 12px;
+    font-weight: 400;
+    padding: 6px 12px;
+    background-color: rgba(157, 78, 221, 0.15);
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
     transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .file-tab.active {
-    background-color: var(--purple);
-    color: var(--black);
+    background-color: var(--color-highlight);
+    color: #fff;
 }
 
 .file-tab:hover:not(.active) {
-    background-color: rgba(168, 85, 247, 0.2);
+    background-color: rgba(157, 78, 221, 0.25);
+}
+
+.tab-close {
+    font-size: 16px;
+    line-height: 1;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.tab-close:hover {
+    opacity: 1;
 }
 
 /* Editor Container */
 .editor-container {
     flex: 1;
     display: flex;
-    background-color: #0d0d1a;
+    background-color: var(--color-panel);
     overflow: hidden;
 }
 
 .line-numbers {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-code);
     font-size: 16px;
     line-height: 1.6;
     padding: 20px 15px;
-    background-color: var(--dark-purple);
+    background-color: #1a0038;
     color: var(--gray);
     text-align: right;
     user-select: none;
-    border-right: 2px solid var(--purple);
+    border-right: 2px solid var(--color-highlight);
     overflow: hidden;
     white-space: pre;
     min-width: 50px;
@@ -699,12 +905,12 @@ body {
 
 .code-editor {
     flex: 1;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-code);
     font-size: 16px;
     line-height: 1.6;
     padding: 20px;
-    background-color: #0d0d1a;
-    color: var(--text);
+    background-color: var(--color-panel);
+    color: var(--color-text);
     border: none;
     outline: none;
     resize: none;
@@ -712,6 +918,7 @@ body {
     overflow-x: auto;
     white-space: pre;
     tab-size: 2;
+    caret-color: var(--color-hover);
 }
 
 .code-editor::placeholder {
@@ -719,30 +926,42 @@ body {
     opacity: 0.5;
 }
 
-/* Output Panel */
+/* Output Panel (Bottom) */
 .output-panel {
     height: 200px;
-    background-color: var(--dark-purple);
-    border-top: 4px solid var(--purple);
+    min-height: 100px;
+    background-color: var(--color-bg);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
-.output-header {
-    font-family: 'Press Start 2P', cursive;
-    font-size: 11px;
-    color: var(--purple);
-    padding: 15px 20px;
-    border-bottom: 2px solid var(--purple);
+.clear-output {
+    background: transparent;
+    border: none;
+    color: var(--color-text);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clear-output:hover {
+    background-color: rgba(157, 78, 221, 0.2);
+    color: var(--color-hover);
 }
 
 .output-content {
     flex: 1;
-    font-family: 'VT323', monospace;
-    font-size: 16px;
+    font-family: var(--font-code);
+    font-size: 14px;
     padding: 15px 20px;
     overflow-y: auto;
     line-height: 1.4;
+    background-color: var(--color-bg);
 }
 
 .output-line {
@@ -750,7 +969,7 @@ body {
 }
 
 .output-line.ready {
-    color: var(--purple);
+    color: var(--color-highlight);
 }
 
 .output-line.success {
@@ -772,28 +991,69 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--dark-purple);
+    background: var(--color-panel);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--purple);
-    border-radius: 0;
+    background: var(--color-highlight);
+    border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--bright-purple);
+    background: var(--color-hover);
 }
 
 /* Selection */
 ::selection {
-    background-color: var(--purple);
-    color: var(--black);
+    background-color: var(--color-highlight);
+    color: #fff;
+}
+
+/* Navigation Footer */
+.nav-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--color-toolbar);
+    border-top: 2px solid var(--color-highlight);
+    padding: 10px 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+}
+
+.nav-footer-btn {
+    background: linear-gradient(135deg, var(--color-highlight), var(--color-hover));
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    color: white;
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-footer-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(157, 78, 221, 0.4);
+}
+
+.nav-footer-btn:active {
+    transform: translateY(0);
 }
 
 /* Focus Styles */
 button:focus,
 textarea:focus {
-    outline: 3px solid var(--bright-purple);
+    outline: 2px solid var(--color-hover);
     outline-offset: 2px;
 }
 

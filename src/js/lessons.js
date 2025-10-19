@@ -183,8 +183,6 @@ Enter your guess (1-20):
 Correct! Attempts: 3`
   }
 };
-
-// Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = lessons;
 }

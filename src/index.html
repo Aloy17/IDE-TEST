@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RID IDE</title>
+    <title>RIDLEY IDE</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Orbitron:wght@700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="particles"></div>
@@ -15,7 +15,7 @@
     <div id="loading-page" class="page active">
         <canvas id="binary-rain"></canvas>
         <div class="loading-content">
-            <div class="loading-logo">RID</div>
+            <div class="loading-logo">RIDLEY</div>
             <div class="loading-text">Loading</div>
             <div class="progress-bar">
                 <div class="progress-fill"></div>
@@ -25,7 +25,7 @@
 
     <div id="home-page" class="page">
         <div class="home-content">
-            <div class="home-logo">RID</div>
+            <div class="home-logo">RIDLEY</div>
             <div class="home-buttons">
                 <button class="pixel-button" id="tutorial-btn">TUTORIAL</button>
                 <button class="pixel-button" id="ide-btn">IDE</button>
@@ -35,7 +35,7 @@
 
     <div id="tutorial-page" class="page">
         <div class="tutorial-header">
-            <h1 class="tutorial-title">LEARN RID</h1>
+            <h1 class="tutorial-title">LEARN RIDLEY</h1>
         </div>
         <div class="tutorial-content">
             <div class="tutorial-cards">
@@ -82,7 +82,7 @@
     <div id="tutorial-detail-page" class="page">
         <div class="tutorial-detail-header">
             <button class="back-btn pixel-button" id="lesson-back-btn">◄ BACK</button>
-            <h1 class="tutorial-title">LEARN RID</h1>
+            <h1 class="tutorial-title">LEARN RIDLEY</h1>
             <div class="spacer"></div>
         </div>
         <div class="tutorial-detail-content">
@@ -107,76 +107,121 @@
     </div>
 
     <div id="ide-page" class="page">
+        
+        <div class="ide-header">
+            <div class="ide-title">RIDLEY IDE</div>
+            <div class="global-controls">
+                <button class="control-btn" id="run-btn" title="Play (Run Code)">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="icon">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                </button>
+                <button class="control-btn" id="delete-btn" title="Delete File">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="icon">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                </button>
+                <button class="control-btn" id="save-btn" title="Save File">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="icon">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
         <div class="ide-layout">
+            
             <div class="sidebar">
-                <nav class="nav-section">
-                    <div class="nav-item" id="nav-home" title="Home">
-                        <img src="assets/icons/home.svg" alt="Home" class="nav-icon" />
-                        <span>HOME</span>
+                <div class="sidebar-header">
+                    <span class="sidebar-title">FILES</span>
+                    <div class="sidebar-actions">
+                        <button class="sidebar-action-btn" id="new-file-btn" title="New File">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" style="width: 16px; height: 16px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </button>
+                        <button class="sidebar-action-btn" id="new-folder-btn" title="New Folder">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" style="width: 16px; height: 16px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 13l4 8m0 0l4-8m-4 8V10.5"/>
+                            </svg>
+                        </button>
                     </div>
-                    <div class="nav-item" id="nav-tutorial" title="Tutorials">
-                        <img src="assets/icons/tutorial.svg" alt="Tutorials" class="nav-icon" />
-                        <span>TUTORIALS</span>
-                    </div>
-                    <div class="nav-item active" id="nav-code" title="Code">
-                        <img src="assets/icons/code.svg" alt="Code" class="nav-icon" />
-                        <span>CODE</span>
-                    </div>
-                </nav>
-                <div class="files-section">
-                    <div class="files-header">FILES</div>
-                    <div class="files-list" id="files-list">
-                    </div>
+                </div>
+                <div class="files-list" id="files-list">
+                    
                 </div>
             </div>
 
+            
+            <div class="resizer" id="sidebar-resizer"></div>
+
+            
             <div class="main-area">
-                <div class="toolbar">
-                    <div class="toolbar-buttons">
-                        <button class="toolbar-btn" id="new-btn" title="New">
-                            <img src="assets/icons/new.svg" alt="New" class="icon" />
-                        </button>
-                        <button class="toolbar-btn" id="save-btn" title="Save">
-                            <img src="assets/icons/save.svg" alt="Save" class="icon" />
-                        </button>
-                        <button class="toolbar-btn run-btn" id="run-btn" title="Run">
-                            <img src="assets/icons/run.svg" alt="Run" class="icon" />
-                        </button>
-                    </div>
-                    <div class="file-tabs" id="file-tabs">
-                        <div class="file-tab active" data-file="untitled">
-                            <span class="tab-name">untitled.rid</span>
+                
+                <div class="editor-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">IDE</span>
+                        <div class="file-tabs" id="file-tabs">
+                            <div class="file-tab active" data-file="untitled.rid">
+                                <span class="tab-name">untitled.rid</span>
+                                <span class="tab-close">×</span>
+                            </div>
                         </div>
                     </div>
+                    <div class="editor-container">
+                        <div class="line-numbers" id="line-numbers">1</div>
+                        <textarea 
+                            class="code-editor" 
+                            id="code-editor" 
+                            spellcheck="false"
+                            placeholder="// Write your RIDLEY code here..."
+                        >// Welcome to RIDLEY IDE!
+// Start coding in RID...
+
+out("Hello from RIDLEY!")
+</textarea>
+                    </div>
                 </div>
 
-                <div class="editor-container">
-                    <div class="line-numbers" id="line-numbers">1</div>
-                    <textarea 
-                        class="code-editor" 
-                        id="code-editor" 
-                        spellcheck="false"
-                        placeholder="~ Write your RID code here ~"
-                    >~ Welcome to RID IDE! ~
-~ This is a comment ~
+                
+                <div class="horizontal-resizer" id="horizontal-resizer"></div>
 
-out("Hello from RID!")
-line</textarea>
-                </div>
-
+                
                 <div class="output-panel">
-                    <div class="output-header">OUTPUT</div>
+                    <div class="panel-header">
+                        <span class="panel-title">OUTPUT</span>
+                        <button class="clear-output" id="clear-output" title="Clear Output">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" style="width: 16px; height: 16px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
                     <div class="output-content" id="output-content">
-                        <div class="output-line ready">&gt; Ready to run your RID code...</div>
+                        <div class="output-line ready">&gt; Ready to run your RIDLEY code...</div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        
+        <div class="nav-footer">
+            <button class="nav-footer-btn" id="nav-home" title="Home">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" style="width: 18px; height: 18px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                </svg>
+                <span>Home</span>
+            </button>
+            <button class="nav-footer-btn" id="nav-tutorial" title="Tutorials">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" style="width: 18px; height: 18px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+                <span>Tutorials</span>
+            </button>
         </div>
     </div>
 
     <script src="js/animations.js"></script>
     <script src="js/lessons.js"></script>
-    <script src="js/tutorials.js"></script>
     <script src="js/editor.js"></script>
     <script src="js/pages.js"></script>
     <script src="js/renderer.js"></script>

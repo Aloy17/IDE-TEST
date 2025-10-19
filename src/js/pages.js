@@ -113,29 +113,18 @@ function initNavigation() {
             }
         });
     }
+    const navHomeFooter = document.getElementById('nav-home');
+    const navTutorialFooter = document.getElementById('nav-tutorial');
     
-    const navHome = document.getElementById('nav-home');
-    const navTutorial = document.getElementById('nav-tutorial');
-    const navCode = document.getElementById('nav-code');
-    
-    if (navHome) {
-        navHome.addEventListener('click', () => {
+    if (navHomeFooter) {
+        navHomeFooter.addEventListener('click', () => {
             showPage('home-page');
-            updateNavActive('nav-home');
         });
     }
     
-    if (navTutorial) {
-        navTutorial.addEventListener('click', () => {
+    if (navTutorialFooter) {
+        navTutorialFooter.addEventListener('click', () => {
             showPage('tutorial-page');
-            updateNavActive('nav-tutorial');
-        });
-    }
-    
-    if (navCode) {
-        navCode.addEventListener('click', () => {
-            showPage('ide-page');
-            updateNavActive('nav-code');
         });
     }
     

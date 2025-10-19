@@ -8,13 +8,9 @@ import json
 import io
 from contextlib import redirect_stdout, redirect_stderr
 import os
-
-# Add transpiler directory to path
 backend_dir = os.path.dirname(os.path.abspath(__file__))
 transpiler_dir = os.path.join(backend_dir, 'rid_transpiler')
 sys.path.insert(0, transpiler_dir)
-
-# Also try parent directory (for direct imports)
 parent_dir = os.path.dirname(backend_dir)
 sys.path.insert(0, parent_dir)
 
@@ -40,7 +36,6 @@ def execute_rid(rid_code):
         dict: Result with success status and output/error
     """
     try:
-        # Tokenize
         tokens = lex(rid_code)
         
         if not tokens:
@@ -48,12 +43,8 @@ def execute_rid(rid_code):
                 'success': True,
                 'output': ''
             }
-        
-        # Parse
         parser = Parser(tokens)
         parser.parse()
-        
-        # Get Python code
         python_code = '\n'.join(parser.output)
         
         if not python_code.strip():
@@ -61,17 +52,12 @@ def execute_rid(rid_code):
                 'success': True,
                 'output': ''
             }
-        
-        # Execute and capture output
         output_buffer = io.StringIO()
         error_buffer = io.StringIO()
         
         with redirect_stdout(output_buffer), redirect_stderr(error_buffer):
-            # Create execution namespace
             exec_globals = {}
             exec(python_code, exec_globals)
-        
-        # Get output
         stdout_output = output_buffer.getvalue()
         stderr_output = error_buffer.getvalue()
         
@@ -108,7 +94,6 @@ def execute_rid(rid_code):
 def main():
     """Main entry point - read code from stdin and execute"""
     try:
-        # Read code from stdin
         code = sys.stdin.read()
         
         if not code.strip():
@@ -117,11 +102,7 @@ def main():
                 'output': ''
             }))
             return
-        
-        # Execute RID code
         result = execute_rid(code)
-        
-        # Output result as JSON
         print(json.dumps(result))
         
     except Exception as e:

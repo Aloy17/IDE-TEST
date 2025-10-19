@@ -1,17 +1,15 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, Menu } = require('electron');
 const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs').promises;
 
 let mainWindow;
 
-// Get user projects folder
 function getProjectsFolder() {
   const userDataPath = app.getPath('userData');
   return path.join(userDataPath, 'projects');
 }
 
-// Create main window
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1400,
@@ -28,22 +26,17 @@ function createWindow() {
   });
 
   mainWindow.loadFile('src/index.html');
-
-  // Open DevTools in development
-  // mainWindow.webContents.openDevTools();
+  Menu.setApplicationMenu(null);
 }
 
-// Initialize projects folder
 async function initializeProjectsFolder() {
   const projectsPath = getProjectsFolder();
   
   try {
     await fs.access(projectsPath);
   } catch {
-    // Create folder if doesn't exist
     await fs.mkdir(projectsPath, { recursive: true });
     
-    // Copy example files
     const examplesPath = app.isPackaged
       ? path.join(process.resourcesPath, 'examples')
       : path.join(__dirname, 'backend', 'examples');
@@ -62,19 +55,14 @@ async function initializeProjectsFolder() {
   }
 }
 
-// Execute RID code
 async function executeRID(code) {
   return new Promise((resolve) => {
-    // In production, use bundled executable in resources
-    // In development, use Python to run the script
     let ridProcess;
     
     if (app.isPackaged) {
-      // Production: Use standalone .exe (no Python needed)
       const exePath = path.join(process.resourcesPath, 'rid_backend.exe');
       ridProcess = spawn(exePath);
     } else {
-      // Development: Use Python interpreter
       const pythonScript = path.join(__dirname, 'backend', 'rid_backend.py');
       ridProcess = spawn('python', [pythonScript]);
     }
@@ -116,22 +104,33 @@ async function executeRID(code) {
       });
     });
     
-    // Send code to RID backend
     ridProcess.stdin.write(code);
     ridProcess.stdin.end();
   });
 }
 
-// IPC Handlers
 ipcMain.handle('execute-rid', async (event, code) => {
   return await executeRID(code);
 });
 
-ipcMain.handle('get-files', async () => {
+ipcMain.handle('get-files', async (event, subPath = '') => {
   const projectsPath = getProjectsFolder();
+  const fullPath = path.join(projectsPath, subPath);
+  
   try {
-    const files = await fs.readdir(projectsPath);
-    return files.filter(f => f.endsWith('.rid'));
+    const items = await fs.readdir(fullPath, { withFileTypes: true });
+    const result = [];
+    
+    for (const item of items) {
+      const itemPath = subPath ? path.join(subPath, item.name) : item.name;
+      result.push({
+        name: item.name,
+        path: itemPath,
+        isDirectory: item.isDirectory()
+      });
+    }
+    
+    return result;
   } catch (err) {
     return [];
   }
@@ -178,7 +177,44 @@ ipcMain.handle('save-file-dialog', async (event, content) => {
   }
 });
 
-// App lifecycle
+ipcMain.handle('delete-file', async (event, filename) => {
+  const filePath = path.join(getProjectsFolder(), filename);
+  try {
+    await fs.unlink(filePath);
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+});
+
+ipcMain.handle('create-folder', async (event, folderName) => {
+  const folderPath = path.join(getProjectsFolder(), folderName);
+  try {
+    await fs.mkdir(folderPath, { recursive: true });
+    return { success: true, folderName };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+});
+
+ipcMain.handle('move-file', async (event, sourcePath, targetFolderPath) => {
+  try {
+    const projectsFolder = getProjectsFolder();
+    const fullSourcePath = path.join(projectsFolder, sourcePath);
+    const fullTargetFolder = path.join(projectsFolder, targetFolderPath);
+    
+    const itemName = path.basename(sourcePath);
+    const fullTargetPath = path.join(fullTargetFolder, itemName);
+    
+    const sourceStats = await fs.stat(fullSourcePath);
+    await fs.mkdir(fullTargetFolder, { recursive: true });
+    await fs.rename(fullSourcePath, fullTargetPath);
+    
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+});
 app.whenReady().then(async () => {
   await initializeProjectsFolder();
   createWindow();
