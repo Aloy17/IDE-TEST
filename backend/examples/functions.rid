@@ -1,0 +1,36 @@
+~ Function Examples ~
+~ Demonstrates function definition and calls ~
+
+func greet(name) {
+    out("Hello, ")
+    out(name)
+    out("!")
+    line
+}
+
+func add(a, b) {
+    give a + b
+}
+
+func factorial(n) {
+    agar(n <= 1) {
+        give 1
+    }
+    warna {
+        give n * factorial(n - 1)
+    }
+}
+
+~ Call functions ~
+greet("Alice")
+greet("Bob")
+
+Let sum = add(10, 20)
+out("10 + 20 = ")
+out(sum)
+line
+
+Let fact = factorial(5)
+out("Factorial of 5 = ")
+out(fact)
+line

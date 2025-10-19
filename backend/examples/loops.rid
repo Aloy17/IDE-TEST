@@ -1,0 +1,24 @@
+~ Loop Examples ~
+~ Demonstrates Run loops ~
+
+out("Fixed count loop:")
+line
+
+Run(5) {
+    out("Hello ")
+}
+line
+line
+
+out("While loop - Countdown:")
+line
+
+Let i = 5
+Run while(i > 0) {
+    out(i)
+    out(" ")
+    i = i - 1
+}
+line
+out("Blastoff!")
+line

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RID IDE</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="particles"></div>
+
+    <div id="loading-page" class="page active">
+        <canvas id="binary-rain"></canvas>
+        <div class="loading-content">
+            <div class="loading-logo">RID</div>
+            <div class="loading-text">Loading</div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="home-page" class="page">
+        <div class="home-content">
+            <div class="home-logo">RID</div>
+            <div class="home-buttons">
+                <button class="pixel-button" id="tutorial-btn">TUTORIAL</button>
+                <button class="pixel-button" id="ide-btn">IDE</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="tutorial-page" class="page">
+        <div class="tutorial-header">
+            <h1 class="tutorial-title">LEARN RID</h1>
+        </div>
+        <div class="tutorial-content">
+            <div class="tutorial-cards">
+                <div class="tutorial-card" data-lesson="1">
+                    <div class="card-number">LESSON 01</div>
+                    <div class="card-title">Getting Started</div>
+                    <div class="card-description">Learn basic output with the 'out()' function and print your first RID program</div>
+                </div>
+
+                <div class="tutorial-card" data-lesson="2">
+                    <div class="card-number">LESSON 02</div>
+                    <div class="card-title">Variables & Types</div>
+                    <div class="card-description">Understand how to declare variables, work with different data types, and perform operations</div>
+                </div>
+
+                <div class="tutorial-card" data-lesson="3">
+                    <div class="card-number">LESSON 03</div>
+                    <div class="card-title">Conditionals</div>
+                    <div class="card-description">Make decisions in your code using agar (if), ya_fir (elif), and warna (else) statements</div>
+                </div>
+
+                <div class="tutorial-card" data-lesson="4">
+                    <div class="card-number">LESSON 04</div>
+                    <div class="card-title">Loops</div>
+                    <div class="card-description">Master repetition with Run loops - both fixed-count and conditional while loops</div>
+                </div>
+
+                <div class="tutorial-card" data-lesson="5">
+                    <div class="card-number">LESSON 05</div>
+                    <div class="card-title">Functions</div>
+                    <div class="card-description">Create reusable code blocks with func, parameters, and return values using give</div>
+                </div>
+
+                <div class="tutorial-card" data-lesson="6">
+                    <div class="card-number">LESSON 06</div>
+                    <div class="card-title">Complete Projects</div>
+                    <div class="card-description">Build complete applications combining everything you've learned - games, calculators, and more</div>
+                </div>
+            </div>
+        </div>
+        <button class="back-btn pixel-button" id="tutorial-back-btn">◄ BACK</button>
+    </div>
+
+    <div id="tutorial-detail-page" class="page">
+        <div class="tutorial-detail-header">
+            <button class="back-btn pixel-button" id="lesson-back-btn">◄ BACK</button>
+            <h1 class="tutorial-title">LEARN RID</h1>
+            <div class="spacer"></div>
+        </div>
+        <div class="tutorial-detail-content">
+            <div class="lesson-container">
+                <h2 class="lesson-title" id="lesson-title">Loading...</h2>
+                <div class="lesson-body" id="lesson-body">
+                </div>
+                <div class="code-block-container">
+                    <div class="code-block-header">RID CODE</div>
+                    <pre class="code-block" id="lesson-code"></pre>
+                </div>
+                <div class="code-output-container">
+                    <div class="code-output-header">EXPECTED OUTPUT</div>
+                    <pre class="code-output" id="lesson-output"></pre>
+                </div>
+                <div class="lesson-navigation">
+                    <button class="pixel-button lesson-nav-btn" id="prev-lesson-btn">◄ PREVIOUS</button>
+                    <button class="pixel-button lesson-nav-btn" id="next-lesson-btn">NEXT ►</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ide-page" class="page">
+        <div class="ide-layout">
+            <div class="sidebar">
+                <nav class="nav-section">
+                    <div class="nav-item" id="nav-home" title="Home">
+                        <img src="assets/icons/home.svg" alt="Home" class="nav-icon" />
+                        <span>HOME</span>
+                    </div>
+                    <div class="nav-item" id="nav-tutorial" title="Tutorials">
+                        <img src="assets/icons/tutorial.svg" alt="Tutorials" class="nav-icon" />
+                        <span>TUTORIALS</span>
+                    </div>
+                    <div class="nav-item active" id="nav-code" title="Code">
+                        <img src="assets/icons/code.svg" alt="Code" class="nav-icon" />
+                        <span>CODE</span>
+                    </div>
+                </nav>
+                <div class="files-section">
+                    <div class="files-header">FILES</div>
+                    <div class="files-list" id="files-list">
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-area">
+                <div class="toolbar">
+                    <div class="toolbar-buttons">
+                        <button class="toolbar-btn" id="new-btn" title="New">
+                            <img src="assets/icons/new.svg" alt="New" class="icon" />
+                        </button>
+                        <button class="toolbar-btn" id="save-btn" title="Save">
+                            <img src="assets/icons/save.svg" alt="Save" class="icon" />
+                        </button>
+                        <button class="toolbar-btn run-btn" id="run-btn" title="Run">
+                            <img src="assets/icons/run.svg" alt="Run" class="icon" />
+                        </button>
+                    </div>
+                    <div class="file-tabs" id="file-tabs">
+                        <div class="file-tab active" data-file="untitled">
+                            <span class="tab-name">untitled.rid</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="editor-container">
+                    <div class="line-numbers" id="line-numbers">1</div>
+                    <textarea 
+                        class="code-editor" 
+                        id="code-editor" 
+                        spellcheck="false"
+                        placeholder="~ Write your RID code here ~"
+                    >~ Welcome to RID IDE! ~
+~ This is a comment ~
+
+out("Hello from RID!")
+line</textarea>
+                </div>
+
+                <div class="output-panel">
+                    <div class="output-header">OUTPUT</div>
+                    <div class="output-content" id="output-content">
+                        <div class="output-line ready">&gt; Ready to run your RID code...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/animations.js"></script>
+    <script src="js/lessons.js"></script>
+    <script src="js/tutorials.js"></script>
+    <script src="js/editor.js"></script>
+    <script src="js/pages.js"></script>
+    <script src="js/renderer.js"></script>
+</body>
+</html>
