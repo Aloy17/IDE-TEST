@@ -49,6 +49,11 @@ wheels/
 .installed.cfg
 *.egg
 
+# PyInstaller
+backend/build/
+backend/dist/
+*.spec.lock
+
 # Environment
 .env
 .env.local

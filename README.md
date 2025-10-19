@@ -74,14 +74,15 @@ npm start
 ## Features
 
 **Windows Installer:**
-- `RID-IDE-Setup.exe` (Approximately 100 MB)
+- `RID-IDE-Setup.exe` (Approximately 130 MB)
+- Includes embedded Python runtime (no Python installation required)
 
 ### Installation Steps
 
 1. Download the installer
 2. Run the installer
 3. Launch RID IDE from your Start Menu
-4. Start coding!
+4. Start coding - no additional setup needed!
 
 ---
 
@@ -90,7 +91,7 @@ npm start
 ### Prerequisites
 
 - **Node.js** 16+ and npm
-- **Python** 3.7+
+- **Python** 3.7+ (with PyInstaller for building)
 - **Git**
 - **Windows OS** (Primary platform)
 
@@ -111,6 +112,16 @@ This will install:
 - Electron
 - Electron Forge
 - All build dependencies
+
+### Build Python Backend
+
+Before building the Electron app, you need to build the Python backend:
+
+```bash
+npm run build:backend
+```
+
+This creates a standalone `rid_backend.exe` that bundles Python so end users don't need Python installed.
 
 ### Run Development Server
 
@@ -183,9 +194,16 @@ Click **IDE** to start coding:
 
 ### Build for Windows
 
+The build process automatically compiles the Python backend before packaging:
+
 ```bash
 npm run make
 ```
+
+This will:
+1. Build the Python backend into a standalone .exe
+2. Package the Electron app with the bundled backend
+3. Create the Windows installer
 
 This creates installers in the `out/make` directory.
 
@@ -286,23 +304,27 @@ npm install
 npm start
 ```
 
-### Python backend not found
+### Troubleshooting
 
 **Error:** `Failed to import RID transpiler`
 
 **Solution:**
-1. Ensure Python 3.7+ is installed
-2. Check that `backend/rid_transpiler/` contains `lexer.py` and `parser.py`
-3. Run: `python backend/rid_backend.py` to test
+- This should not occur in the packaged app (Python is bundled)
+- For development: Ensure Python 3.7+ is installed
+- Check that `backend/rid_transpiler/` contains `lexer.py` and `parser.py`
 
 ### Code execution fails
 
-**Error:** `Failed to start Python`
+**In Development Mode:**
 
 **Solution:**
 1. Verify Python is in your PATH: `python --version`
 2. Try using `python3` instead:
-   - Edit `main.js`, line 67: Change `'python'` to `'python3'`
+   - Edit `main.js`, line 75: Change `'python'` to `'python3'`
+
+**In Packaged App:**
+- The bundled backend should work without Python installed
+- If errors persist, check the application logs
 
 ### Files not saving
 

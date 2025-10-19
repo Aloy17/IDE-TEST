@@ -44,15 +44,14 @@ async function initializeProjectsFolder() {
     await fs.mkdir(projectsPath, { recursive: true });
     
     // Copy example files
-    const backendPath = app.isPackaged
-      ? path.join(process.resourcesPath, 'backend')
-      : path.join(__dirname, 'backend');
-    const examplesSource = path.join(backendPath, 'examples');
+    const examplesPath = app.isPackaged
+      ? path.join(process.resourcesPath, 'examples')
+      : path.join(__dirname, 'backend', 'examples');
     try {
-      const files = await fs.readdir(examplesSource);
+      const files = await fs.readdir(examplesPath);
       for (const file of files) {
         if (file.endsWith('.rid')) {
-          const sourcePath = path.join(examplesSource, file);
+          const sourcePath = path.join(examplesPath, file);
           const destPath = path.join(projectsPath, file);
           await fs.copyFile(sourcePath, destPath);
         }
@@ -66,26 +65,32 @@ async function initializeProjectsFolder() {
 // Execute RID code
 async function executeRID(code) {
   return new Promise((resolve) => {
-    // In production, backend is in resources/backend (extraResource)
-    // In development, it's in the project root
-    const backendPath = app.isPackaged
-      ? path.join(process.resourcesPath, 'backend')
-      : path.join(__dirname, 'backend');
-    const pythonScript = path.join(backendPath, 'rid_backend.py');
-    const pythonProcess = spawn('python', [pythonScript]);
+    // In production, use bundled executable in resources
+    // In development, use Python to run the script
+    let ridProcess;
+    
+    if (app.isPackaged) {
+      // Production: Use standalone .exe (no Python needed)
+      const exePath = path.join(process.resourcesPath, 'rid_backend.exe');
+      ridProcess = spawn(exePath);
+    } else {
+      // Development: Use Python interpreter
+      const pythonScript = path.join(__dirname, 'backend', 'rid_backend.py');
+      ridProcess = spawn('python', [pythonScript]);
+    }
     
     let output = '';
     let errorOutput = '';
     
-    pythonProcess.stdout.on('data', (data) => {
+    ridProcess.stdout.on('data', (data) => {
       output += data.toString();
     });
     
-    pythonProcess.stderr.on('data', (data) => {
+    ridProcess.stderr.on('data', (data) => {
       errorOutput += data.toString();
     });
     
-    pythonProcess.on('close', (code) => {
+    ridProcess.on('close', (code) => {
       if (code !== 0 && errorOutput) {
         resolve({
           success: false,
@@ -104,16 +109,16 @@ async function executeRID(code) {
       }
     });
     
-    pythonProcess.on('error', (err) => {
+    ridProcess.on('error', (err) => {
       resolve({
         success: false,
-        error: `Failed to start Python: ${err.message}`
+        error: `Failed to start RID backend: ${err.message}`
       });
     });
     
-    // Send code to Python
-    pythonProcess.stdin.write(code);
-    pythonProcess.stdin.end();
+    // Send code to RID backend
+    ridProcess.stdin.write(code);
+    ridProcess.stdin.end();
   });
 }
 

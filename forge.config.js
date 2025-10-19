@@ -2,7 +2,10 @@ module.exports = {
   packagerConfig: {
     name: 'RID IDE',
     executableName: 'rid-ide',
-    extraResource: ['./backend'],
+    extraResource: [
+      './backend/dist/rid_backend.exe',
+      './backend/examples'
+    ],
     asar: true
   },
   makers: [
