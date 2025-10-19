@@ -44,7 +44,10 @@ async function initializeProjectsFolder() {
     await fs.mkdir(projectsPath, { recursive: true });
     
     // Copy example files
-    const examplesSource = path.join(__dirname, 'backend', 'examples');
+    const backendPath = app.isPackaged
+      ? path.join(process.resourcesPath, 'backend')
+      : path.join(__dirname, 'backend');
+    const examplesSource = path.join(backendPath, 'examples');
     try {
       const files = await fs.readdir(examplesSource);
       for (const file of files) {
@@ -63,7 +66,12 @@ async function initializeProjectsFolder() {
 // Execute RID code
 async function executeRID(code) {
   return new Promise((resolve) => {
-    const pythonScript = path.join(__dirname, 'backend', 'rid_backend.py');
+    // In production, backend is in resources/backend (extraResource)
+    // In development, it's in the project root
+    const backendPath = app.isPackaged
+      ? path.join(process.resourcesPath, 'backend')
+      : path.join(__dirname, 'backend');
+    const pythonScript = path.join(backendPath, 'rid_backend.py');
     const pythonProcess = spawn('python', [pythonScript]);
     
     let output = '';
