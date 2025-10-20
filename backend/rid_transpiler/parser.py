@@ -10,7 +10,6 @@ class Parser:
             "LET": self.var_declare,
             "IDENTIFIER": self.assignment,
             "OUT": self.print_stmt,
-            "IN": self.input_stmt,
             "RUN": self.loop_stmt,
             "IF": self.conditional_stmt,
             "ELIF": self.conditional_stmt,
@@ -428,6 +427,32 @@ class Parser:
 
         elif key_token == "BOOL_CONVERT":
             return self.parse_type_conversion("bool")
+
+        elif key_token == "IN":
+            self.position += 1
+            if self.position >= len(self.token) or self.token[self.position][1] != "LPAREN":
+                raise SyntaxError("Syntax Error: Expected '(' after 'in'")
+            self.position += 1
+            
+            if self.position >= len(self.token):
+                raise SyntaxError("Syntax Error: Unexpected end of expression in 'in()' function")
+            
+            if self.token[self.position][1] == "STRING":
+                prompt = f'"{self.token[self.position][0]}"'
+                self.position += 1
+            elif self.token[self.position][1] == "RPAREN":
+                prompt = None
+            else:
+                raise SyntaxError("Syntax Error: Expected string prompt or ')' in 'in()' function")
+            
+            if self.position >= len(self.token) or self.token[self.position][1] != "RPAREN":
+                raise SyntaxError("Syntax Error: Expected ')' after prompt in 'in()' function")
+            self.position += 1
+            
+            if prompt:
+                return f"input({prompt})"
+            else:
+                return "input()"
 
         elif key_token == "IDENTIFIER":
             if self.position + 1 < len(self.token) and self.token[self.position + 1][1] == "LPAREN":
