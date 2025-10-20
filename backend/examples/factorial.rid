@@ -1,0 +1,39 @@
+~ Factorial Calculator Using Iteration ~
+
+func factorial(n) {
+    Let result = 1
+    Let counter = 1
+
+    Run while(counter <= n) {
+        result = result * counter
+        counter = counter + 1
+    }
+
+    give result
+}
+
+Let num = 5
+Let result = factorial(num)
+
+out("Factorial of ")
+out(num)
+out(" is ")
+out(result)
+
+~ Calculate another ~
+Let number = 7
+Let answer = factorial(number)
+
+out("Factorial of ")
+out(number)
+out(" is ")
+out(answer)
+
+~ One more example ~
+Let value = 10
+Let output = factorial(value)
+
+out("Factorial of ")
+out(value)
+out(" is ")
+out(output)

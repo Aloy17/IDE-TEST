@@ -1,25 +1,26 @@
 ~ Simple Calculator ~
-~ Demonstrates variables and arithmetic ~
+~ Demonstrates arithmetic operations ~
 
 Let a = 10
-Let b = 5
+Let b = 3
+
+out("Number 1: ")
+out(a)
+out("Number 2: ")
+out(b)
+out("")
 
 out("Addition: ")
 out(a + b)
-line
 
 out("Subtraction: ")
 out(a - b)
-line
 
 out("Multiplication: ")
 out(a * b)
-line
 
 out("Division: ")
 out(a / b)
-line
 
 out("Modulo: ")
 out(a % b)
-line

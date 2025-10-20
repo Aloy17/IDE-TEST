@@ -1,41 +1,40 @@
-~ Conditionals Example ~
-~ Demonstrates agar, ya_fir, warna ~
+~ Conditional Statements Demo ~
+~ Shows agar, ya_fir, and warna ~
 
+Let age = 20
+
+out("Age Grade System:")
+
+agar(age >= 18) {
+    out("You are an adult")
+}
+ya_fir(age >= 13) {
+    out("You are a teenager")
+}
+warna {
+    out("You are a child")
+}
+
+~ Grade calculator ~
 Let score = 85
 
+out("")
+out("Grade Calculator:")
 out("Your score: ")
 out(score)
-line
 
 agar(score >= 90) {
-    out("Grade: A")
-    line
+    out("Grade: A - Excellent!")
 }
 ya_fir(score >= 80) {
-    out("Grade: B")
-    line
+    out("Grade: B - Good job!")
 }
 ya_fir(score >= 70) {
-    out("Grade: C")
-    line
+    out("Grade: C - Satisfactory")
 }
 ya_fir(score >= 60) {
-    out("Grade: D")
-    line
+    out("Grade: D - Needs improvement")
 }
 warna {
-    out("Grade: F")
-    line
-}
-
-~ Check if number is positive ~
-Let num = 42
-
-agar(num > 0) {
-    out("Number is positive")
-    line
-}
-warna {
-    out("Number is not positive")
-    line
+    out("Grade: F - Failed")
 }
