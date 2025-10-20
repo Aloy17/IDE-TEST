@@ -2,14 +2,11 @@ const { app, BrowserWindow, ipcMain, dialog, Menu } = require('electron');
 const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs').promises;
-
 let mainWindow;
-
 function getProjectsFolder() {
   const userDataPath = app.getPath('userData');
   return path.join(userDataPath, 'projects');
 }
-
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1400,
@@ -26,19 +23,15 @@ function createWindow() {
     },
     icon: path.join(__dirname, 'src', 'assets', 'icon.png')
   });
-
   mainWindow.loadFile('src/index.html');
   Menu.setApplicationMenu(null);
 }
-
 async function initializeProjectsFolder() {
   const projectsPath = getProjectsFolder();
-  
   try {
     await fs.access(projectsPath);
   } catch {
     await fs.mkdir(projectsPath, { recursive: true });
-    
     const examplesPath = app.isPackaged
       ? path.join(process.resourcesPath, 'examples')
       : path.join(__dirname, 'backend', 'examples');
@@ -56,15 +49,11 @@ async function initializeProjectsFolder() {
     }
   }
 }
-
 let currentProcess = null;
-
 async function executeRID(code) {
   return new Promise((resolve) => {
     let ridProcess;
-    
     const codeBase64 = Buffer.from(code, 'utf-8').toString('base64');
-    
     if (app.isPackaged) {
       const exePath = path.join(process.resourcesPath, 'rid_backend.exe');
       ridProcess = spawn(exePath, [codeBase64], { stdio: ['pipe', 'pipe', 'pipe'] });
@@ -72,20 +61,16 @@ async function executeRID(code) {
       const pythonScript = path.join(__dirname, 'backend', 'rid_backend.py');
       ridProcess = spawn('python', [pythonScript, codeBase64, '-u'], { stdio: ['pipe', 'pipe', 'pipe'] });
     }
-    
     currentProcess = ridProcess;
     let output = '';
     let errorOutput = '';
     let buffer = '';
-    
     ridProcess.stdout.on('data', (data) => {
       output += data.toString();
     });
-    
     ridProcess.stderr.on('data', (data) => {
       const stderrData = data.toString();
       console.log('[STDERR]:', stderrData);
-      
       if (stderrData.includes('__RIDLEY_PROMPT__')) {
         console.log('[PROMPT DETECTED]');
         const promptMatch = stderrData.match(/__RIDLEY_PROMPT__(.+)/);
@@ -96,13 +81,10 @@ async function executeRID(code) {
           return;
         }
       }
-      
       errorOutput += stderrData;
     });
-    
     ridProcess.on('close', (code) => {
       currentProcess = null;
-      
       if (code !== 0 && errorOutput) {
         resolve({
           success: false,
@@ -120,7 +102,6 @@ async function executeRID(code) {
         }
       }
     });
-    
     ridProcess.on('error', (err) => {
       currentProcess = null;
       resolve({
@@ -130,25 +111,20 @@ async function executeRID(code) {
     });
   });
 }
-
 ipcMain.on('send-input', (event, userInput) => {
   if (currentProcess && !currentProcess.killed) {
     currentProcess.stdin.write(userInput + '\n');
   }
 });
-
 ipcMain.handle('execute-rid', async (event, code) => {
   return await executeRID(code);
 });
-
 ipcMain.handle('get-files', async (event, subPath = '') => {
   const projectsPath = getProjectsFolder();
   const fullPath = path.join(projectsPath, subPath);
-  
   try {
     const items = await fs.readdir(fullPath, { withFileTypes: true });
     const result = [];
-    
     for (const item of items) {
       const itemPath = subPath ? path.join(subPath, item.name) : item.name;
       result.push({
@@ -157,13 +133,11 @@ ipcMain.handle('get-files', async (event, subPath = '') => {
         isDirectory: item.isDirectory()
       });
     }
-    
     return result;
   } catch (err) {
     return [];
   }
 });
-
 ipcMain.handle('load-file', async (event, filename) => {
   const filePath = path.join(getProjectsFolder(), filename);
   try {
@@ -173,7 +147,6 @@ ipcMain.handle('load-file', async (event, filename) => {
     return { success: false, error: err.message };
   }
 });
-
 ipcMain.handle('save-file', async (event, filename, content) => {
   const filePath = path.join(getProjectsFolder(), filename);
   try {
@@ -183,7 +156,6 @@ ipcMain.handle('save-file', async (event, filename, content) => {
     return { success: false, error: err.message };
   }
 });
-
 ipcMain.handle('save-file-dialog', async (event, content) => {
   const result = await dialog.showSaveDialog(mainWindow, {
     defaultPath: path.join(getProjectsFolder(), 'untitled.rid'),
@@ -191,11 +163,9 @@ ipcMain.handle('save-file-dialog', async (event, content) => {
       { name: 'RID Files', extensions: ['rid'] }
     ]
   });
-  
   if (result.canceled) {
     return { success: false, canceled: true };
   }
-  
   try {
     await fs.writeFile(result.filePath, content, 'utf-8');
     const filename = path.basename(result.filePath);
@@ -204,7 +174,6 @@ ipcMain.handle('save-file-dialog', async (event, content) => {
     return { success: false, error: err.message };
   }
 });
-
 ipcMain.handle('delete-file', async (event, filename) => {
   const filePath = path.join(getProjectsFolder(), filename);
   try {
@@ -214,7 +183,6 @@ ipcMain.handle('delete-file', async (event, filename) => {
     return { success: false, error: err.message };
   }
 });
-
 ipcMain.handle('create-folder', async (event, folderName) => {
   const folderPath = path.join(getProjectsFolder(), folderName);
   try {
@@ -224,20 +192,16 @@ ipcMain.handle('create-folder', async (event, folderName) => {
     return { success: false, error: err.message };
   }
 });
-
 ipcMain.handle('move-file', async (event, sourcePath, targetFolderPath) => {
   try {
     const projectsFolder = getProjectsFolder();
     const fullSourcePath = path.join(projectsFolder, sourcePath);
     const fullTargetFolder = path.join(projectsFolder, targetFolderPath);
-    
     const itemName = path.basename(sourcePath);
     const fullTargetPath = path.join(fullTargetFolder, itemName);
-    
     const sourceStats = await fs.stat(fullSourcePath);
     await fs.mkdir(fullTargetFolder, { recursive: true });
     await fs.rename(fullSourcePath, fullTargetPath);
-    
     return { success: true };
   } catch (err) {
     return { success: false, error: err.message };
@@ -246,14 +210,12 @@ ipcMain.handle('move-file', async (event, sourcePath, targetFolderPath) => {
 app.whenReady().then(async () => {
   await initializeProjectsFolder();
   createWindow();
-  
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
     }
   });
 });
-
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();

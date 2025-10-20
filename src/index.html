@@ -13,7 +13,6 @@
     <div id="animated-background">
         <div class="gradient-mesh"></div>
     </div>
-
     <button id="theme-toggle" aria-label="Toggle theme" title="Toggle Theme">
         <svg class="sun-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="12" cy="12" r="4" fill="currentColor"/>
@@ -23,16 +22,13 @@
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="currentColor"/>
         </svg>
     </button>
-
     <div id="loading-page" class="page" style="display: none;">
-
         <canvas id="binary-rain"></canvas>
         <div class="loading-content">
             <div class="loading-logo">RIDLEY</div>
             <div class="loading-text">Loading</div>
         </div>
     </div>
-
     <div id="home-page" class="page active">
         <div class="home-content">
             <div class="home-logo">RIDLEY</div>
@@ -43,7 +39,6 @@
             </div>
         </div>
     </div>
-
     <div id="tutorial-page" class="page">
         <div class="tutorial-header">
             <h1 class="tutorial-title">LEARN RIDLEY</h1>
@@ -55,31 +50,26 @@
                     <div class="card-title">Getting Started</div>
                     <div class="card-description">Learn basic output with the 'out()' function and print your first RID program</div>
                 </div>
-
                 <div class="tutorial-card" data-lesson="2">
                     <div class="card-number">LESSON 02</div>
                     <div class="card-title">Variables & Types</div>
                     <div class="card-description">Understand how to declare variables, work with different data types, and perform operations</div>
                 </div>
-
                 <div class="tutorial-card" data-lesson="3">
                     <div class="card-number">LESSON 03</div>
                     <div class="card-title">Conditionals</div>
                     <div class="card-description">Make decisions in your code using agar (if), ya_fir (elif), and warna (else) statements</div>
                 </div>
-
                 <div class="tutorial-card" data-lesson="4">
                     <div class="card-number">LESSON 04</div>
                     <div class="card-title">Loops</div>
                     <div class="card-description">Master repetition with Run loops - both fixed-count and conditional while loops</div>
                 </div>
-
                 <div class="tutorial-card" data-lesson="5">
                     <div class="card-number">LESSON 05</div>
                     <div class="card-title">Functions</div>
                     <div class="card-description">Create reusable code blocks with func, parameters, and return values using give</div>
                 </div>
-
                 <div class="tutorial-card" data-lesson="6">
                     <div class="card-number">LESSON 06</div>
                     <div class="card-title">Complete Projects</div>
@@ -89,7 +79,6 @@
         </div>
         <button class="back-btn pixel-button" id="tutorial-back-btn">◄ BACK</button>
     </div>
-
     <div id="tutorial-detail-page" class="page">
         <div class="tutorial-detail-header">
             <button class="back-btn pixel-button" id="lesson-back-btn">◄ BACK</button>
@@ -116,9 +105,7 @@
             </div>
         </div>
     </div>
-
     <div id="ide-page" class="page">
-        
         <div class="ide-header">
             <button class="control-btn back-btn" id="back-btn" title="Back">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="icon">
@@ -143,9 +130,7 @@
                 </button>
             </div>
         </div>
-
         <div class="ide-layout">
-            
             <div class="sidebar">
                 <div class="sidebar-header">
                     <span class="sidebar-title">FILES</span>
@@ -163,16 +148,10 @@
                     </div>
                 </div>
                 <div class="files-list" id="files-list">
-                    
                 </div>
             </div>
-
-            
             <div class="resizer" id="sidebar-resizer"></div>
-
-            
             <div class="main-area">
-                
                 <div class="editor-panel">
                     <div class="panel-header">
                         <div class="file-tabs" id="file-tabs">
@@ -191,16 +170,11 @@
                             placeholder="~ Write your RID code here ~"
                         >~ Welcome to RIDLEY IDE! ~
 ~ Start coding in RID ~
-
 out("Hello from RIDLEY!")
 </textarea>
                     </div>
                 </div>
-
-                
                 <div class="horizontal-resizer" id="horizontal-resizer"></div>
-
-                
                 <div class="output-panel">
                     <div class="panel-header output-header">
                         <div class="output-tabs">
@@ -220,9 +194,7 @@ out("Hello from RIDLEY!")
                 </div>
             </div>
         </div>
-
     </div>
-
     <script src="js/animations.js"></script>
     <script src="js/lessons.js"></script>
     <script src="js/editor.js"></script>

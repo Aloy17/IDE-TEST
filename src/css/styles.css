@@ -1,164 +1,103 @@
-/* ===================================
-   RIDLEY IDE - VS Code Theme System
-   Quiet Light & Dark Modern Themes Only
-   =================================== */
-
-/* Google Fonts Import */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&family=JetBrains+Mono:wght@400;500&family=Brygada+1918:wght@400&display=swap');
-
-/* Brass Mono Font (if available locally, otherwise fallback) */
 @font-face {
     font-family: 'Brass Mono';
     src: local('Brass Mono Regular'), local('BrassMono-Regular');
     font-weight: 400;
     font-style: normal;
 }
-
-/* ===================================
-   VS CODE QUIET LIGHT THEME (Default)
-   =================================== */
 :root,
 body.theme-quiet-light {
-    /* Editor Colors */
     --color-bg-editor: #f5f5f5;
     --color-bg-sidebar: #f3f3f3;
     --color-bg-panel: #ffffff;
     --color-bg-inactive-tab: #ececec;
     --color-bg-active-tab: #ffffff;
-    
-    /* Text Colors */
     --color-text-primary: #333333;
     --color-text-secondary: #6a6a6a;
-    
-    /* UI Elements */
     --color-border: #e5e5e5;
     --color-selection: #add6ff;
     --color-hover-bg: rgba(0, 0, 0, 0.05);
     --color-active-bg: rgba(0, 0, 0, 0.08);
-    
-    /* Buttons - Neutral Indigo */
     --color-button-bg: #6366F1;
     --color-button-hover: #4F46E5;
     --color-button-active: #4338CA;
     --color-button-text: #ffffff;
-    
-    /* Accent Colors (subtle purple hints) */
     --color-accent: #c586c0;
     --color-accent-secondary: #4ec9b0;
-    
-    /* Syntax Highlighting - VS Code Quiet Light */
     --color-comment: #008000;
     --color-string: #a31515;
     --color-keyword: #0000ff;
     --color-function: #795e26;
     --color-number: #09885a;
     --color-variable: #001080;
-    
-    /* Semantic Colors */
     --color-success: #89d185;
     --color-error: #e51400;
     --color-warning: #bf8803;
     --color-info: #1a85ff;
-    
-    /* Shadows */
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
-    
-    /* Gradient Mesh Animation (Extremely Subtle) */
     --gradient-1: rgba(0, 0, 0, 0.02);
     --gradient-2: rgba(0, 0, 0, 0.015);
     --gradient-3: rgba(0, 0, 0, 0.01);
     --gradient-4: rgba(0, 0, 0, 0.015);
-    
-    /* Typography */
     --font-display: 'Space Grotesk', system-ui, sans-serif;
     --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --font-code: 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
-    
-    /* Spacing System (8px base) */
     --space-1: 8px;
     --space-2: 16px;
     --space-3: 24px;
     --space-4: 32px;
     --space-5: 40px;
     --space-6: 48px;
-    
-    /* Border Radius (VS Code style - minimal) */
     --radius-sm: 2px;
     --radius-md: 3px;
     --radius-lg: 5px;
-    
-    /* Transitions */
     --transition-fast: 0.1s ease;
     --transition-base: 0.15s ease;
     --transition-slow: 0.3s ease;
 }
-
-/* ===================================
-   VS CODE DARK MODERN THEME
-   =================================== */
 body.theme-dark-modern {
-    /* Editor Colors */
     --color-bg-editor: #1e1e1e;
     --color-bg-sidebar: #252526;
     --color-bg-panel: #1e1e1e;
     --color-bg-inactive-tab: #2d2d2d;
     --color-bg-active-tab: #1e1e1e;
-    
-    /* Text Colors */
     --color-text-primary: #cccccc;
     --color-text-secondary: #858585;
-    
-    /* UI Elements */
     --color-border: #3e3e42;
     --color-selection: #264f78;
     --color-hover-bg: rgba(255, 255, 255, 0.05);
     --color-active-bg: rgba(255, 255, 255, 0.08);
-    
-    /* Buttons - Neutral Indigo */
     --color-button-bg: #6366F1;
     --color-button-hover: #4F46E5;
     --color-button-active: #4338CA;
     --color-button-text: #ffffff;
-    
-    /* Accent Colors (VS Code Blue) */
     --color-accent: #007acc;
     --color-accent-secondary: #4ec9b0;
-    
-    /* Syntax Highlighting - VS Code Dark Modern */
     --color-comment: #6a9955;
     --color-string: #ce9178;
     --color-keyword: #569cd6;
     --color-function: #dcdcaa;
     --color-number: #b5cea8;
     --color-variable: #9cdcfe;
-    
-    /* Semantic Colors */
     --color-success: #89d185;
     --color-error: #f48771;
     --color-warning: #cca700;
     --color-info: #75beff;
-    
-    /* Shadows */
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4);
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
     --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
-    
-    /* Gradient Mesh Animation (Extremely Subtle) */
     --gradient-1: rgba(14, 99, 156, 0.03);
     --gradient-2: rgba(86, 156, 214, 0.025);
     --gradient-3: rgba(78, 78, 78, 0.02);
     --gradient-4: rgba(37, 37, 38, 0.025);
 }
-
-/* Reset & Base Styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
 body {
     font-family: var(--font-ui);
     background: var(--color-bg-editor);
@@ -170,11 +109,6 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-
-/* ===================================
-   ANIMATED GRADIENT MESH BACKGROUND - VISIBLE & BEAUTIFUL
-   =================================== */
-
 #animated-background {
     position: fixed;
     top: 0;
@@ -186,23 +120,18 @@ body {
     opacity: 0;
     transition: opacity 1.5s ease;
 }
-
 #animated-background.loaded {
     opacity: 1;
 }
-
-/* Gradient Mesh Layers - VISIBLE and Animated */
 .gradient-mesh {
     position: absolute;
     top: -50%;
     left: -50%;
     width: 200%;
     height: 200%;
-    opacity: 0.5; /* VISIBLE for light theme */
+    opacity: 0.5; 
     animation: gradientFloat 25s ease-in-out infinite;
 }
-
-/* Quiet Light Theme - Pastel Gradients */
 :root .gradient-mesh,
 .theme-quiet-light .gradient-mesh {
     background: 
@@ -211,17 +140,14 @@ body {
         radial-gradient(ellipse 900px 600px at 50% 50%, #a5f3fc, transparent 70%),
         radial-gradient(ellipse 600px 800px at 70% 20%, #fae8ff, transparent 70%);
 }
-
-/* Dark Modern Theme - Deep Rich Gradients */
 .theme-dark-modern .gradient-mesh {
     background: 
         radial-gradient(ellipse 800px 600px at 20% 30%, #4c1d95, transparent 70%),
         radial-gradient(ellipse 700px 700px at 80% 70%, #1e3a8a, transparent 70%),
         radial-gradient(ellipse 900px 600px at 50% 50%, #164e63, transparent 70%),
         radial-gradient(ellipse 600px 800px at 70% 20%, #4a1d75, transparent 70%);
-    opacity: 0.4; /* Slightly more subtle for dark theme */
+    opacity: 0.4; 
 }
-
 @keyframes gradientFloat {
     0%, 100% {
         transform: translate(0, 0) scale(1);
@@ -233,11 +159,6 @@ body {
         transform: translate(-8%, -8%) scale(1.05);
     }
 }
-
-/* ===================================
-   THEME TOGGLE BUTTON - PREMIUM SOLID DESIGN
-   =================================== */
-
 #theme-toggle {
     position: fixed;
     top: 24px;
@@ -262,70 +183,53 @@ body {
     opacity: 0;
     visibility: hidden;
 }
-
-/* Show theme toggle after loading */
 body.loaded #theme-toggle {
     opacity: 1;
     visibility: visible;
 }
-
 #theme-toggle svg {
     width: 28px;
     height: 28px;
     color: var(--color-text-primary);
     transition: all 0.3s ease;
 }
-
 #theme-toggle:hover {
     transform: scale(1.05);
     border-color: var(--color-accent);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
-
 #theme-toggle:active {
     transform: scale(0.95);
 }
-
-/* Reposition on IDE page to avoid covering toolbar */
 body:has(#ide-page.active) #theme-toggle {
     top: auto;
     bottom: 20px;
 }
-
-/* Icon visibility and transitions */
 #theme-toggle .sun-icon,
 #theme-toggle .moon-icon {
     position: absolute;
     transition: all 0.3s ease;
 }
-
-/* Light theme - show moon icon */
 :root #theme-toggle .sun-icon,
 body.theme-quiet-light #theme-toggle .sun-icon,
 body:not(.theme-dark-modern) #theme-toggle .sun-icon {
     opacity: 0;
     transform: rotate(180deg) scale(0);
 }
-
 :root #theme-toggle .moon-icon,
 body.theme-quiet-light #theme-toggle .moon-icon,
 body:not(.theme-dark-modern) #theme-toggle .moon-icon {
     opacity: 1;
     transform: rotate(0deg) scale(1);
 }
-
-/* Dark theme - show sun icon */
 body.theme-dark-modern #theme-toggle .sun-icon {
     opacity: 1;
     transform: rotate(0deg) scale(1);
 }
-
 body.theme-dark-modern #theme-toggle .moon-icon {
     opacity: 0;
     transform: rotate(-180deg) scale(0);
 }
-
-/* Page System */
 .page {
     position: absolute;
     top: 0;
@@ -337,16 +241,10 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     transition: opacity var(--transition-slow), visibility var(--transition-slow);
     background: var(--color-bg-editor);
 }
-
 .page.active {
     opacity: 1;
     visibility: visible;
 }
-
-/* ===================================
-   PAGE 1: LOADING SCREEN
-   =================================== */
-
 #loading-page {
     display: flex;
     align-items: center;
@@ -357,7 +255,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     width: 100%;
     height: 100%;
 }
-
 .loading-content {
     text-align: center;
     position: fixed;
@@ -366,7 +263,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     transform: translate(-50%, -50%);
     z-index: 10;
 }
-
 #binary-rain {
     position: fixed;
     top: 0;
@@ -377,7 +273,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     pointer-events: none;
     opacity: 0.3;
 }
-
 .loading-logo {
     font-family: 'Space Grotesk', var(--font-display);
     font-size: 96px;
@@ -391,7 +286,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     line-height: 1;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
-
 @keyframes subtle-glow {
     0%, 100% {
         filter: brightness(1);
@@ -400,7 +294,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
         filter: brightness(1.2);
     }
 }
-
 .loading-text {
     font-family: var(--font-ui);
     font-size: 24px;
@@ -411,9 +304,8 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     z-index: 10;
     letter-spacing: 1px;
 }
-
 .progress-bar {
-    display: none; /* Hidden - no longer used */
+    display: none; 
     width: 400px;
     height: 6px;
     background-color: var(--color-bg-panel);
@@ -425,9 +317,8 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     z-index: 10;
     box-shadow: var(--shadow-sm);
 }
-
 .progress-fill {
-    display: none; /* Hidden - no longer used */
+    display: none; 
     height: 100%;
     background: var(--color-accent);
     width: 0%;
@@ -435,17 +326,11 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     box-shadow: 0 0 12px rgba(0, 120, 212, 0.6);
     border-radius: 999px;
 }
-
 @keyframes fill-bar {
     to {
         width: 100%;
     }
 }
-
-/* ===================================
-   PAGE 2: HOME PAGE - MODERN PREMIUM DESIGN
-   =================================== */
-
 #home-page {
     display: flex;
     align-items: center;
@@ -454,7 +339,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     position: relative;
     overflow: hidden;
 }
-
 .home-content {
     text-align: center;
     position: relative;
@@ -462,7 +346,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     max-width: 800px;
     padding: var(--space-4);
 }
-
 .home-logo {
     font-family: 'Space Grotesk', var(--font-display);
     font-size: 96px;
@@ -474,7 +357,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     position: relative;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
-
 .home-tagline {
     font-family: var(--font-ui);
     font-size: 24px;
@@ -487,14 +369,12 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     margin-left: auto;
     margin-right: auto;
 }
-
 .home-buttons {
     display: flex;
     gap: 24px;
     justify-content: center;
     align-items: center;
 }
-
 .pixel-button {
     font-family: var(--font-ui);
     font-size: 18px;
@@ -512,30 +392,22 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
     letter-spacing: 0;
 }
-
 .pixel-button:hover {
     background: var(--color-button-hover);
     transform: translateY(-2px);
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
 }
-
 .pixel-button:active {
     background: var(--color-button-active);
     transform: translateY(0);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
-
-/* ===================================
-   PAGE 3: TUTORIAL PAGE
-   =================================== */
-
 #tutorial-page {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
     background: var(--color-bg-editor);
 }
-
 .tutorial-header {
     padding: var(--space-5) 0;
     text-align: center;
@@ -546,7 +418,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     z-index: 100;
     box-shadow: var(--shadow-sm);
 }
-
 .tutorial-title {
     font-family: var(--font-display);
     font-size: 48px;
@@ -554,7 +425,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     color: var(--color-text-primary);
     letter-spacing: -1px;
 }
-
 .tutorial-title {
     font-family: var(--font-display);
     font-size: 42px;
@@ -562,14 +432,12 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     color: var(--color-text-primary);
     letter-spacing: -1px;
 }
-
 .tutorial-content {
     flex: 1;
     padding: var(--space-6) var(--space-3);
     display: flex;
     justify-content: center;
 }
-
 .tutorial-cards {
     max-width: 800px;
     width: 100%;
@@ -577,7 +445,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     flex-direction: column;
     gap: var(--space-2);
 }
-
 .tutorial-card {
     background: var(--color-bg-panel);
     border: 1px solid var(--color-border);
@@ -587,13 +454,11 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     transition: all var(--transition-base);
     box-shadow: var(--shadow-sm);
 }
-
 .tutorial-card:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
     background: var(--color-hover-bg);
 }
-
 .card-number {
     font-family: var(--font-ui);
     font-size: 11px;
@@ -603,7 +468,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     text-transform: uppercase;
     letter-spacing: 1px;
 }
-
 .card-title {
     font-family: var(--font-ui);
     font-size: 20px;
@@ -611,7 +475,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     color: var(--color-text-primary);
     margin-bottom: var(--space-2);
 }
-
 .card-description {
     font-family: var(--font-ui);
     font-size: 15px;
@@ -619,7 +482,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     color: var(--color-text-secondary);
     line-height: 1.6;
 }
-
 .back-btn {
     position: fixed;
     bottom: var(--space-4);
@@ -635,23 +497,16 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     cursor: pointer;
     transition: all var(--transition-base);
 }
-
 .back-btn:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
     border-color: var(--color-border);
 }
-
-/* ===================================
-   PAGE 3B: TUTORIAL DETAIL PAGE
-   =================================== */
-
 #tutorial-detail-page {
     display: flex;
     flex-direction: column;
     height: 100vh;
 }
-
 .tutorial-detail-header {
     display: flex;
     align-items: center;
@@ -660,17 +515,14 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     border-bottom: 2px solid var(--color-highlight);
     background: var(--color-panel);
 }
-
 .tutorial-detail-header .tutorial-title {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
 }
-
 .tutorial-detail-header .spacer {
     width: 150px;
 }
-
 .tutorial-detail-content {
     flex: 1;
     overflow-y: auto;
@@ -678,13 +530,11 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     display: flex;
     justify-content: center;
 }
-
 .lesson-container {
     max-width: 900px;
     width: 100%;
     animation: fadeIn 0.5s ease;
 }
-
 .lesson-title {
     font-family: var(--font-ui);
     font-size: 32px;
@@ -694,7 +544,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     margin-bottom: 40px;
     text-shadow: 0 0 15px var(--color-highlight);
 }
-
 .lesson-body {
     font-family: var(--font-ui);
     font-size: 18px;
@@ -704,12 +553,10 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     margin-bottom: 40px;
     white-space: pre-wrap;
 }
-
 .lesson-body strong {
     color: var(--color-hover);
     font-weight: 600;
 }
-
 .lesson-body code {
     font-family: var(--font-code);
     background-color: rgba(102, 136, 204, 0.2);
@@ -717,7 +564,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     border-radius: 0;
     color: var(--cyan);
 }
-
 .code-block-container,
 .code-output-container {
     margin-bottom: 30px;
@@ -726,7 +572,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     overflow: hidden;
     background: var(--color-panel);
 }
-
 .code-block-header,
 .code-output-header {
     font-family: var(--font-ui);
@@ -737,7 +582,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     padding: 10px 20px;
     text-transform: uppercase;
 }
-
 .code-block,
 .code-output {
     font-family: var(--font-code);
@@ -749,15 +593,12 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     overflow-x: auto;
     line-height: 1.6;
 }
-
 .code-block {
     color: var(--cyan);
 }
-
 .code-output {
     color: var(--green);
 }
-
 .lesson-navigation {
     display: flex;
     justify-content: space-between;
@@ -766,29 +607,21 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     padding-top: 30px;
     border-top: 2px solid var(--color-highlight);
 }
-
 .lesson-nav-btn {
     flex: 1;
     max-width: 250px;
     padding: 10px 24px;
     font-size: 14px;
 }
-
 .lesson-nav-btn:disabled {
     opacity: 0.3;
     cursor: not-allowed;
 }
-
 .lesson-nav-btn:disabled:hover {
     background-color: transparent;
     box-shadow: none;
     transform: none;
 }
-
-/* ===================================
-   PAGE 4: IDE PAGE
-   =================================== */
-
 #ide-page {
     display: flex;
     flex-direction: column;
@@ -796,8 +629,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     height: 100vh;
     background: var(--color-bg-editor);
 }
-
-/* IDE Header Bar */
 .ide-header {
     display: flex;
     align-items: center;
@@ -809,12 +640,9 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     flex-shrink: 0;
     box-sizing: border-box;
 }
-
 .back-btn {
     margin-right: auto;
 }
-
-/* Global Controls (In Header) */
 .global-controls {
     display: flex;
     align-items: center;
@@ -822,7 +650,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     height: 100%;
     margin-left: auto;
 }
-
 .control-btn {
     font-family: var(--font-ui);
     font-size: 13px;
@@ -839,32 +666,26 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     justify-content: center;
     height: 28px;
 }
-
 .control-btn .icon {
     width: 18px;
     height: 18px;
     stroke: currentColor;
     transition: all var(--transition-base);
 }
-
 .control-btn:hover {
     background: var(--color-button-hover);
     transform: translateY(-1px);
 }
-
 .control-btn:active {
     background: var(--color-button-active);
     transform: translateY(0);
 }
-
 .ide-layout {
     display: flex;
     width: 100%;
     flex: 1;
     overflow: hidden;
 }
-
-/* Left Sidebar (File Explorer Only) */
 .sidebar {
     width: 240px;
     min-width: 180px;
@@ -875,7 +696,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     flex-direction: column;
     overflow: hidden;
 }
-
 .sidebar-header {
     font-family: var(--font-ui);
     font-size: 11px;
@@ -891,17 +711,14 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     justify-content: space-between;
     letter-spacing: 0.5px;
 }
-
 .sidebar-title {
     flex: 1;
 }
-
 .sidebar-actions {
     display: flex;
     gap: 4px;
     align-items: center;
 }
-
 .sidebar-action-btn {
     background: transparent;
     border: none;
@@ -916,20 +733,16 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     width: 24px;
     height: 24px;
 }
-
 .sidebar-action-btn:hover {
     background-color: var(--color-hover-bg);
     color: var(--color-text-primary);
 }
-
 .sidebar-action-btn svg {
     stroke: currentColor !important;
     fill: none !important;
     width: 16px !important;
     height: 16px !important;
 }
-
-/* Resizable Divider */
 .resizer {
     width: 1px;
     background-color: var(--color-border);
@@ -937,11 +750,9 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     transition: background-color var(--transition-base);
     position: relative;
 }
-
 .resizer:hover {
     background-color: var(--color-accent);
 }
-
 .resizer::before {
     content: '';
     position: absolute;
@@ -950,14 +761,12 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     right: -3px;
     bottom: 0;
 }
-
 .files-list {
     flex: 1;
     padding: var(--space-1);
     overflow-y: auto;
     user-select: none;
 }
-
 .file-item {
     font-family: var(--font-ui);
     font-size: 13px;
@@ -976,38 +785,31 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     text-overflow: ellipsis;
     color: var(--color-text-secondary);
 }
-
 .file-item:hover {
     background-color: var(--color-hover-bg);
     color: var(--color-text-primary);
 }
-
 .file-item.active {
     background-color: var(--color-active-bg);
     color: var(--color-text-primary);
     box-shadow: inset 3px 0 0 var(--color-accent);
 }
-
 .file-item.folder {
     font-weight: 500;
     color: var(--color-text-secondary);
 }
-
 .file-item.folder:hover {
     background-color: var(--color-hover-bg);
     color: var(--color-text-primary);
 }
-
 .file-item.drag-over {
     background-color: var(--color-active-bg);
     border: 1px dashed var(--color-accent);
 }
-
 .file-item.dragging {
     opacity: 0.4;
     cursor: grabbing;
 }
-
 .folder-arrow {
     display: inline-block;
     font-size: 10px;
@@ -1018,7 +820,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     text-align: center;
     flex-shrink: 0;
 }
-
 .file-icon {
     flex-shrink: 0;
     display: flex;
@@ -1027,28 +828,24 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     width: 16px;
     height: 16px;
 }
-
 .file-icon svg {
     width: 16px;
     height: 16px;
     stroke: currentColor;
     opacity: 0.7;
 }
-
 .file-name {
     flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-
 .file-item.editing {
     background-color: var(--color-active-bg);
     display: flex;
     align-items: center;
     padding: 6px var(--space-1);
 }
-
 .inline-rename-input {
     flex: 1;
     background-color: var(--color-bg-panel);
@@ -1061,13 +858,10 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     outline: none;
     transition: all var(--transition-base);
 }
-
 .inline-rename-input:focus {
     border-color: var(--color-button-bg);
     box-shadow: 0 0 0 3px var(--color-selection);
 }
-
-/* Main Content Area */
 .main-area {
     flex: 1;
     display: flex;
@@ -1075,8 +869,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     overflow: hidden;
     background: var(--color-bg-editor);
 }
-
-/* Panel Headers */
 .panel-header {
     display: flex;
     align-items: stretch;
@@ -1086,7 +878,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     background-color: var(--color-bg-sidebar);
     border-bottom: 1px solid var(--color-border);
 }
-
 .panel-title {
     font-family: var(--font-ui);
     font-size: 11px;
@@ -1095,8 +886,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     text-transform: uppercase;
     letter-spacing: 0.8px;
 }
-
-/* Editor Panel (Top) */
 .editor-panel {
     flex: 1;
     display: flex;
@@ -1104,8 +893,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     overflow: hidden;
     min-height: 200px;
 }
-
-/* Horizontal Resizer */
 .horizontal-resizer {
     height: 1px;
     background-color: var(--color-border);
@@ -1113,11 +900,9 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     transition: background-color var(--transition-base);
     position: relative;
 }
-
 .horizontal-resizer:hover {
     background-color: var(--color-accent);
 }
-
 .horizontal-resizer::before {
     content: '';
     position: absolute;
@@ -1126,8 +911,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     left: 0;
     right: 0;
 }
-
-/* File Tabs */
 .panel-header .file-tabs {
     display: flex;
     gap: 0;
@@ -1137,7 +920,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     height: 35px;
     background: var(--color-bg-sidebar);
 }
-
 .file-tab {
     font-family: var(--font-ui);
     font-size: 13px;
@@ -1157,7 +939,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     height: 35px;
     min-width: 120px;
 }
-
 .file-tab::after {
     content: '';
     position: absolute;
@@ -1169,30 +950,24 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     opacity: 0;
     transition: opacity 0.1s ease;
 }
-
 .file-tab:hover {
     background-color: var(--color-hover-bg);
 }
-
 .file-tab.active {
     background-color: var(--color-bg-editor);
     color: var(--color-text-primary);
     font-weight: 400;
 }
-
 .file-tab.active::after {
     opacity: 1;
 }
-
 .file-tab:active {
     cursor: grabbing;
 }
-
 .file-tab.dragging {
     opacity: 0.4;
     cursor: grabbing;
 }
-
 .file-tab.drag-over-left::before,
 .file-tab.drag-over-right::after {
     content: '';
@@ -1202,15 +977,12 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     width: 2px;
     background-color: var(--color-accent);
 }
-
 .file-tab.drag-over-left::before {
     left: 0;
 }
-
 .file-tab.drag-over-right::after {
     right: 0;
 }
-
 .tab-close {
     font-size: 16px;
     line-height: 1;
@@ -1224,25 +996,20 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     border-radius: 3px;
     padding: 0;
 }
-
 .file-tab:hover .tab-close,
 .file-tab.active .tab-close {
     opacity: 0.6;
 }
-
 .tab-close:hover {
     opacity: 1;
     background-color: rgba(90, 93, 94, 0.31);
 }
-
-/* Editor Container */
 .editor-container {
     flex: 1;
     display: flex;
     background-color: var(--color-bg-editor);
     overflow: hidden;
 }
-
 .line-numbers {
     font-family: var(--font-code);
     font-size: 13px;
@@ -1258,7 +1025,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     min-width: 48px;
     opacity: 0.6;
 }
-
 .code-editor {
     flex: 1;
     font-family: 'Brass Mono', 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
@@ -1277,13 +1043,10 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     tab-size: 4;
     caret-color: var(--color-button-bg);
 }
-
 .code-editor::placeholder {
     color: var(--color-text-secondary);
     opacity: 0.5;
 }
-
-/* Output Panel (Bottom) */
 .output-panel {
     height: 220px;
     min-height: 120px;
@@ -1293,7 +1056,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     overflow: hidden;
     border-top: 1px solid var(--color-border);
 }
-
 .output-header {
     display: flex;
     align-items: stretch;
@@ -1303,7 +1065,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     background-color: var(--color-bg-sidebar);
     border-bottom: 1px solid var(--color-border);
 }
-
 .output-tabs {
     display: flex;
     align-items: stretch;
@@ -1311,7 +1072,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     height: 35px;
     background: var(--color-bg-sidebar);
 }
-
 .output-tab {
     font-family: var(--font-ui);
     font-size: 11px;
@@ -1330,7 +1090,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     height: 35px;
     min-width: 120px;
 }
-
 .output-tab::after {
     content: '';
     position: absolute;
@@ -1342,21 +1101,17 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     opacity: 0;
     transition: opacity 0.1s ease;
 }
-
 .output-tab:hover {
     background-color: var(--color-hover-bg);
 }
-
 .output-tab.active {
     color: var(--color-text-primary);
     background-color: var(--color-bg-editor);
     font-weight: 400;
 }
-
 .output-tab.active::after {
     opacity: 1;
 }
-
 .clear-output {
     background: transparent;
     border: none;
@@ -1370,12 +1125,10 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     justify-content: center;
     margin-right: var(--space-1);
 }
-
 .clear-output:hover {
     background-color: var(--color-hover-bg);
     color: var(--color-text-primary);
 }
-
 .output-content {
     flex: 1;
     font-family: var(--font-code);
@@ -1385,7 +1138,6 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     line-height: 1.6;
     background-color: var(--color-bg-editor);
 }
-
 .output-line {
     margin-bottom: 4px;
     padding: 2px 0;
@@ -1393,39 +1145,31 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     white-space: pre-wrap;
     word-wrap: break-word;
 }
-
 .output-line.ready {
     color: var(--color-text-secondary);
 }
-
 .output-line.success {
     color: var(--color-success);
 }
-
 .output-line.error {
     color: var(--color-error);
 }
-
 .output-line.info {
     color: var(--color-info);
 }
-
 .output-line.input-prompt {
     color: var(--color-accent);
     font-weight: 500;
 }
-
 .output-line.input-echo {
     color: var(--color-text-primary);
     font-style: italic;
 }
-
 .input-container {
     display: flex;
     align-items: center;
     padding: 4px 0;
 }
-
 .input-field {
     flex: 1;
     font-family: var(--font-code);
@@ -1437,53 +1181,38 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     border-radius: var(--radius-sm);
     outline: none;
 }
-
 .input-field:focus {
     border-color: var(--color-accent);
     background: var(--color-bg-editor);
 }
-
 .input-field::placeholder {
     color: var(--color-text-secondary);
     opacity: 0.6;
 }
-
-/* Scrollbar Styling */
 ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
 }
-
 ::-webkit-scrollbar-track {
     background: var(--color-bg-editor);
 }
-
 ::-webkit-scrollbar-thumb {
     background: var(--color-bg-panel);
     border-radius: var(--radius-sm);
     border: 2px solid var(--color-bg-editor);
 }
-
 ::-webkit-scrollbar-thumb:hover {
     background: var(--color-accent);
 }
-
-/* Selection */
 ::selection {
     background-color: var(--color-accent);
     color: #ffffff;
 }
-
-
-
-/* Focus Styles */
 button:focus,
 textarea:focus {
     outline: 2px solid var(--color-hover);
     outline-offset: 2px;
 }
-
-/* Animations */
 @keyframes slideUp {
     from {
         transform: translateY(20px);
@@ -1494,81 +1223,49 @@ textarea:focus {
         opacity: 1;
     }
 }
-
 .tutorial-card {
     animation: slideUp 0.5s ease-out backwards;
 }
-
 .tutorial-card:nth-child(1) { animation-delay: 0.1s; }
 .tutorial-card:nth-child(2) { animation-delay: 0.2s; }
 .tutorial-card:nth-child(3) { animation-delay: 0.3s; }
 .tutorial-card:nth-child(4) { animation-delay: 0.4s; }
 .tutorial-card:nth-child(5) { animation-delay: 0.5s; }
 .tutorial-card:nth-child(6) { animation-delay: 0.6s; }
-
-/* ===================================
-   SYNTAX HIGHLIGHTING - RID LANGUAGE
-   VS Code Token Colors
-   =================================== */
-
-/* Keywords: Let, func, agar, ya_fir, warna, Run, jab_tak */
 .token-keyword {
     color: var(--color-keyword);
     font-weight: 500;
 }
-
-/* Functions: out, in, give, line */
 .token-function {
     color: var(--color-function);
 }
-
-/* Strings (in quotes) */
 .token-string {
     color: var(--color-string);
 }
-
-/* Comments (~ text ~) */
 .token-comment {
     color: var(--color-comment);
     font-style: italic;
 }
-
-/* Numbers */
 .token-number {
     color: var(--color-number);
 }
-
-/* Variables */
 .token-variable {
     color: var(--color-variable);
 }
-
-/* Operators: +, -, *, /, =, ==, !=, <, >, etc. */
 .token-operator {
     color: var(--color-text-primary);
 }
-
-/* Punctuation: (, ), {, }, [, ], :, ; */
 .token-punctuation {
     color: var(--color-text-secondary);
 }
-
-/* ===================================
-   RESPONSIVE DESIGN
-   =================================== */
-
-/* Responsive */
 @media (max-width: 1200px) {
     .sidebar {
         width: 200px;
     }
-    
     .home-logo {
         font-size: 80px;
     }
-    
     .tutorial-title {
         font-size: 36px;
     }
 }
-

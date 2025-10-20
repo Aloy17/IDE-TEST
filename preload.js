@@ -1,5 +1,4 @@
 const { contextBridge, ipcRenderer } = require('electron');
-
 contextBridge.exposeInMainWorld('electronAPI', {
   executeRID: (code) => ipcRenderer.invoke('execute-rid', code),
   getFiles: (subPath) => ipcRenderer.invoke('get-files', subPath),
