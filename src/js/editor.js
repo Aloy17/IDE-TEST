@@ -10,6 +10,7 @@ function initEditor() {
     editor.addEventListener('input', updateLineNumbers);
     editor.addEventListener('scroll', syncScroll);
     editor.addEventListener('keydown', handleTab);
+    editor.addEventListener('keydown', handleAutoPair);
     updateLineNumbers();
 }
 function updateLineNumbers() {
@@ -33,6 +34,39 @@ function handleTab(e) {
         const value = editor.value;
         editor.value = value.substring(0, start) + '  ' + value.substring(end);
         editor.selectionStart = editor.selectionEnd = start + 2;
+    }
+}
+function handleAutoPair(e) {
+    const pairs = {
+        '(': ')',
+        '{': '}',
+        '"': '"'
+    };
+    if (pairs[e.key]) {
+        e.preventDefault();
+        const editor = e.target;
+        const start = editor.selectionStart;
+        const end = editor.selectionEnd;
+        const value = editor.value;
+        const selectedText = value.substring(start, end);
+        const openChar = e.key;
+        const closeChar = pairs[e.key];
+        editor.value = value.substring(0, start) + openChar + selectedText + closeChar + value.substring(end);
+        editor.selectionStart = editor.selectionEnd = start + 1;
+        updateLineNumbers();
+    }
+    if (e.key === 'Backspace') {
+        const editor = e.target;
+        const start = editor.selectionStart;
+        const value = editor.value;
+        const charBefore = value[start - 1];
+        const charAfter = value[start];
+        if (pairs[charBefore] && pairs[charBefore] === charAfter) {
+            e.preventDefault();
+            editor.value = value.substring(0, start - 1) + value.substring(start + 1);
+            editor.selectionStart = editor.selectionEnd = start - 1;
+            updateLineNumbers();
+        }
     }
 }
 async function loadFiles(subPath = '', depth = 0) {
@@ -461,6 +495,7 @@ async function runCode() {
     const code = editor.value;
     const outputContent = document.getElementById('output-content');
     outputContent.innerHTML = '<div class="output-line info">&gt; Running...</div>';
+    clearErrorHighlight();
     try {
         const result = await window.electronAPI.executeRID(code);
         outputContent.innerHTML = '';
@@ -476,9 +511,34 @@ async function runCode() {
             }
         } else {
             updateOutputPanel('error', `> ${result.error}`);
+            highlightErrorLine(result.error);
         }
     } catch (err) {
         updateOutputPanel('error', `> Execution error: ${err.message}`);
+    }
+}
+function highlightErrorLine(errorMessage) {
+    const lineMatch = errorMessage.match(/Line (\d+):/);
+    if (lineMatch) {
+        const lineNumber = parseInt(lineMatch[1]);
+        const editor = document.getElementById('code-editor');
+        const lines = editor.value.split('\n');
+        if (lineNumber > 0 && lineNumber <= lines.length) {
+            const errorLine = lines[lineNumber - 1];
+            const start = lines.slice(0, lineNumber - 1).join('\n').length + (lineNumber > 1 ? 1 : 0);
+            const end = start + errorLine.length;
+            editor.focus();
+            editor.setSelectionRange(start, end);
+            editor.scrollTop = Math.max(0, (lineNumber - 5) * 20);
+            const lineNumbers = document.getElementById('line-numbers');
+            lineNumbers.scrollTop = editor.scrollTop;
+        }
+    }
+}
+function clearErrorHighlight() {
+    const editor = document.getElementById('code-editor');
+    if (editor.selectionStart !== editor.selectionEnd) {
+        editor.setSelectionRange(editor.value.length, editor.value.length);
     }
 }
 function updateOutputPanel(type, message) {
