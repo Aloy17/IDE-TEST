@@ -56,8 +56,8 @@ async function loadFiles(subPath = '', depth = 0) {
         if (depth === 0) {
             filesList.innerHTML = '';
             
-            if (items.length === 0) {
-                filesList.innerHTML = '<div style="padding: 8px; color: #6b7280; font-size: 12px;">No files yet</div>';
+            if (files.length === 0) {
+                filesList.innerHTML = '<div style="padding: 8px; color: var(--color-text-secondary); font-size: 12px;">No files yet</div>';
                 return;
             }
         }
@@ -309,10 +309,67 @@ function addFileTab(filename) {
         switchToFile(filename);
     });
     
+    setupTabDragAndDrop(tab);
+    
     fileTabs.querySelectorAll('.file-tab').forEach(t => t.classList.remove('active'));
     
     fileTabs.appendChild(tab);
     console.log('Tab added successfully');
+}
+
+function setupTabDragAndDrop(tab) {
+    tab.draggable = true;
+    
+    tab.addEventListener('dragstart', (e) => {
+        tab.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', tab.dataset.file);
+    });
+    
+    tab.addEventListener('dragend', (e) => {
+        tab.classList.remove('dragging');
+        document.querySelectorAll('.file-tab').forEach(t => {
+            t.classList.remove('drag-over-left', 'drag-over-right');
+        });
+    });
+    
+    tab.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        const draggingTab = document.querySelector('.file-tab.dragging');
+        if (!draggingTab || draggingTab === tab) return;
+        
+        const rect = tab.getBoundingClientRect();
+        const midpoint = rect.left + rect.width / 2;
+        
+        tab.classList.remove('drag-over-left', 'drag-over-right');
+        if (e.clientX < midpoint) {
+            tab.classList.add('drag-over-left');
+        } else {
+            tab.classList.add('drag-over-right');
+        }
+    });
+    
+    tab.addEventListener('dragleave', (e) => {
+        tab.classList.remove('drag-over-left', 'drag-over-right');
+    });
+    
+    tab.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const draggingTab = document.querySelector('.file-tab.dragging');
+        if (!draggingTab || draggingTab === tab) return;
+        
+        const rect = tab.getBoundingClientRect();
+        const midpoint = rect.left + rect.width / 2;
+        const fileTabs = document.getElementById('file-tabs');
+        
+        if (e.clientX < midpoint) {
+            fileTabs.insertBefore(draggingTab, tab);
+        } else {
+            fileTabs.insertBefore(draggingTab, tab.nextSibling);
+        }
+        
+        tab.classList.remove('drag-over-left', 'drag-over-right');
+    });
 }
 
 function setActiveTab(filename) {
@@ -555,6 +612,49 @@ function updateOutputPanel(type, message) {
     outputContent.scrollTop = outputContent.scrollHeight;
 }
 
+function initInputHandler() {
+    window.electronAPI.onInputPrompt((prompt) => {
+        const outputContent = document.getElementById('output-content');
+        
+        const promptLine = document.createElement('div');
+        promptLine.className = 'output-line input-prompt';
+        promptLine.textContent = prompt;
+        outputContent.appendChild(promptLine);
+        
+        const inputContainer = document.createElement('div');
+        inputContainer.className = 'output-line input-container';
+        
+        const inputField = document.createElement('input');
+        inputField.type = 'text';
+        inputField.className = 'input-field';
+        inputField.placeholder = 'Type your input and press Enter...';
+        
+        inputField.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const userInput = inputField.value;
+                
+                const inputEcho = document.createElement('div');
+                inputEcho.className = 'output-line input-echo';
+                inputEcho.textContent = userInput;
+                outputContent.appendChild(inputEcho);
+                
+                inputContainer.remove();
+                
+                window.electronAPI.sendInput(userInput);
+                
+                outputContent.scrollTop = outputContent.scrollHeight;
+            }
+        });
+        
+        inputContainer.appendChild(inputField);
+        outputContent.appendChild(inputContainer);
+        
+        inputField.focus();
+        
+        outputContent.scrollTop = outputContent.scrollHeight;
+    });
+}
+
 function initResizers() {
     const sidebarResizer = document.getElementById('sidebar-resizer');
     const sidebar = document.querySelector('.sidebar');
@@ -743,6 +843,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initEditor();
         loadFiles();
         initResizers();
+        initInputHandler();
         
         openFiles.set('untitled.rid', {
             content: '~ Write your RID code here ~\n\n',
@@ -761,6 +862,7 @@ document.addEventListener('DOMContentLoaded', () => {
             initialTab.addEventListener('click', () => {
                 switchToFile('untitled.rid');
             });
+            setupTabDragAndDrop(initialTab);
         }
         
         document.getElementById('run-btn').addEventListener('click', runCode);
@@ -786,7 +888,7 @@ function setupFilesListDropZone() {
         if (!e.target.closest('.file-item')) {
             e.preventDefault();
             e.dataTransfer.dropEffect = 'move';
-            filesList.style.backgroundColor = 'rgba(157, 78, 221, 0.1)';
+            filesList.style.backgroundColor = 'var(--color-hover-bg)';
         }
     });
     

@@ -51,18 +51,8 @@ function loadLessonDetail(lessonId) {
 }
 
 function initLoadingScreen() {
-    const loadingText = document.querySelector('.loading-text');
-    let dotCount = 0;
-    
-    const dotInterval = setInterval(() => {
-        dotCount = (dotCount + 1) % 4;
-        loadingText.textContent = 'Loading' + '.'.repeat(dotCount);
-    }, 500);
-    
-    setTimeout(() => {
-        clearInterval(dotInterval);
-        showPage('home-page');
-    }, 2500);
+    document.body.classList.add('loaded');
+    showPage('home-page');
 }
 
 function initNavigation() {
@@ -113,18 +103,11 @@ function initNavigation() {
             }
         });
     }
-    const navHomeFooter = document.getElementById('nav-home');
-    const navTutorialFooter = document.getElementById('nav-tutorial');
     
-    if (navHomeFooter) {
-        navHomeFooter.addEventListener('click', () => {
+    const backBtn = document.getElementById('back-btn');
+    if (backBtn) {
+        backBtn.addEventListener('click', () => {
             showPage('home-page');
-        });
-    }
-    
-    if (navTutorialFooter) {
-        navTutorialFooter.addEventListener('click', () => {
-            showPage('tutorial-page');
         });
     }
     

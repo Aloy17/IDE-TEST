@@ -101,9 +101,9 @@ class Parser:
             raise SyntaxError(f"Syntax Error: Expected variable name after 'in', got '{self.token[self.position][0]}'")
         var_name = self.token[self.position][0]
 
+        # Automatically add variable to symbols if it doesn't exist
         if var_name not in self.symbols:
-            raise NameError(
-                f"Name Error: Variable '{var_name}' is not defined. Declare it with 'Let {var_name} = ...' before using 'in'")
+            self.symbols[var_name] = None
 
         self.position += 1
 
@@ -405,7 +405,30 @@ class Parser:
                 expr = self.parse_primary()
                 return f"-({expr})"
 
-        if key_token == "NUMBER":
+        if key_token == "IN":
+            # Handle in() as a function call in expressions
+            self.position += 1
+            if self.position >= len(self.token) or self.token[self.position][1] != "LPAREN":
+                raise SyntaxError("Syntax Error: Expected '(' after 'in'")
+            self.position += 1
+            
+            # Check if there's a prompt string
+            if self.token[self.position][1] == "STRING":
+                prompt = f'"{self.token[self.position][0]}"'
+                self.position += 1
+            else:
+                prompt = ""
+            
+            if self.position >= len(self.token) or self.token[self.position][1] != "RPAREN":
+                raise SyntaxError("Syntax Error: Expected ')' after prompt in 'in()' function")
+            self.position += 1
+            
+            if prompt:
+                return f"input({prompt})"
+            else:
+                return "input()"
+        
+        elif key_token == "NUMBER":
             self.position += 1
             return value_token
 

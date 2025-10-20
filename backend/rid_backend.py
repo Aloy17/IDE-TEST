@@ -1,11 +1,7 @@
-"""
-RID Backend - Python Transpiler Integration
-Handles RID code execution via Electron IPC
-"""
-
 import sys
 import json
 import io
+import base64
 from contextlib import redirect_stdout, redirect_stderr
 import os
 backend_dir = os.path.dirname(os.path.abspath(__file__))
@@ -26,15 +22,6 @@ except ImportError as e:
 
 
 def execute_rid(rid_code):
-    """
-    Execute RID code and return output
-    
-    Args:
-        rid_code (str): RID source code
-        
-    Returns:
-        dict: Result with success status and output/error
-    """
     try:
         tokens = lex(rid_code)
         
@@ -55,8 +42,25 @@ def execute_rid(rid_code):
         output_buffer = io.StringIO()
         error_buffer = io.StringIO()
         
+        # Save reference to real stdout, stderr and stdin before redirection
+        real_stdout = sys.stdout
+        real_stderr = sys.stderr
+        real_stdin = sys.stdin
+        
+        # Custom input function that sends prompts to real stderr
+        def custom_input(prompt=''):
+            if prompt:
+                # Write prompt to real stderr with special marker (not buffered)
+                # Use stderr for prompts so they don't interfere with JSON output on stdout
+                real_stderr.write(f"__RIDLEY_PROMPT__{prompt}")
+                real_stderr.flush()
+            # Read from real stdin
+            return real_stdin.readline().rstrip('\n')
+        
+        # stdin is naturally available since we didn't close it
+        # Only stdout and stderr are redirected
         with redirect_stdout(output_buffer), redirect_stderr(error_buffer):
-            exec_globals = {}
+            exec_globals = {'input': custom_input}  # Override input with our custom version
             exec(python_code, exec_globals)
         stdout_output = output_buffer.getvalue()
         stderr_output = error_buffer.getvalue()
@@ -92,9 +96,16 @@ def execute_rid(rid_code):
 
 
 def main():
-    """Main entry point - read code from stdin and execute"""
     try:
-        code = sys.stdin.read()
+        if len(sys.argv) < 2:
+            print(json.dumps({
+                'success': False,
+                'error': 'No code provided'
+            }))
+            return
+        
+        code_base64 = sys.argv[1]
+        code = base64.b64decode(code_base64).decode('utf-8')
         
         if not code.strip():
             print(json.dumps({
@@ -102,6 +113,7 @@ def main():
                 'output': ''
             }))
             return
+        
         result = execute_rid(code)
         print(json.dumps(result))
         

@@ -7,28 +7,39 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Orbitron:wght@700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Orbitron:wght@700;family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="particles"></div>
+    <div id="animated-background">
+        <div class="gradient-mesh"></div>
+    </div>
 
-    <div id="loading-page" class="page active">
+    <button id="theme-toggle" aria-label="Toggle theme" title="Toggle Theme">
+        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="4" fill="currentColor"/>
+            <path d="M12 2v2m0 16v2M4 12H2m4.314-5.686L4.9 4.9m12.786 1.414L19.1 4.9M6.314 17.69L4.9 19.104m12.786-1.414l1.414 1.414M22 12h-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="currentColor"/>
+        </svg>
+    </button>
+
+    <div id="loading-page" class="page" style="display: none;">
+
         <canvas id="binary-rain"></canvas>
         <div class="loading-content">
             <div class="loading-logo">RIDLEY</div>
             <div class="loading-text">Loading</div>
-            <div class="progress-bar">
-                <div class="progress-fill"></div>
-            </div>
         </div>
     </div>
 
-    <div id="home-page" class="page">
+    <div id="home-page" class="page active">
         <div class="home-content">
             <div class="home-logo">RIDLEY</div>
+            <p class="home-tagline">Interactive Code Editor for RID</p>
             <div class="home-buttons">
-                <button class="pixel-button" id="tutorial-btn">TUTORIAL</button>
-                <button class="pixel-button" id="ide-btn">IDE</button>
+                <button class="pixel-button" id="tutorial-btn">Start Learning</button>
+                <button class="pixel-button" id="ide-btn">Open Editor</button>
             </div>
         </div>
     </div>
@@ -109,19 +120,23 @@
     <div id="ide-page" class="page">
         
         <div class="ide-header">
-            <div class="ide-title">RIDLEY IDE</div>
+            <button class="control-btn back-btn" id="back-btn" title="Back">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="icon">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+            </button>
             <div class="global-controls">
-                <button class="control-btn" id="run-btn" title="Play (Run Code)">
+                <button class="control-btn" id="run-btn" title="Run">
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="icon">
                         <path d="M8 5v14l11-7z"/>
                     </svg>
                 </button>
-                <button class="control-btn" id="delete-btn" title="Delete File">
+                <button class="control-btn" id="delete-btn" title="Delete">
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="icon">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                     </svg>
                 </button>
-                <button class="control-btn" id="save-btn" title="Save File">
+                <button class="control-btn" id="save-btn" title="Save">
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="icon">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
                     </svg>
@@ -137,12 +152,12 @@
                     <div class="sidebar-actions">
                         <button class="sidebar-action-btn" id="new-file-btn" title="New File">
                             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" style="width: 16px; height: 16px;">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                             </svg>
                         </button>
                         <button class="sidebar-action-btn" id="new-folder-btn" title="New Folder">
                             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" style="width: 16px; height: 16px;">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 13l4 8m0 0l4-8m-4 8V10.5"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
                             </svg>
                         </button>
                     </div>
@@ -160,7 +175,6 @@
                 
                 <div class="editor-panel">
                     <div class="panel-header">
-                        <span class="panel-title">IDE</span>
                         <div class="file-tabs" id="file-tabs">
                             <div class="file-tab active" data-file="untitled.rid">
                                 <span class="tab-name">untitled.rid</span>
@@ -188,8 +202,12 @@ out("Hello from RIDLEY!")
 
                 
                 <div class="output-panel">
-                    <div class="panel-header">
-                        <span class="panel-title">OUTPUT</span>
+                    <div class="panel-header output-header">
+                        <div class="output-tabs">
+                            <div class="output-tab active">
+                                <span>OUTPUT</span>
+                            </div>
+                        </div>
                         <button class="clear-output" id="clear-output" title="Clear Output">
                             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" style="width: 16px; height: 16px;">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -203,21 +221,6 @@ out("Hello from RIDLEY!")
             </div>
         </div>
 
-        
-        <div class="nav-footer">
-            <button class="nav-footer-btn" id="nav-home" title="Home">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" style="width: 18px; height: 18px;">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                </svg>
-                <span>Home</span>
-            </button>
-            <button class="nav-footer-btn" id="nav-tutorial" title="Tutorials">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" style="width: 18px; height: 18px;">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                </svg>
-                <span>Tutorials</span>
-            </button>
-        </div>
     </div>
 
     <script src="js/animations.js"></script>

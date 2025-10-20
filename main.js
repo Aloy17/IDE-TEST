@@ -17,6 +17,8 @@ function createWindow() {
     minWidth: 1200,
     minHeight: 700,
     backgroundColor: '#0a0014',
+    frame: false,
+    titleBarStyle: 'hidden',
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -55,30 +57,52 @@ async function initializeProjectsFolder() {
   }
 }
 
+let currentProcess = null;
+
 async function executeRID(code) {
   return new Promise((resolve) => {
     let ridProcess;
     
+    const codeBase64 = Buffer.from(code, 'utf-8').toString('base64');
+    
     if (app.isPackaged) {
       const exePath = path.join(process.resourcesPath, 'rid_backend.exe');
-      ridProcess = spawn(exePath);
+      ridProcess = spawn(exePath, [codeBase64], { stdio: ['pipe', 'pipe', 'pipe'] });
     } else {
       const pythonScript = path.join(__dirname, 'backend', 'rid_backend.py');
-      ridProcess = spawn('python', [pythonScript]);
+      ridProcess = spawn('python', [pythonScript, codeBase64, '-u'], { stdio: ['pipe', 'pipe', 'pipe'] });
     }
     
+    currentProcess = ridProcess;
     let output = '';
     let errorOutput = '';
+    let buffer = '';
     
     ridProcess.stdout.on('data', (data) => {
       output += data.toString();
     });
     
     ridProcess.stderr.on('data', (data) => {
-      errorOutput += data.toString();
+      const stderrData = data.toString();
+      console.log('[STDERR]:', stderrData);
+      
+      if (stderrData.includes('__RIDLEY_PROMPT__')) {
+        console.log('[PROMPT DETECTED]');
+        const promptMatch = stderrData.match(/__RIDLEY_PROMPT__(.+)/);
+        if (promptMatch) {
+          const prompt = promptMatch[1];
+          console.log('[SENDING PROMPT TO RENDERER]:', prompt);
+          mainWindow.webContents.send('input-prompt', prompt);
+          return;
+        }
+      }
+      
+      errorOutput += stderrData;
     });
     
     ridProcess.on('close', (code) => {
+      currentProcess = null;
+      
       if (code !== 0 && errorOutput) {
         resolve({
           success: false,
@@ -98,16 +122,20 @@ async function executeRID(code) {
     });
     
     ridProcess.on('error', (err) => {
+      currentProcess = null;
       resolve({
         success: false,
         error: `Failed to start RID backend: ${err.message}`
       });
     });
-    
-    ridProcess.stdin.write(code);
-    ridProcess.stdin.end();
   });
 }
+
+ipcMain.on('send-input', (event, userInput) => {
+  if (currentProcess && !currentProcess.killed) {
+    currentProcess.stdin.write(userInput + '\n');
+  }
+});
 
 ipcMain.handle('execute-rid', async (event, code) => {
   return await executeRID(code);
