@@ -91,7 +91,7 @@ def execute_rid(rid_code):
     except SyntaxError as e:
         return {
             'success': False,
-            'error': f'Syntax Error: {str(e)}'
+            'error': str(e)
         }
     except NameError as e:
         return {
