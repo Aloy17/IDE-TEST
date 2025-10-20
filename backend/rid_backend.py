@@ -4,21 +4,33 @@ import io
 import base64
 from contextlib import redirect_stdout, redirect_stderr
 import os
-backend_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Setup paths for transpiler imports
+if getattr(sys, 'frozen', False):
+    # Running as PyInstaller bundle
+    backend_dir = sys._MEIPASS
+else:
+    # Running as normal Python script
+    backend_dir = os.path.dirname(os.path.abspath(__file__))
+
 transpiler_dir = os.path.join(backend_dir, 'rid_transpiler')
-sys.path.insert(0, transpiler_dir)
-parent_dir = os.path.dirname(backend_dir)
-sys.path.insert(0, parent_dir)
+if os.path.exists(transpiler_dir):
+    sys.path.insert(0, transpiler_dir)
 
 try:
-    from lexer import lex
-    from parser import Parser
-except ImportError as e:
-    print(json.dumps({
-        'success': False,
-        'error': f'Failed to import RID transpiler: {str(e)}\nSearched in: {transpiler_dir}'
-    }))
-    sys.exit(1)
+    from rid_transpiler.lexer import lex
+    from rid_transpiler.parser import Parser
+except ImportError:
+    # Fallback to direct imports
+    try:
+        from lexer import lex
+        from parser import Parser
+    except ImportError as e:
+        print(json.dumps({
+            'success': False,
+            'error': f'Failed to import RID transpiler: {str(e)}'
+        }))
+        sys.exit(1)
 
 
 def execute_rid(rid_code):

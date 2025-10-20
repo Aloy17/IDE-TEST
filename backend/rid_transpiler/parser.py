@@ -19,6 +19,17 @@ class Parser:
             "NEWLINE": self.newline_stmt
         }
 
+    def get_line_num(self):
+        """Get the current line number from token"""
+        if self.position < len(self.token) and len(self.token[self.position]) > 2:
+            return self.token[self.position][2]
+        return "?"
+
+    def error(self, message):
+        """Format error message with line number"""
+        line = self.get_line_num()
+        return f"Line {line}: {message}"
+
     def parse(self):
         while self.position < len(self.token):
             current_token = self.token[self.position]
@@ -39,14 +50,14 @@ class Parser:
         var_token = self.token[self.position]
 
         if var_token[1] != "IDENTIFIER":
-            raise SyntaxError(f"Syntax Error: Expected variable name after 'Let', got '{var_token[0]}'")
+            raise SyntaxError(self.error(f"Syntax Error: Expected variable name after 'Let', got '{var_token[0]}'"))
 
         var_name = var_token[0]
         self.position += 1
 
         if self.token[self.position][1] != "ASSIGN":
             raise SyntaxError(
-                f"Syntax Error: Expected '=' after variable '{var_name}', got '{self.token[self.position][0]}'")
+                self.error(f"Syntax Error: Expected '=' after variable '{var_name}', got '{self.token[self.position][0]}'"))
 
         self.position += 1
         expr = self.expression()
@@ -59,12 +70,12 @@ class Parser:
 
         if var_name not in self.symbols and var_name not in self.current_params:
             raise NameError(
-                f"Name Error: Variable '{var_name}' is not defined. Use 'Let {var_name} = ...' to declare it first")
+                self.error(f"Name Error: Variable '{var_name}' is not defined. Use 'Let {var_name} = ...' to declare it first"))
 
         self.position += 1
         if self.token[self.position][1] != "ASSIGN":
             raise SyntaxError(
-                f"Syntax Error: Expected '=' after variable '{var_name}', got '{self.token[self.position][0]}'")
+                self.error(f"Syntax Error: Expected '=' after variable '{var_name}', got '{self.token[self.position][0]}'"))
 
         self.position += 1
         expr = self.expression()
@@ -75,9 +86,9 @@ class Parser:
     def print_stmt(self, current_token):
         self.position += 1
         if self.position >= len(self.token):
-            raise SyntaxError(f"Syntax Error: Expected '(' after 'out', but reached end of file")
+            raise SyntaxError(self.error(f"Syntax Error: Expected '(' after 'out', but reached end of file"))
         if self.token[self.position][1] != "LPAREN":
-            raise SyntaxError(f"Syntax Error: Expected '(' after 'out', got '{self.token[self.position][0]}'")
+            raise SyntaxError(self.error(f"Syntax Error: Expected '(' after 'out', got '{self.token[self.position][0]}'"))
         self.position += 1
 
         value = self.expression()
@@ -350,15 +361,15 @@ class Parser:
 
     def parse_primary(self):
         if self.position >= len(self.token):
-            raise SyntaxError("Syntax Error: Unexpected end of expression")
+            raise SyntaxError(self.error("Syntax Error: Unexpected end of expression"))
 
         current = self.token[self.position]
-        value_token, key_token = current
+        value_token, key_token = current[0], current[1]
 
         if key_token == "MINUS":
             self.position += 1
             if self.position >= len(self.token):
-                raise SyntaxError("Syntax Error: Expected expression after '-'")
+                raise SyntaxError(self.error("Syntax Error: Expected expression after '-'"))
 
             next_token = self.token[self.position]
             if next_token[1] == "NUMBER":
@@ -395,7 +406,7 @@ class Parser:
         elif key_token == "IN":
             self.position += 1
             if self.position >= len(self.token) or self.token[self.position][1] != "LPAREN":
-                raise SyntaxError(f"Syntax Error: Expected '(' after 'in'")
+                raise SyntaxError(self.error(f"Syntax Error: Expected '(' after 'in'"))
             self.position += 1
 
             next_token = self.token[self.position]
@@ -406,11 +417,11 @@ class Parser:
                 prompt = f'"{next_token[0]}"'
                 self.position += 1
                 if self.position >= len(self.token) or self.token[self.position][1] != "RPAREN":
-                    raise SyntaxError(f"Syntax Error: Expected ')' after prompt string in 'in()'")
+                    raise SyntaxError(self.error(f"Syntax Error: Expected ')' after prompt string in 'in()'"))
                 self.position += 1
                 return f"input({prompt})"
             else:
-                raise SyntaxError(f"Syntax Error: Expected ')' or prompt string in 'in()', got '{next_token[0]}'")
+                raise SyntaxError(self.error(f"Syntax Error: Expected ')' or prompt string in 'in()', got '{next_token[0]}'"))
 
         elif key_token == "IDENTIFIER":
             if self.position + 1 < len(self.token) and self.token[self.position + 1][1] == "LPAREN":
@@ -419,7 +430,7 @@ class Parser:
                 if (value_token not in self.symbols and
                         value_token not in self.current_params and
                         value_token not in self.functions):
-                    raise NameError(f"Name Error: Variable '{value_token}' is not defined")
+                    raise NameError(self.error(f"Name Error: Variable '{value_token}' is not defined"))
                 self.position += 1
                 return value_token
 
@@ -428,12 +439,12 @@ class Parser:
             expr = self.parse_additive()
 
             if self.position >= len(self.token) or self.token[self.position][1] != "RPAREN":
-                raise SyntaxError("Syntax Error: Expected ')' to close expression")
+                raise SyntaxError(self.error("Syntax Error: Expected ')' to close expression"))
             self.position += 1
             return f"({expr})"
 
         else:
-            raise SyntaxError(f"Syntax Error: Unexpected token '{value_token}' in expression")
+            raise SyntaxError(self.error(f"Syntax Error: Unexpected token '{value_token}' in expression"))
 
     def parse_type_conversion(self, conversion_type):
         self.position += 1

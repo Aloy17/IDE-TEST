@@ -1,7 +1,0 @@
-~ Hello World Example ~
-~ Your first RID program! ~
-
-out("Hello from RID!")
-line
-out("Welcome to RID programming language")
-line

@@ -1,0 +1,36 @@
+~ Type Conversion Example ~
+~ Demonstrates num(), dec(), word(), bool() with in() function ~
+
+~ Get user input as strings ~
+Let name = in("Enter your name: ")
+Let age_str = in("Enter your age: ")
+Let height_str = in("Enter your height in meters: ")
+Let is_student_str = in("Are you a student? (true/false): ")
+
+~ Convert to appropriate types ~
+Let age = num(age_str)
+Let height = dec(height_str)
+Let is_student = bool(is_student_str)
+
+~ Display converted values ~
+out("Hello, ", name)
+out("You are ", age, " years old")
+out("Your height is ", height, " meters")
+
+agar(is_student) {
+    out("Student status: Yes")
+}
+warna {
+    out("Student status: No")
+}
+
+~ Type conversion in calculations ~
+Let birth_year = 2025 - age
+out("You were born around ", birth_year)
+
+~ Convert number back to string ~
+Let age_text = word(age)
+out("Age as text: '", age_text, "'")
+
+line
+out("Type conversion complete!")
