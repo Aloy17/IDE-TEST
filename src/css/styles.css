@@ -1060,20 +1060,22 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     caret-color: var(--color-button-bg);
 }
 .code-editor::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
 }
 .code-editor::-webkit-scrollbar-track {
     background: transparent;
-    margin: 4px 0;
+    margin: 100px 0;
 }
 .code-editor::-webkit-scrollbar-thumb {
-    background: var(--color-border);
-    border-radius: 4px;
-    min-height: 40px;
+    background: var(--color-text-secondary);
+    border-radius: 5px;
+    min-height: 60px;
+    max-height: 100px;
+    border: 2px solid var(--color-bg-editor);
 }
 .code-editor::-webkit-scrollbar-thumb:hover {
-    background: var(--color-text-secondary);
+    background: var(--color-accent);
 }
 .code-editor::-webkit-scrollbar-corner {
     background: var(--color-bg-editor);
