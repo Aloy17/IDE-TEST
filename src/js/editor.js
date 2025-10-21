@@ -73,6 +73,62 @@ function handleAutoPair(e) {
         '{': '}',
         '"': '"'
     };
+    
+    // Handle Enter key for smart indentation
+    if (e.key === 'Enter') {
+        const editor = e.target;
+        const start = editor.selectionStart;
+        const value = editor.value;
+        const charBefore = value[start - 1];
+        const charAfter = value[start];
+        
+        // Check if cursor is between braces
+        if (charBefore === '{' && charAfter === '}') {
+            e.preventDefault();
+            
+            // Get current line to calculate indentation
+            const lines = value.substring(0, start).split('\n');
+            const currentLine = lines[lines.length - 1];
+            const currentIndent = currentLine.match(/^\s*/)[0];
+            const indent = '    '; // 4 spaces
+            
+            // Insert newline, indent, cursor position, newline, and closing brace indentation
+            const newText = '\n' + currentIndent + indent + '\n' + currentIndent;
+            editor.value = value.substring(0, start) + newText + value.substring(start);
+            
+            // Place cursor on the indented line
+            const newCursorPos = start + currentIndent.length + indent.length + 1;
+            editor.selectionStart = editor.selectionEnd = newCursorPos;
+            updateLineNumbers();
+            return;
+        }
+        
+        // Regular Enter - maintain current indentation
+        const lines = value.substring(0, start).split('\n');
+        const currentLine = lines[lines.length - 1];
+        const currentIndent = currentLine.match(/^\s*/)[0];
+        
+        // If line ends with {, add extra indentation
+        if (charBefore === '{') {
+            e.preventDefault();
+            const indent = '    ';
+            const newText = '\n' + currentIndent + indent;
+            editor.value = value.substring(0, start) + newText + value.substring(start);
+            editor.selectionStart = editor.selectionEnd = start + newText.length;
+            updateLineNumbers();
+            return;
+        }
+        
+        // Otherwise just maintain current indentation
+        if (currentIndent) {
+            e.preventDefault();
+            const newText = '\n' + currentIndent;
+            editor.value = value.substring(0, start) + newText + value.substring(start);
+            editor.selectionStart = editor.selectionEnd = start + newText.length;
+            updateLineNumbers();
+        }
+    }
+    
     if (pairs[e.key]) {
         e.preventDefault();
         const editor = e.target;
@@ -997,13 +1053,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (clearBtn) {
             clearBtn.addEventListener('click', clearOutput);
         }
-        // Window controls
-        const minimizeBtn = document.getElementById('minimize-btn');
-        const maximizeBtn = document.getElementById('maximize-btn');
-        const closeBtn = document.getElementById('close-btn');
-        if (minimizeBtn) minimizeBtn.addEventListener('click', () => window.electronAPI.minimizeWindow());
-        if (maximizeBtn) maximizeBtn.addEventListener('click', () => window.electronAPI.maximizeWindow());
-        if (closeBtn) closeBtn.addEventListener('click', () => window.electronAPI.closeWindow());
         setupFilesListDropZone();
         setupGlobalDragCleanup();
     }, 100);

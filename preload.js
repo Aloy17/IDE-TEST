@@ -12,5 +12,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   onInputPrompt: (callback) => ipcRenderer.on('input-prompt', (event, prompt) => callback(prompt)),
   minimizeWindow: () => ipcRenderer.send('minimize-window'),
   maximizeWindow: () => ipcRenderer.send('maximize-window'),
-  closeWindow: () => ipcRenderer.send('close-window')
+  closeWindow: () => ipcRenderer.send('close-window'),
+  onMaximize: (callback) => ipcRenderer.on('window-maximized', callback),
+  onUnmaximize: (callback) => ipcRenderer.on('window-unmaximized', callback)
 });

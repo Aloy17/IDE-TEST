@@ -25,6 +25,15 @@ function createWindow() {
   });
   mainWindow.loadFile('src/index.html');
   Menu.setApplicationMenu(null);
+  
+  // Listen for maximize/unmaximize events
+  mainWindow.on('maximize', () => {
+    mainWindow.webContents.send('window-maximized');
+  });
+  
+  mainWindow.on('unmaximize', () => {
+    mainWindow.webContents.send('window-unmaximized');
+  });
 }
 async function initializeProjectsFolder() {
   const projectsPath = getProjectsFolder();

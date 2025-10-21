@@ -62,8 +62,41 @@ function updateThemeIcon() {
         }
     }
 }
+function updateMaximizeIcon(isMaximized) {
+    const maximizeIcon = document.querySelector('.maximize-icon');
+    const restoreIcon = document.querySelector('.restore-icon');
+    const maximizeBtn = document.getElementById('maximize-btn');
+    
+    if (maximizeIcon && restoreIcon && maximizeBtn) {
+        if (isMaximized) {
+            maximizeIcon.style.display = 'none';
+            restoreIcon.style.display = 'block';
+            maximizeBtn.title = 'Restore';
+        } else {
+            maximizeIcon.style.display = 'block';
+            restoreIcon.style.display = 'none';
+            maximizeBtn.title = 'Maximize';
+        }
+    }
+}
+
+function initWindowControls() {
+    const minimizeBtn = document.getElementById('minimize-btn');
+    const maximizeBtn = document.getElementById('maximize-btn');
+    const closeBtn = document.getElementById('close-btn');
+    
+    if (minimizeBtn) minimizeBtn.addEventListener('click', () => window.electronAPI.minimizeWindow());
+    if (maximizeBtn) maximizeBtn.addEventListener('click', () => window.electronAPI.maximizeWindow());
+    if (closeBtn) closeBtn.addEventListener('click', () => window.electronAPI.closeWindow());
+    
+    // Listen for maximize/unmaximize events
+    window.electronAPI.onMaximize(() => updateMaximizeIcon(true));
+    window.electronAPI.onUnmaximize(() => updateMaximizeIcon(false));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
+    initWindowControls();
     const themeToggle = document.getElementById('theme-toggle');
     if (themeToggle) {
         themeToggle.addEventListener('click', toggleTheme);
