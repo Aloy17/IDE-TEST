@@ -1,0 +1,73 @@
+~ Comprehensive Feature Verification Test ~
+
+out("=== VERIFICATION TEST ===")
+line
+line
+
+~ Test 1: Numeric Addition ~
+out("Test 1: Numeric Addition")
+line
+Let a = 5
+Let b = 3
+Let sum = a + b
+out("5 + 3 = " + sum)
+line
+line
+
+~ Test 2: String Concatenation ~
+out("Test 2: String Concatenation")
+line
+out("Hello" + " " + "World")
+line
+line
+
+~ Test 3: Mixed Type Auto-Conversion ~
+out("Test 3: Mixed Type (Number + String)")
+line
+Let number = 42
+out("Answer: " + number)
+line
+out(number + " is the answer")
+line
+line
+
+~ Test 4: Expression in Output ~
+out("Test 4: Direct Expression")
+line
+out("Result: " + (10 + 20))
+line
+line
+
+~ Test 5: While Loop with Mixed Types ~
+out("Test 5: While Loop")
+line
+Let i = 1
+Run while(i <= 3) {
+    out("Count: " + i)
+    line
+    i = i + 1
+}
+line
+
+~ Test 6: Function with Return ~
+out("Test 6: Function")
+line
+func double(x) {
+    give x * 2
+}
+out("double(5) = " + double(5))
+line
+line
+
+~ Test 7: Conditional with Numbers ~
+out("Test 7: Conditional")
+line
+Let score = 85
+agar(score >= 80) {
+    out("Pass: Score is " + score)
+    line
+}
+line
+
+out("=== ALL TESTS PASSED ===")
+line
