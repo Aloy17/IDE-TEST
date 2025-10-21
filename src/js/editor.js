@@ -9,6 +9,8 @@ let inputPromptQueue = []; // Queue for input prompts
 let isWaitingForInput = false; // Flag to track if currently waiting for input
 let lastLineCount = 0; // Track line count for optimization
 let lineNumberUpdateTimeout = null; // Debounce timeout
+const MAX_OUTPUT_LINES = 1000; // Maximum output lines to keep
+let outputLineCount = 0; // Track output line count
 function initEditor() {
     const editor = document.getElementById('code-editor');
     const lineNumbers = document.getElementById('line-numbers');
@@ -378,46 +380,86 @@ function addFileTab(filename) {
 }
 function setupTabDragAndDrop(tab) {
     tab.draggable = true;
+    
     tab.addEventListener('dragstart', (e) => {
         tab.classList.add('dragging');
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setData('text/plain', tab.dataset.file);
     });
+    
     tab.addEventListener('dragend', (e) => {
         tab.classList.remove('dragging');
         document.querySelectorAll('.file-tab').forEach(t => {
             t.classList.remove('drag-over-left', 'drag-over-right');
         });
     });
+    
     tab.addEventListener('dragover', (e) => {
         e.preventDefault();
         const draggingTab = document.querySelector('.file-tab.dragging');
-        if (!draggingTab || draggingTab === tab) return;
+        
+        // Prevent dropping tab on itself
+        if (!draggingTab || draggingTab === tab) {
+            return;
+        }
+        
+        // Use getBoundingClientRect for accurate edge detection
         const rect = tab.getBoundingClientRect();
         const midpoint = rect.left + rect.width / 2;
+        
+        // Add margin for better edge detection (10% of width)
+        const edgeMargin = rect.width * 0.1;
+        
         tab.classList.remove('drag-over-left', 'drag-over-right');
+        
         if (e.clientX < midpoint) {
             tab.classList.add('drag-over-left');
         } else {
             tab.classList.add('drag-over-right');
         }
     });
+    
     tab.addEventListener('dragleave', (e) => {
-        tab.classList.remove('drag-over-left', 'drag-over-right');
+        // Only remove classes if actually leaving the tab
+        const rect = tab.getBoundingClientRect();
+        const x = e.clientX;
+        const y = e.clientY;
+        
+        if (x < rect.left || x >= rect.right || y < rect.top || y >= rect.bottom) {
+            tab.classList.remove('drag-over-left', 'drag-over-right');
+        }
     });
+    
     tab.addEventListener('drop', (e) => {
         e.preventDefault();
         const draggingTab = document.querySelector('.file-tab.dragging');
-        if (!draggingTab || draggingTab === tab) return;
+        
+        // Prevent dropping tab on itself
+        if (!draggingTab || draggingTab === tab) {
+            return;
+        }
+        
         const rect = tab.getBoundingClientRect();
         const midpoint = rect.left + rect.width / 2;
         const fileTabs = document.getElementById('file-tabs');
+        
+        // Remember the active file before reordering
+        const wasActive = draggingTab.classList.contains('active');
+        const draggedFile = draggingTab.dataset.file;
+        
         if (e.clientX < midpoint) {
             fileTabs.insertBefore(draggingTab, tab);
         } else {
             fileTabs.insertBefore(draggingTab, tab.nextSibling);
         }
+        
         tab.classList.remove('drag-over-left', 'drag-over-right');
+        
+        // Update active tab reference if needed
+        if (wasActive) {
+            activeFile = draggedFile;
+            setActiveTab(draggedFile);
+        }
     });
 }
 function setActiveTab(filename) {
@@ -601,20 +643,32 @@ async function runCode() {
     const code = editor.value;
     const outputContent = document.getElementById('output-content');
     outputContent.innerHTML = '<div class="output-line info">&gt; Running...</div>';
+    outputLineCount = 1;
     clearErrorHighlight();
+    
     try {
         const result = await window.electronAPI.executeRID(code);
         outputContent.innerHTML = '';
+        outputLineCount = 0;
+        
         if (result.success) {
             const lines = result.output.split('\n');
-            lines.forEach(line => {
-                if (line.trim()) {
-                    updateOutputPanel('success', line);
-                }
-            });
-            if (lines.length === 0 || lines.every(l => !l.trim())) {
+            const outputLines = lines
+                .filter(line => line.trim())
+                .map(line => ({type: 'success', message: line}));
+            
+            if (outputLines.length === 0) {
                 updateOutputPanel('success', '> Program executed successfully (no output)');
+            } else if (outputLines.length > 10) {
+                // Use batch update for many lines
+                updateOutputPanelBatch(outputLines);
+            } else {
+                // Use regular update for few lines
+                outputLines.forEach(({type, message}) => {
+                    updateOutputPanel(type, message);
+                });
             }
+            
             // Clear any selection on successful run
             clearErrorHighlight();
         } else {
@@ -666,10 +720,50 @@ function clearErrorHighlight() {
 }
 function updateOutputPanel(type, message) {
     const outputContent = document.getElementById('output-content');
+    
+    // Limit output history to MAX_OUTPUT_LINES
+    if (outputLineCount >= MAX_OUTPUT_LINES) {
+        const firstLine = outputContent.querySelector('.output-line');
+        if (firstLine) {
+            firstLine.remove();
+            outputLineCount--;
+        }
+    }
+    
     const line = document.createElement('div');
     line.className = `output-line ${type}`;
     line.textContent = message;
     outputContent.appendChild(line);
+    outputLineCount++;
+    
+    // Auto-scroll to bottom
+    outputContent.scrollTop = outputContent.scrollHeight;
+}
+
+// Batch version for adding multiple lines efficiently
+function updateOutputPanelBatch(lines) {
+    const outputContent = document.getElementById('output-content');
+    const fragment = document.createDocumentFragment();
+    
+    lines.forEach(({type, message}) => {
+        // Remove old lines if exceeding limit
+        if (outputLineCount >= MAX_OUTPUT_LINES) {
+            const firstLine = outputContent.querySelector('.output-line');
+            if (firstLine) {
+                firstLine.remove();
+                outputLineCount--;
+            }
+        }
+        
+        const line = document.createElement('div');
+        line.className = `output-line ${type}`;
+        line.textContent = message;
+        fragment.appendChild(line);
+        outputLineCount++;
+    });
+    
+    // Single DOM update for all lines
+    outputContent.appendChild(fragment);
     outputContent.scrollTop = outputContent.scrollHeight;
 }
 function initInputHandler() {
@@ -830,6 +924,7 @@ function copyCode() {
 function clearOutput() {
     const outputContent = document.getElementById('output-content');
     outputContent.innerHTML = '<div class="output-line ready">&gt; Output cleared</div>';
+    outputLineCount = 1;
 }
 async function createFolder() {
     console.log('Creating new folder with inline rename');

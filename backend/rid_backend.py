@@ -89,16 +89,49 @@ def execute_rid(rid_code):
         }
         
     except SyntaxError as e:
+        # Syntax errors from parser already have proper formatting
         return {
             'success': False,
             'error': str(e)
         }
     except NameError as e:
+        # Name errors when undefined variables are used
         return {
             'success': False,
             'error': f'Name Error: {str(e)}'
         }
+    except ZeroDivisionError as e:
+        # Division by zero errors
+        return {
+            'success': False,
+            'error': f'Math Error: Division by zero'
+        }
+    except TypeError as e:
+        # Type errors from invalid operations
+        return {
+            'success': False,
+            'error': f'Type Error: {str(e)}'
+        }
+    except ValueError as e:
+        # Value errors from invalid conversions
+        return {
+            'success': False,
+            'error': f'Value Error: {str(e)}'
+        }
+    except RecursionError as e:
+        # Recursion limit exceeded
+        return {
+            'success': False,
+            'error': 'Recursion Error: Maximum recursion depth exceeded'
+        }
+    except KeyboardInterrupt:
+        # User interrupted execution
+        return {
+            'success': False,
+            'error': 'Execution interrupted by user'
+        }
     except Exception as e:
+        # Catch-all for any other errors
         error_msg = str(e)
         error_type = type(e).__name__
         return {
