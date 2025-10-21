@@ -161,6 +161,21 @@ ipcMain.on('send-input', (event, userInput) => {
     }
   }
 });
+ipcMain.on('minimize-window', () => {
+  if (mainWindow) mainWindow.minimize();
+});
+ipcMain.on('maximize-window', () => {
+  if (mainWindow) {
+    if (mainWindow.isMaximized()) {
+      mainWindow.unmaximize();
+    } else {
+      mainWindow.maximize();
+    }
+  }
+});
+ipcMain.on('close-window', () => {
+  if (mainWindow) mainWindow.close();
+});
 ipcMain.handle('execute-rid', async (event, code) => {
   return await executeRID(code);
 });

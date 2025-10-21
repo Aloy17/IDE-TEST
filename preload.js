@@ -9,5 +9,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   createFolder: (folderName) => ipcRenderer.invoke('create-folder', folderName),
   moveFile: (sourcePath, targetFolderPath) => ipcRenderer.invoke('move-file', sourcePath, targetFolderPath),
   sendInput: (input) => ipcRenderer.send('send-input', input),
-  onInputPrompt: (callback) => ipcRenderer.on('input-prompt', (event, prompt) => callback(prompt))
+  onInputPrompt: (callback) => ipcRenderer.on('input-prompt', (event, prompt) => callback(prompt)),
+  minimizeWindow: () => ipcRenderer.send('minimize-window'),
+  maximizeWindow: () => ipcRenderer.send('maximize-window'),
+  closeWindow: () => ipcRenderer.send('close-window')
 });
