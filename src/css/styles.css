@@ -56,7 +56,6 @@ body.theme-quiet-light {
     --transition-fast: 0.1s ease;
     --transition-base: 0.15s ease;
     --transition-slow: 0.3s ease;
-    /* Additional size variables */
     --size-icon-sm: 20px;
     --size-icon-md: 28px;
     --size-icon-lg: 32px;
@@ -111,12 +110,12 @@ body.theme-dark-modern {
 }
 body {
     font-family: var(--font-ui);
-    background: var(--color-bg-editor);
+    background: transparent;
     color: var(--color-text-primary);
     overflow: hidden;
     width: 100vw;
     height: 100vh;
-    transition: background var(--transition-slow), color var(--transition-slow);
+    transition: color var(--transition-slow);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -130,44 +129,54 @@ body {
     pointer-events: none;
     opacity: 0;
     transition: opacity 1.5s ease;
+    overflow: hidden;
 }
 #animated-background.loaded {
     opacity: 1;
 }
 .gradient-mesh {
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    opacity: 0.5; 
-    animation: gradientFloat 25s ease-in-out infinite;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: 400% 400%;
+    animation: flowingGradient 15s ease infinite;
+    transition: background 0.6s ease;
+    opacity: 1;
 }
 :root .gradient-mesh,
 .theme-quiet-light .gradient-mesh {
-    background: 
-        radial-gradient(ellipse 800px 600px at 20% 30%, #d8b4fe, transparent 70%),
-        radial-gradient(ellipse 700px 700px at 80% 70%, #bfdbfe, transparent 70%),
-        radial-gradient(ellipse 900px 600px at 50% 50%, #a5f3fc, transparent 70%),
-        radial-gradient(ellipse 600px 800px at 70% 20%, #fae8ff, transparent 70%);
+    background: linear-gradient(
+        135deg,
+        #f0f9ff 0%,
+        #e0e7ff 20%,
+        #ddd6fe 40%,
+        #fae8ff 60%,
+        #bfdbfe 80%,
+        #f0f9ff 100%
+    );
 }
 .theme-dark-modern .gradient-mesh {
-    background: 
-        radial-gradient(ellipse 800px 600px at 20% 30%, #4c1d95, transparent 70%),
-        radial-gradient(ellipse 700px 700px at 80% 70%, #1e3a8a, transparent 70%),
-        radial-gradient(ellipse 900px 600px at 50% 50%, #164e63, transparent 70%),
-        radial-gradient(ellipse 600px 800px at 70% 20%, #4a1d75, transparent 70%);
-    opacity: 0.4; 
+    background: linear-gradient(
+        135deg,
+        #0c1222 0%,
+        #1e1b4b 20%,
+        #2d1b4e 40%,
+        #1e3a5f 60%,
+        #0f2942 80%,
+        #0c1222 100%
+    );
 }
-@keyframes gradientFloat {
-    0%, 100% {
-        transform: translate(0, 0) scale(1);
+@keyframes flowingGradient {
+    0% {
+        background-position: 0% 50%;
     }
-    33% {
-        transform: translate(8%, 8%) scale(1.1);
+    50% {
+        background-position: 100% 50%;
     }
-    66% {
-        transform: translate(-8%, -8%) scale(1.05);
+    100% {
+        background-position: 0% 50%;
     }
 }
 .title-bar {
@@ -176,12 +185,17 @@ body {
     left: 0;
     right: 0;
     height: 30px;
-    background: var(--color-bg-sidebar);
+    background: rgba(255, 255, 255, 0.5);
     display: flex;
     align-items: center;
     justify-content: space-between;
     z-index: 10000;
     -webkit-app-region: drag;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+.theme-dark-modern .title-bar {
+    background: rgba(15, 23, 42, 0.5);
 }
 .title-bar-drag-region {
     flex: 1;
@@ -299,7 +313,7 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     opacity: 0;
     visibility: hidden;
     transition: opacity var(--transition-slow), visibility var(--transition-slow);
-    background: var(--color-bg-editor);
+    background: transparent;
 }
 .page.active {
     opacity: 1;
@@ -395,7 +409,7 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--color-bg-editor);
+    background: transparent;
     position: relative;
     overflow: hidden;
 }
@@ -466,17 +480,18 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    background: var(--color-bg-editor);
+    background: transparent;
 }
 .tutorial-header {
     padding: var(--space-5) 0;
     text-align: center;
-    background: var(--color-bg-sidebar);
-    border-bottom: 1px solid var(--color-border);
+    background: transparent;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 .tutorial-title {
     font-family: var(--font-display);
@@ -565,23 +580,59 @@ body.theme-dark-modern #theme-toggle .moon-icon {
 #tutorial-detail-page {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: calc(100vh - 30px);
 }
 .tutorial-detail-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     padding: 30px 50px;
     border-bottom: 2px solid var(--color-highlight);
     background: var(--color-panel);
+    position: relative;
+}
+.tutorial-detail-header .back-btn {
+    position: fixed !important;
+    top: calc(var(--space-3) + 30px + 28px) !important;
+    left: var(--space-3) !important;
+    bottom: auto !important;
+    transform: translateY(-50%) !important;
+    background: var(--color-button-bg) !important;
+    border: none !important;
+    color: var(--color-button-text) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+    z-index: 10001 !important;
+    padding: 10px 20px !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    border-radius: 12px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: auto !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    line-height: 1 !important;
+    writing-mode: horizontal-tb !important;
+    transition: all 0.2s ease !important;
+}
+.tutorial-detail-header .back-btn:hover {
+    background: var(--color-button-hover) !important;
+    transform: translateY(calc(-50% - 2px)) !important;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18) !important;
+}
+.tutorial-detail-header .back-btn:active {
+    background: var(--color-button-active) !important;
+    transform: translateY(-50%) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
 }
 .tutorial-detail-header .tutorial-title {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    margin: 0;
 }
 .tutorial-detail-header .spacer {
-    width: 150px;
+    display: none;
 }
 .tutorial-detail-content {
     flex: 1;
@@ -594,6 +645,7 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     max-width: 900px;
     width: 100%;
     animation: fadeIn 0.5s ease;
+    padding-bottom: 200px;
 }
 .lesson-title {
     font-family: var(--font-ui);
@@ -637,10 +689,14 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     font-family: var(--font-ui);
     font-size: 12px;
     font-weight: 600;
-    background-color: var(--color-highlight);
-    color: #fff;
+    background-color: transparent;
+    color: var(--color-text-secondary);
     padding: 10px 20px;
     text-transform: uppercase;
+}
+.theme-dark-modern .code-block-header,
+.theme-dark-modern .code-output-header {
+    color: var(--color-text-primary);
 }
 .code-block,
 .code-output {
@@ -664,14 +720,18 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     justify-content: space-between;
     gap: 20px;
     margin-top: 50px;
+    margin-bottom: 50px;
     padding-top: 30px;
     border-top: 2px solid var(--color-highlight);
+    padding-left: 50px;
+    padding-right: 50px;
 }
 .lesson-nav-btn {
-    flex: 1;
-    max-width: var(--size-sidebar);
+    flex: 0 0 auto;
+    width: 150px;
     padding: 10px var(--space-3);
-    font-size: 14px;
+    font-size: 24px;
+    font-weight: 600;
 }
 .lesson-nav-btn:disabled {
     opacity: 0.3;
@@ -687,28 +747,43 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     flex-direction: column;
     width: 100%;
     height: 100vh;
-    background: var(--color-bg-editor);
+    background: transparent;
 }
 .ide-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 35px;
+    height: 60px;
     padding: 0 var(--space-2);
-    background: var(--color-bg-sidebar);
-    border-bottom: 1px solid var(--color-border);
+    background: transparent;
+    border-bottom: none;
     flex-shrink: 0;
     box-sizing: border-box;
+    position: relative;
+    z-index: 1000;
+    margin-top: 10px;
 }
-.back-btn {
+.theme-dark-modern .ide-header {
+    background: transparent;
+}
+.ide-header .back-btn {
+    position: static !important;
     margin-right: auto;
+    flex-shrink: 0;
+    bottom: auto !important;
+    left: auto !important;
+    padding: 6px 12px !important;
+    font-size: 13px !important;
+    box-shadow: none !important;
 }
 .global-controls {
     display: flex;
     align-items: center;
     gap: var(--space-1);
-    height: 100%;
     margin-left: auto;
+    position: relative;
+    z-index: 1001;
+    flex-shrink: 0;
 }
 .control-btn {
     font-family: var(--font-ui);
@@ -725,6 +800,8 @@ body.theme-dark-modern #theme-toggle .moon-icon {
     align-items: center;
     justify-content: center;
     height: 28px;
+    position: relative;
+    z-index: 1;
 }
 .control-btn .icon {
     width: 18px;

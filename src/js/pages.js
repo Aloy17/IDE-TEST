@@ -65,7 +65,7 @@ function initNavigation() {
     const lessonBackBtn = document.getElementById('lesson-back-btn');
     if (lessonBackBtn) {
         lessonBackBtn.addEventListener('click', () => {
-            showPage('tutorial-page');
+            showPage('home-page');
         });
     }
     const prevLessonBtn = document.getElementById('prev-lesson-btn');

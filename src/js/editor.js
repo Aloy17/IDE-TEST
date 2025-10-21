@@ -962,7 +962,6 @@ function clearOutput() {
     outputLineCount = 1;
 }
 async function createFolder() {
-    console.log('Creating new folder with inline rename');
     const filesList = document.getElementById('files-list');
     const renameItem = document.createElement('div');
     renameItem.className = 'file-item folder editing';
