@@ -1,0 +1,24 @@
+~ Test While Loops with Variables ~
+
+out("Test 1: Simple countdown")
+line
+Let countdown = 5
+Run while(countdown > 0) {
+    out(countdown + " ")
+    countdown = countdown - 1
+}
+line
+
+out("Test 2: Sum calculation")
+line
+Let sum = 0
+Let i = 1
+Run while(i <= 10) {
+    sum = sum + i
+    i = i + 1
+}
+out("Sum: " + sum)
+line
+
+out("All tests passed!")
+line
