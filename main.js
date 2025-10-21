@@ -64,10 +64,39 @@ async function executeRID(code) {
     currentProcess = ridProcess;
     let output = '';
     let errorOutput = '';
-    let buffer = '';
+    let stdoutClosed = false;
+    let stderrClosed = false;
+    let processExited = false;
+    
+    // 30 second timeout to force-kill hung processes
+    const killTimeout = setTimeout(() => {
+      if (currentProcess && !currentProcess.killed) {
+        console.log('[FORCE KILLING HUNG PROCESS]');
+        currentProcess.kill('SIGKILL');
+        cleanup();
+        resolve({
+          success: false,
+          error: 'Process execution timed out after 30 seconds'
+        });
+      }
+    }, 30000);
+    
+    const cleanup = () => {
+      clearTimeout(killTimeout);
+      if (stdoutClosed && stderrClosed && processExited) {
+        currentProcess = null;
+      }
+    };
+    
     ridProcess.stdout.on('data', (data) => {
       output += data.toString();
     });
+    
+    ridProcess.stdout.on('close', () => {
+      stdoutClosed = true;
+      cleanup();
+    });
+    
     ridProcess.stderr.on('data', (data) => {
       const stderrData = data.toString();
       console.log('[STDERR]:', stderrData);
@@ -83,8 +112,17 @@ async function executeRID(code) {
       }
       errorOutput += stderrData;
     });
+    
+    ridProcess.stderr.on('close', () => {
+      stderrClosed = true;
+      cleanup();
+    });
+    
     ridProcess.on('close', (code) => {
-      currentProcess = null;
+      processExited = true;
+      clearTimeout(killTimeout);
+      cleanup();
+      
       if (code !== 0 && errorOutput) {
         resolve({
           success: false,
@@ -102,8 +140,11 @@ async function executeRID(code) {
         }
       }
     });
+    
     ridProcess.on('error', (err) => {
-      currentProcess = null;
+      processExited = true;
+      clearTimeout(killTimeout);
+      cleanup();
       resolve({
         success: false,
         error: `Failed to start RID backend: ${err.message}`
@@ -113,7 +154,11 @@ async function executeRID(code) {
 }
 ipcMain.on('send-input', (event, userInput) => {
   if (currentProcess && !currentProcess.killed) {
-    currentProcess.stdin.write(userInput + '\n');
+    try {
+      currentProcess.stdin.write(userInput + '\n');
+    } catch (err) {
+      console.error('[ERROR WRITING TO STDIN]:', err);
+    }
   }
 });
 ipcMain.handle('execute-rid', async (event, code) => {

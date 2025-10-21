@@ -4,20 +4,49 @@ let openFiles = new Map(); // Map of filename -> {content, savedContent}
 let activeFile = 'untitled.rid';
 let currentPath = ''; // Current folder path (empty = root)
 let expandedFolders = new Set(); // Track which folders are expanded
+let isLoadingFiles = false; // Prevent concurrent loadFiles calls
+let inputPromptQueue = []; // Queue for input prompts
+let isWaitingForInput = false; // Flag to track if currently waiting for input
+let lastLineCount = 0; // Track line count for optimization
+let lineNumberUpdateTimeout = null; // Debounce timeout
 function initEditor() {
     const editor = document.getElementById('code-editor');
     const lineNumbers = document.getElementById('line-numbers');
-    editor.addEventListener('input', updateLineNumbers);
+    editor.addEventListener('input', debouncedUpdateLineNumbers);
     editor.addEventListener('scroll', syncScroll);
     editor.addEventListener('keydown', handleTab);
     editor.addEventListener('keydown', handleAutoPair);
     updateLineNumbers();
 }
+
+function debouncedUpdateLineNumbers() {
+    // Debounce to run at most every 100ms
+    if (lineNumberUpdateTimeout) {
+        clearTimeout(lineNumberUpdateTimeout);
+    }
+    lineNumberUpdateTimeout = setTimeout(() => {
+        updateLineNumbers();
+    }, 100);
+}
+
 function updateLineNumbers() {
     const editor = document.getElementById('code-editor');
     const lineNumbers = document.getElementById('line-numbers');
     const lines = editor.value.split('\n');
-    const lineNumbersText = lines.map((_, i) => i + 1).join('\n');
+    const currentLineCount = lines.length;
+    
+    // Only update if line count changed
+    if (currentLineCount === lastLineCount) {
+        return;
+    }
+    
+    lastLineCount = currentLineCount;
+    
+    // Use textContent directly instead of creating array and joining
+    let lineNumbersText = '';
+    for (let i = 1; i <= currentLineCount; i++) {
+        lineNumbersText += i + (i < currentLineCount ? '\n' : '');
+    }
     lineNumbers.textContent = lineNumbersText;
 }
 function syncScroll() {
@@ -70,21 +99,35 @@ function handleAutoPair(e) {
     }
 }
 async function loadFiles(subPath = '', depth = 0) {
+    // Prevent concurrent loadFiles calls at root level
+    if (depth === 0) {
+        if (isLoadingFiles) {
+            console.log('loadFiles already in progress, skipping');
+            return;
+        }
+        isLoadingFiles = true;
+    }
+    
     try {
         const items = await window.electronAPI.getFiles(subPath);
         const filesList = document.getElementById('files-list');
+        
+        // Clear the list only once at the root level
         if (depth === 0) {
             filesList.innerHTML = '';
-            if (files.length === 0) {
+            if (items.length === 0) {
                 filesList.innerHTML = '<div style="padding: 8px; color: var(--color-text-secondary); font-size: 12px;">No files yet</div>';
+                isLoadingFiles = false;
                 return;
             }
         }
+        
         items.sort((a, b) => {
             if (a.isDirectory && !b.isDirectory) return -1;
             if (!a.isDirectory && b.isDirectory) return 1;
             return a.name.localeCompare(b.name);
         });
+        
         for (const item of items) {
             const fileItem = document.createElement('div');
             fileItem.className = 'file-item';
@@ -94,21 +137,26 @@ async function loadFiles(subPath = '', depth = 0) {
             fileItem.dataset.isDirectory = item.isDirectory;
             fileItem.dataset.depth = depth;
             fileItem.draggable = true;
+            
             if (item.isDirectory) {
                 fileItem.classList.add('folder');
                 const isExpanded = expandedFolders.has(item.path);
+                
                 const arrow = document.createElement('span');
                 arrow.className = 'folder-arrow';
                 arrow.textContent = isExpanded ? '▼' : '▶';
                 fileItem.appendChild(arrow);
+                
                 const icon = document.createElement('span');
                 icon.className = 'file-icon';
                 icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>`;
                 fileItem.appendChild(icon);
+                
                 const fileName = document.createElement('span');
                 fileName.className = 'file-name';
                 fileName.textContent = item.name;
                 fileItem.appendChild(fileName);
+                
                 fileItem.addEventListener('click', async (e) => {
                     e.stopPropagation();
                     if (expandedFolders.has(item.path)) {
@@ -123,20 +171,30 @@ async function loadFiles(subPath = '', depth = 0) {
                 icon.className = 'file-icon';
                 icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>`;
                 fileItem.appendChild(icon);
+                
                 const fileName = document.createElement('span');
                 fileName.className = 'file-name';
                 fileName.textContent = item.name;
                 fileItem.appendChild(fileName);
+                
                 fileItem.addEventListener('click', () => openFile(item.path));
             }
+            
             setupDragAndDrop(fileItem, item);
             filesList.appendChild(fileItem);
+            
+            // Await recursive folder loading to ensure proper order
             if (item.isDirectory && expandedFolders.has(item.path)) {
                 await loadFiles(item.path, depth + 1);
             }
         }
     } catch (err) {
         console.error('Failed to load files:', err);
+    } finally {
+        // Release the loading flag at root level
+        if (depth === 0) {
+            isLoadingFiles = false;
+        }
     }
 }
 function setupDragAndDrop(fileItem, item) {
@@ -163,7 +221,11 @@ function setupDragAndDrop(fileItem, item) {
             }
         });
         fileItem.addEventListener('dragleave', (e) => {
-            if (e.target === fileItem) {
+            // Only remove class when actually leaving the element
+            const rect = fileItem.getBoundingClientRect();
+            const x = e.clientX;
+            const y = e.clientY;
+            if (x < rect.left || x >= rect.right || y < rect.top || y >= rect.bottom) {
                 fileItem.classList.remove('drag-over');
             }
         });
@@ -171,13 +233,24 @@ function setupDragAndDrop(fileItem, item) {
             e.preventDefault();
             e.stopPropagation();
             fileItem.classList.remove('drag-over');
-            const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-            const sourcePath = data.path;
-            const targetFolderPath = item.path;
-            if (sourcePath === targetFolderPath) {
-                return;
+            
+            try {
+                const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+                const sourcePath = data.path;
+                const targetFolderPath = item.path;
+                
+                if (sourcePath === targetFolderPath) {
+                    return;
+                }
+                
+                await moveFileOrFolder(sourcePath, targetFolderPath, data.name);
+            } catch (err) {
+                console.error('Drop error:', err);
+                // Ensure dragging class is removed on error
+                document.querySelectorAll('.dragging').forEach(el => {
+                    el.classList.remove('dragging');
+                });
             }
-            await moveFileOrFolder(sourcePath, targetFolderPath, data.name);
         });
     }
 }
@@ -228,17 +301,33 @@ async function openFile(filename) {
 }
 function switchToFile(filename) {
     if (!openFiles.has(filename)) return;
+    
+    const editor = document.getElementById('code-editor');
+    
+    // Always save current editor content before switching
     if (activeFile && openFiles.has(activeFile)) {
-        const editor = document.getElementById('code-editor');
-        openFiles.get(activeFile).content = editor.value;
+        const currentFileData = openFiles.get(activeFile);
+        currentFileData.content = editor.value;
+        // Sync currentContent with actual content
+        if (activeFile === currentFile) {
+            currentContent = currentFileData.savedContent;
+        }
     }
+    
+    // Update active file references
     activeFile = filename;
     currentFile = filename;
+    
+    // Load the new file's content
     const fileData = openFiles.get(filename);
     currentContent = fileData.savedContent;
-    const editor = document.getElementById('code-editor');
+    
+    // Set editor value and update line numbers
     editor.value = fileData.content;
+    
+    // Call updateLineNumbers after setting value to ensure sync
     updateLineNumbers();
+    
     updateActiveFile(filename);
     setActiveTab(filename);
 }
@@ -348,17 +437,34 @@ function closeFileTab(filename) {
         console.log('Cannot close - only one file open');
         return;
     }
+    
+    // Remove from openFiles Map
     openFiles.delete(filename);
     console.log('Open files after delete:', Array.from(openFiles.keys()));
+    
     const fileTabs = document.getElementById('file-tabs');
     const tab = fileTabs.querySelector(`[data-file="${filename}"]`);
+    
     if (tab) {
-        console.log('Removing tab element');
-        tab.remove();
+        console.log('Removing tab element with cleanup');
+        
+        // Remove all event listeners by cloning and replacing
+        const tabClone = tab.cloneNode(true);
+        tab.parentNode.replaceChild(tabClone, tab);
+        tabClone.remove();
+        
+        // Clear the reference
+        tab.dataset.file = null;
     } else {
         console.log('Tab element not found!');
     }
+    
+    // Clear editor content if this was the active file
     if (activeFile === filename) {
+        const editor = document.getElementById('editor');
+        editor.value = '';
+        activeFile = null;
+        
         const remainingFile = Array.from(openFiles.keys())[0];
         console.log('Switching to remaining file:', remainingFile);
         if (remainingFile) {
@@ -509,6 +615,8 @@ async function runCode() {
             if (lines.length === 0 || lines.every(l => !l.trim())) {
                 updateOutputPanel('success', '> Program executed successfully (no output)');
             }
+            // Clear any selection on successful run
+            clearErrorHighlight();
         } else {
             updateOutputPanel('error', `> ${result.error}`);
             highlightErrorLine(result.error);
@@ -520,15 +628,29 @@ async function runCode() {
 function highlightErrorLine(errorMessage) {
     const lineMatch = errorMessage.match(/Line (\d+):/);
     if (lineMatch) {
-        const lineNumber = parseInt(lineMatch[1]);
+        const lineNumber = parseInt(lineMatch[1]); // 1-based line number from error
         const editor = document.getElementById('code-editor');
+        
+        // Use consistent line splitting method
         const lines = editor.value.split('\n');
+        
+        // Check bounds correctly (lineNumber is 1-based, array is 0-based)
         if (lineNumber > 0 && lineNumber <= lines.length) {
+            // Get the error line (convert 1-based to 0-based index)
             const errorLine = lines[lineNumber - 1];
-            const start = lines.slice(0, lineNumber - 1).join('\n').length + (lineNumber > 1 ? 1 : 0);
+            
+            // Calculate character position correctly
+            // Sum all previous lines' lengths plus newline characters
+            let start = 0;
+            for (let i = 0; i < lineNumber - 1; i++) {
+                start += lines[i].length + 1; // +1 for \n
+            }
             const end = start + errorLine.length;
+            
             editor.focus();
             editor.setSelectionRange(start, end);
+            
+            // Scroll to show the error line
             editor.scrollTop = Math.max(0, (lineNumber - 5) * 20);
             const lineNumbers = document.getElementById('line-numbers');
             lineNumbers.scrollTop = editor.scrollTop;
@@ -537,6 +659,7 @@ function highlightErrorLine(errorMessage) {
 }
 function clearErrorHighlight() {
     const editor = document.getElementById('code-editor');
+    // Clear selection by setting cursor to end
     if (editor.selectionStart !== editor.selectionEnd) {
         editor.setSelectionRange(editor.value.length, editor.value.length);
     }
@@ -551,34 +674,70 @@ function updateOutputPanel(type, message) {
 }
 function initInputHandler() {
     window.electronAPI.onInputPrompt((prompt) => {
-        const outputContent = document.getElementById('output-content');
-        const promptLine = document.createElement('div');
-        promptLine.className = 'output-line input-prompt';
-        promptLine.textContent = prompt;
-        outputContent.appendChild(promptLine);
-        const inputContainer = document.createElement('div');
-        inputContainer.className = 'output-line input-container';
-        const inputField = document.createElement('input');
-        inputField.type = 'text';
-        inputField.className = 'input-field';
-        inputField.placeholder = 'Type your input and press Enter...';
-        inputField.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const userInput = inputField.value;
-                const inputEcho = document.createElement('div');
-                inputEcho.className = 'output-line input-echo';
-                inputEcho.textContent = userInput;
-                outputContent.appendChild(inputEcho);
-                inputContainer.remove();
-                window.electronAPI.sendInput(userInput);
-                outputContent.scrollTop = outputContent.scrollHeight;
-            }
-        });
-        inputContainer.appendChild(inputField);
-        outputContent.appendChild(inputContainer);
-        inputField.focus();
-        outputContent.scrollTop = outputContent.scrollHeight;
+        // Add prompt to queue
+        inputPromptQueue.push(prompt);
+        
+        // Process queue if not already waiting for input
+        if (!isWaitingForInput) {
+            processNextInputPrompt();
+        }
     });
+}
+
+function processNextInputPrompt() {
+    if (inputPromptQueue.length === 0) {
+        isWaitingForInput = false;
+        return;
+    }
+    
+    isWaitingForInput = true;
+    const prompt = inputPromptQueue.shift();
+    const outputContent = document.getElementById('output-content');
+    
+    // Clear any old input containers before adding new one
+    const oldContainers = outputContent.querySelectorAll('.input-container');
+    oldContainers.forEach(container => container.remove());
+    
+    const promptLine = document.createElement('div');
+    promptLine.className = 'output-line input-prompt';
+    promptLine.textContent = prompt;
+    outputContent.appendChild(promptLine);
+    
+    const inputContainer = document.createElement('div');
+    inputContainer.className = 'output-line input-container';
+    
+    const inputField = document.createElement('input');
+    inputField.type = 'text';
+    inputField.className = 'input-field';
+    inputField.placeholder = 'Type your input and press Enter...';
+    
+    inputField.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !inputField.disabled) {
+            // Disable field immediately to prevent multiple submissions
+            inputField.disabled = true;
+            
+            const userInput = inputField.value;
+            const inputEcho = document.createElement('div');
+            inputEcho.className = 'output-line input-echo';
+            inputEcho.textContent = userInput;
+            outputContent.appendChild(inputEcho);
+            
+            inputContainer.remove();
+            window.electronAPI.sendInput(userInput);
+            
+            outputContent.scrollTop = outputContent.scrollHeight;
+            
+            // Process next prompt in queue after a short delay
+            setTimeout(() => {
+                processNextInputPrompt();
+            }, 100);
+        }
+    });
+    
+    inputContainer.appendChild(inputField);
+    outputContent.appendChild(inputContainer);
+    inputField.focus();
+    outputContent.scrollTop = outputContent.scrollHeight;
 }
 function initResizers() {
     const sidebarResizer = document.getElementById('sidebar-resizer');
@@ -765,8 +924,34 @@ document.addEventListener('DOMContentLoaded', () => {
             clearBtn.addEventListener('click', clearOutput);
         }
         setupFilesListDropZone();
+        setupGlobalDragCleanup();
     }, 100);
 });
+
+// Global drag cleanup to prevent state pollution
+function setupGlobalDragCleanup() {
+    document.addEventListener('dragend', () => {
+        // Clean up all drag-related classes
+        document.querySelectorAll('.drag-over').forEach(el => {
+            el.classList.remove('drag-over');
+        });
+        document.querySelectorAll('.dragging').forEach(el => {
+            el.classList.remove('dragging');
+        });
+        // Reset filesList background
+        const filesList = document.getElementById('files-list');
+        if (filesList) {
+            filesList.style.backgroundColor = '';
+        }
+    });
+    
+    // Additional cleanup on drag errors
+    document.addEventListener('drop', () => {
+        document.querySelectorAll('.drag-over').forEach(el => {
+            el.classList.remove('drag-over');
+        });
+    });
+}
 function setupFilesListDropZone() {
     const filesList = document.getElementById('files-list');
     filesList.addEventListener('dragover', (e) => {
