@@ -34,9 +34,6 @@ function initTheme() {
         const animatedBg = document.getElementById('animated-background');
         if (animatedBg) {
             animatedBg.classList.add('loaded');
-            console.log('✓ Background animation loaded');
-        } else {
-            console.error('✗ Animated background element not found');
         }
     }, 100);
 }
@@ -66,7 +63,6 @@ function updateThemeIcon() {
     }
 }
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('RID IDE Initialized');
     initTheme();
     const themeToggle = document.getElementById('theme-toggle');
     if (themeToggle) {
@@ -75,9 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         initIDE();
     }, 100);
-});
-window.addEventListener('error', (e) => {
-    console.error('Application error:', e.error);
 });
 document.addEventListener('dragover', (e) => e.preventDefault());
 document.addEventListener('drop', (e) => e.preventDefault());

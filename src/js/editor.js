@@ -104,7 +104,6 @@ async function loadFiles(subPath = '', depth = 0) {
     // Prevent concurrent loadFiles calls at root level
     if (depth === 0) {
         if (isLoadingFiles) {
-            console.log('loadFiles already in progress, skipping');
             return;
         }
         isLoadingFiles = true;
@@ -271,16 +270,12 @@ async function moveFileOrFolder(sourcePath, targetFolderPath, itemName) {
 }
 async function openFile(filename) {
     try {
-        console.log('Opening file:', filename);
-        console.log('Currently open files:', Array.from(openFiles.keys()));
         if (openFiles.has(filename)) {
-            console.log('File already open, switching to it');
             switchToFile(filename);
             return;
         }
         const result = await window.electronAPI.loadFile(filename);
         if (result.success) {
-            console.log('File loaded successfully:', filename);
             openFiles.set(filename, {
                 content: result.content,
                 savedContent: result.content
@@ -344,15 +339,12 @@ function updateActiveFile(filename) {
     });
 }
 function addFileTab(filename) {
-    console.log('Adding file tab:', filename);
     const fileTabs = document.getElementById('file-tabs');
     const existingTab = fileTabs.querySelector(`[data-file="${filename}"]`);
     if (existingTab) {
-        console.log('Tab already exists, setting active');
         setActiveTab(filename);
         return;
     }
-    console.log('Creating new tab');
     const tab = document.createElement('div');
     tab.className = 'file-tab active';
     tab.dataset.file = filename;
@@ -363,20 +355,17 @@ function addFileTab(filename) {
     closeBtn.className = 'tab-close';
     closeBtn.textContent = '×';
     closeBtn.addEventListener('click', (e) => {
-        console.log('Close button clicked for:', filename);
         e.stopPropagation();
         closeFileTab(filename);
     });
     tab.appendChild(tabName);
     tab.appendChild(closeBtn);
     tab.addEventListener('click', () => {
-        console.log('Tab clicked:', filename);
         switchToFile(filename);
     });
     setupTabDragAndDrop(tab);
     fileTabs.querySelectorAll('.file-tab').forEach(t => t.classList.remove('active'));
     fileTabs.appendChild(tab);
-    console.log('Tab added successfully');
 }
 function setupTabDragAndDrop(tab) {
     tab.draggable = true;
@@ -473,23 +462,17 @@ function setActiveTab(filename) {
     });
 }
 function closeFileTab(filename) {
-    console.log('Closing file tab:', filename);
-    console.log('Open files before close:', Array.from(openFiles.keys()));
     if (openFiles.size <= 1) {
-        console.log('Cannot close - only one file open');
         return;
     }
     
     // Remove from openFiles Map
     openFiles.delete(filename);
-    console.log('Open files after delete:', Array.from(openFiles.keys()));
     
     const fileTabs = document.getElementById('file-tabs');
     const tab = fileTabs.querySelector(`[data-file="${filename}"]`);
     
     if (tab) {
-        console.log('Removing tab element with cleanup');
-        
         // Remove all event listeners by cloning and replacing
         const tabClone = tab.cloneNode(true);
         tab.parentNode.replaceChild(tabClone, tab);
@@ -497,8 +480,6 @@ function closeFileTab(filename) {
         
         // Clear the reference
         tab.dataset.file = null;
-    } else {
-        console.log('Tab element not found!');
     }
     
     // Clear editor content if this was the active file
@@ -508,14 +489,12 @@ function closeFileTab(filename) {
         activeFile = null;
         
         const remainingFile = Array.from(openFiles.keys())[0];
-        console.log('Switching to remaining file:', remainingFile);
         if (remainingFile) {
             switchToFile(remainingFile);
         }
     }
 }
 function newFile() {
-    console.log('Creating new file with inline rename');
     const filesList = document.getElementById('files-list');
     const renameItem = document.createElement('div');
     renameItem.className = 'file-item editing';
