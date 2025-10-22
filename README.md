@@ -44,8 +44,27 @@ Learn more about the RID language at:  [RID Programming Language Repository](htt
 ---
 
 ## Installation
- 
-- Currently undergoing maintenace, will be shared soon in [RIDLEY Releases Page](https://github.com/Aloy17/RIDLEY/releases):
+
+ ### System Requirements
+- **OS:** Windows 10 or higher  
+- **RAM:** 4 GB minimum (8 GB recommended)  
+- **Disk Space:** 200 MB free  
+- **Display:** 1280×720 minimum resolution  
+
+### Download
+Get the latest release from the [RIDLEY Releases Page](https://github.com/Aloy17/RIDLEY/releases):
+
+---
+
+## Installation Steps
+
+**Installer Version**
+1. Download `RID IDE-1.0.0 Setup.exe` from assets
+2. Run the installer and follow the prompts  
+3. Launch RIDLEY IDE from the Start Menu  
+
+**Portable Version**
+- Download & Run `RID IDE-1.0.0 Setup.exe`  
 
 ---
 
