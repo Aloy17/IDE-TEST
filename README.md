@@ -249,8 +249,4 @@ See [`LICENSE`](LICENSE) for full details.
 
 Ryane Bose: Creator of the RID Programming Language and RIDLEY IDE.
 
----
 
-
-Would you like me to add a **“Contributing”** section (with basic setup steps for building RIDLEY from source via `npm install && npm run start`) before finalizing?
-```
