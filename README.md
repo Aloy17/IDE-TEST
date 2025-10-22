@@ -26,8 +26,7 @@
 It features a clean UI, built-in tutorials, real-time execution, and a fully integrated RID transpiler backend.  
 RIDLEY requires **no setup or dependencies** — download and run immediately.
 
-Learn more about the RID language at:  
-👉 [RID Programming Language Repository](https://github.com/Aloy17/RID-language)
+Learn more about the RID language at:  [RID Programming Language Repository](https://github.com/Aloy17/RID-language)
 
 ---
 
