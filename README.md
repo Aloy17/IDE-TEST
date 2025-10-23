@@ -14,6 +14,16 @@
 
 ---
 
+## IDE Preview
+
+<div align="center">
+ <img width="80%" alt="CODE_EDITOR_LIGHT" src="https://github.com/user-attachments/assets/b8730307-a3a5-4994-8ee7-3b14079a4d50" />
+  <br>
+  <sub><i>RIDLEY Code Editor — Light Theme</i></sub>
+</div>
+
+---
+
 ## Table of Contents
 
 1. [Introduction](#introduction)
@@ -28,31 +38,32 @@
 10. [Troubleshooting](#troubleshooting)
 11. [Technical Architecture](#technical-architecture)
 12. [Development](#development)
+13. [Additional Resources](#additional-resources)
 
 ---
 
 ## Introduction
 
-**RIDLEY IDE** is a standalone desktop integrated development environment specifically designed for the RID Programming Language. It provides a complete learning and development environment with zero external dependencies, built-in tutorials, and real-time code execution.
+**RIDLEY IDE** is a standalone desktop integrated development environment specifically designed for the **RID Programming Language**. It provides a complete learning and development setup with zero external dependencies, built-in tutorials, and real-time code execution.
 
 ### Key Features
 
-- **Zero Installation**: Completely self-contained with no external dependencies
-- **Integrated RID Engine**: Real-time code execution with immediate feedback
-- **Modern Editor**: Syntax highlighting, line numbering, and intelligent code formatting
-- **Interactive Tutorials**: Six comprehensive lessons covering all language features
-- **Dual Theme Support**: Light (Quiet Light) and Dark (Dark Modern) themes
-- **Project Management**: Intuitive file and folder organization
-- **Cross-Platform**: Built with Electron for Windows, macOS, and Linux
+* **Zero Installation** – Completely self-contained
+* **Integrated RID Engine** – Real-time code execution
+* **Modern Editor** – Syntax highlighting, line numbering, intelligent formatting
+* **Interactive Tutorials** – Six guided lessons covering all language features
+* **Dual Theme Support** – Light (Quiet Light) & Dark (Dark Modern)
+* **Project Management** – Intuitive file/folder organization
+* **Cross-Platform Design** – Built with Electron for Windows, macOS, and Linux
 
 ### System Requirements
 
-- **Operating System**: Windows 10 or higher
-- **Memory**: 4 GB RAM minimum (8 GB recommended)
-- **Storage**: 200 MB free disk space
-- **Display**: Minimum resolution of 1280x720 pixels
+* **OS**: Windows 10 or higher
+* **Memory**: 4 GB minimum (8 GB recommended)
+* **Storage**: 200 MB free space
+* **Display**: 1280×720 minimum
 
-**Note**: Currently available for Windows only. macOS and Linux support coming soon.
+> **Note:** macOS and Linux builds are planned for future releases.
 
 ---
 
@@ -64,19 +75,18 @@ Get the latest release from the [RIDLEY Releases Page](https://github.com/Aloy17
 
 ### Windows Installation
 
-1. Download `RID IDE-1.0.0 Setup.exe` from the releases page
-2. Run the installer and follow the installation wizard
-3. Launch RIDLEY IDE from the Start Menu or desktop shortcut
+1. Download `RID IDE-1.0.0 Setup.exe`
+2. Run the installer and follow the setup wizard
+3. Launch **RIDLEY IDE** from Start Menu or desktop
 
 ### Portable Version
 
-1. Download the portable executable from the releases page
-2. Place it in your desired directory
-3. Double-click to launch (no installation required)
+1. Download the portable executable
+2. Place it anywhere
+3. Double-click to run
 
-### Default Project Location
+**Default Project Directory:**
 
-Projects are stored at:
 ```
 Windows: %APPDATA%/RIDLEY IDE/projects/
 ```
@@ -85,16 +95,20 @@ Windows: %APPDATA%/RIDLEY IDE/projects/
 
 ## Getting Started
 
+<div align="center">
+ <img width="80%" alt="HOMEPAGE_LIGHT" src="https://github.com/user-attachments/assets/8f578a6e-865a-4d84-be05-9f32535b717b" />
+  <br>
+  <sub><i>RIDLEY Home Screen — Light Theme</i></sub>
+</div>
+
 ### First Launch
 
-Upon launching RIDLEY IDE, you will see the home screen with two options:
+You’ll be greeted with:
 
-1. **Start Learning** - Opens the interactive tutorial system
-2. **Open Editor** - Launches the main IDE interface
+* **Start Learning** — Opens the interactive tutorial suite
+* **Open Editor** — Launches the full IDE workspace
 
 ### Your First Program
-
-Create a new file and write:
 
 ```rid
 ~ Hello World Program ~
@@ -102,217 +116,87 @@ out("Hello, RIDLEY!")
 line
 ```
 
-Press **F5** or click the **Run** button to execute. You should see the output in the panel below.
-
-### Understanding the Output
-
-- `out()` - Prints text without a newline
-- `line` - Prints a newline character
-- `~` comments `~` - Comments are enclosed in tildes
+Press **F5** or click **Run** — output appears instantly.
 
 ---
 
 ## User Interface
 
+<div align="center">
+<img width="48%" alt="CODE_EDITOR_LIGHT" src="https://github.com/user-attachments/assets/6a489f6a-44b9-44f4-91d0-8fc4e07efa56" />
+<img width="48%" alt="CODE_EDITOR_DARK" src="https://github.com/user-attachments/assets/e1d9dd71-6784-4aa0-bc1e-84d3635afa9f" />
+<br>
+<sub><i>RIDLEY Code Editor — Light and Dark Themes</i></sub>
+</div>
+
 ### Main Components
 
-#### 1. Title Bar
-- Custom window controls (minimize, maximize, close)
-- Frameless design for a modern appearance
-- Drag region for window movement
+* **Title Bar:** Frameless window with drag and control buttons
+* **Toolbar:** Quick Run | Save | Delete | Back actions
+* **Sidebar:** File/folder tree with drag & drop support
+* **Editor Panel:** Syntax-highlighted code area with tabs and line numbers
+* **Output Panel:** Real-time output, color-coded by message type
+* **Theme Toggle:** Floating button to switch between themes
 
-#### 2. Toolbar
-Located at the top of the IDE, provides quick access to:
-- **Back Button** - Return to home screen
-- **Run Button** - Execute current code (F5)
-- **Delete Button** - Remove current file
-- **Save Button** - Save current file (Ctrl+S)
+**Resizable Panels:**
 
-#### 3. Sidebar (Files Panel)
-- Hierarchical file and folder structure
-- Create new files and folders with action buttons
-- Drag-and-drop support for reorganization
-- Click to open files, click folders to expand/collapse
-
-#### 4. Editor Panel
-- **Tab Bar** - Manage multiple open files
-- **Line Numbers** - Synchronized with editor content
-- **Code Editor** - Main editing area with syntax awareness
-- Auto-pairing for brackets, quotes, and parentheses
-- Smart indentation on Enter key
-
-#### 5. Output Panel
-- Real-time execution output
-- Interactive input prompts
-- Color-coded messages:
-  - Green: Successful output
-  - Red: Error messages
-  - Blue: Information messages
-  - Purple: Input prompts
-
-#### 6. Theme Toggle
-- Floating button (top-right in most views, bottom-right in IDE)
-- Switches between Quiet Light and Dark Modern themes
-- Theme preference is persisted across sessions
-
-### Resizable Panels
-
-- **Sidebar Width**: Drag the vertical border between sidebar and main area
-- **Output Height**: Drag the horizontal border between editor and output
+* Adjust sidebar width or output height via drag handles.
 
 ---
 
 ## RID Language Reference
 
-### Comments
+RID is designed for clarity and readability. Below are core syntax highlights.
 
-Comments are enclosed in tildes and can span multiple lines:
+### Comments
 
 ```rid
 ~ This is a single-line comment ~
 
-~ 
-This is a
-multi-line comment
+~
+This is
+a multi-line comment
 ~
 ```
 
 ### Variables
 
-Declare variables using the `Let` keyword:
-
 ```rid
 Let name = "Alice"
 Let age = 25
-Let height = 5.7
 Let isStudent = True
-```
-
-**Supported Types**:
-- **String**: Text enclosed in double quotes
-- **Number**: Integers (42, -10)
-- **Decimal**: Floating-point numbers (3.14, -0.5)
-- **Boolean**: True or False
-
-**Variable Reassignment**:
-
-```rid
-Let count = 10
-count = count + 5
-count = 20
 ```
 
 ### Type Conversion
 
-Convert between types using conversion functions:
-
 ```rid
-Let age_string = "25"
-Let age_number = num(age_string)      ~ String to integer ~
-
-Let pi_string = "3.14159"
-Let pi_decimal = dec(pi_string)       ~ String to decimal ~
-
-Let value = 42
-Let value_string = word(value)        ~ Number to string ~
-
-Let flag = bool(1)                     ~ Number to boolean ~
+Let n = num("25")
+Let s = word(42)
+Let f = dec("3.14")
+Let b = bool(1)
 ```
-
-### Operators
-
-**Arithmetic**:
-- `+` Addition
-- `-` Subtraction
-- `*` Multiplication
-- `/` Division
-- `%` Modulo
-
-**Comparison**:
-- `==` Equal to
-- `!=` Not equal to
-- `<` Less than
-- `>` Greater than
-- `<=` Less than or equal to
-- `>=` Greater than or equal to
-
-### Output
-
-Print to the output panel:
-
-```rid
-out("Hello World")           ~ Print without newline ~
-line                         ~ Print newline ~
-out("Value: " + word(42))    ~ Concatenation ~
-```
-
-### Input
-
-Read user input:
-
-```rid
-Let name = in("Enter your name: ")
-Let age = num(in("Enter your age: "))
-```
-
-The IDE displays the prompt in the output panel and waits for user input.
 
 ### Conditionals
 
-Make decisions using `agar` (if), `ya_fir` (elif), and `warna` (else):
-
 ```rid
-Let score = 85
-
-agar(score >= 90) {
-    out("Grade: A")
-    line
-}
-ya_fir(score >= 80) {
-    out("Grade: B")
-    line
-}
-ya_fir(score >= 70) {
-    out("Grade: C")
-    line
+agar(x > 0) {
+    out("Positive")
 }
 warna {
-    out("Grade: F")
-    line
+    out("Non-positive")
 }
 ```
 
 ### Loops
 
-**Fixed-Count Loop**:
-
 ```rid
-Let counter = 1
 Run(5) {
-    out("Count: " + word(counter))
+    out("Iteration")
     line
-    counter = counter + 1
 }
-```
-
-**While Loop**:
-
-```rid
-Let number = 5
-Let factorial = 1
-
-Run while(number > 1) {
-    factorial = factorial * number
-    number = number - 1
-}
-
-out("Result: " + word(factorial))
-line
 ```
 
 ### Functions
-
-Define reusable code blocks:
 
 ```rid
 func greet(name) {
@@ -320,31 +204,10 @@ func greet(name) {
     line
 }
 
-greet("Alice")
-greet("Bob")
+greet("Ryane")
 ```
 
-**Functions with Return Values**:
-
-```rid
-func add(x, y) {
-    give x + y
-}
-
-func multiply(x, y) {
-    give x * y
-}
-
-Let sum = add(10, 5)
-Let product = multiply(4, 7)
-
-out("Sum: " + word(sum))
-line
-out("Product: " + word(product))
-line
-```
-
-**Recursive Functions**:
+### Recursive Example
 
 ```rid
 func factorial(n) {
@@ -355,10 +218,6 @@ func factorial(n) {
         give n * factorial(n - 1)
     }
 }
-
-Let result = factorial(5)
-out("5! = " + word(result))
-line
 ```
 
 ---
@@ -367,273 +226,100 @@ line
 
 ### Smart Code Editing
 
-**Auto-Pairing**:
-- Typing `(` automatically adds `)`
-- Typing `{` automatically adds `}`
-- Typing `"` automatically adds closing `"`
-
-**Smart Indentation**:
-- Press Enter between braces to auto-indent
-- Maintains current indentation level
-- Tab key inserts 2 spaces
-
-**Line Numbers**:
-- Automatically updated as you type
-- Synchronized scrolling with editor
+* Auto-pairing for `()`, `{}`, and quotes
+* Intelligent indentation
+* Real-time error highlighting
 
 ### Tab Management
 
-**Opening Files**:
-- Click files in the sidebar to open them
-- Files open in new tabs
-- Previously opened files are remembered
-
-**Tab Operations**:
-- Click tab to switch files
-- Click X to close tab
-- Drag tabs to reorder them
-- Active tab highlighted with accent color
-
-**Unsaved Changes**:
-- Changes are tracked per file
-- Save individual files with Ctrl+S
+* Open multiple files as tabs
+* Drag to reorder
+* Active tab highlight
 
 ### Code Execution
 
-**Running Code**:
-1. Click the Run button or press F5
-2. Output appears in the bottom panel
-3. Errors are highlighted in red
-4. Click error messages to jump to error line
+* Press **F5** or click **Run**
+* Output streamed live below
+* Error lines auto-highlighted
 
-**Interactive Input**:
-- When code requires input, a prompt appears
-- Type response and press Enter
-- Input is echoed in the output panel
+### Output Panel
 
-**Output Management**:
-- Maximum 1000 lines retained
-- Clear output with the clear button
-- Color-coded message types
+* **Green:** Success
+* **Red:** Errors
+* **Blue:** Info
+* **Purple:** Input prompts
 
 ### Error Handling
 
-When errors occur:
-1. Error message displays in output panel
-2. Error line is automatically selected in editor
-3. Editor scrolls to show the error
-4. Line number is included in error message
-
-Common error types:
-- **Syntax Error**: Invalid RID syntax
-- **Name Error**: Undefined variable or function
-- **Type Error**: Invalid type operation
-- **Runtime Error**: Division by zero, recursion limit, etc.
+Automatic navigation to faulty lines with detailed messages.
 
 ---
 
 ## File Management
 
-### Creating Files
+* **New File:** `Ctrl + N` or sidebar "+"
+* **Save File:** `Ctrl + S`
+* **Delete:** Toolbar Delete button
+* **Drag & Drop:** Move files into folders
+* **Tabs:** Auto-sync with opened files
 
-**Method 1**: Click the plus icon in the sidebar header
-**Method 2**: Use Ctrl+N
-
-- Enter filename (`.rid` extension added automatically)
-- Press Enter to confirm
-- Press Escape to cancel
-- Invalid characters are rejected
-
-### Creating Folders
-
-1. Click the folder icon in sidebar header
-2. Enter folder name
-3. Press Enter to confirm
-4. Folders appear at the top of file list
-
-### Opening Files
-
-- Click any file in the sidebar
-- File opens in a new tab
-- Content loads into editor
-- Previous content is auto-saved
-
-### Saving Files
-
-**New Files**:
-- Click Save or press Ctrl+S
-- Choose location and filename
-- File is added to project directory
-
-**Existing Files**:
-- Click Save or press Ctrl+S
-- File is saved in place
-- No dialog appears
-
-### Deleting Files
-
-1. Open the file to delete
-2. Click Delete button in toolbar
-3. Confirm deletion
-4. File is permanently removed
-
-### Drag and Drop
-
-**Files**:
-- Drag files to move into folders
-- Drag files to root to move out of folders
-- Visual feedback during drag operation
-
-**Folders**:
-- Drag files into folders
-- Cannot drag folders (coming soon)
-
-**Tabs**:
-- Drag tabs to reorder
-- Drop indicator shows insertion point
-
-### File Organization
-
-- Folders displayed before files
-- Items sorted alphabetically
-- Expand/collapse folders with click
-- Expanded state remembered
+```
+📁 Projects
+ ├── Lesson1.rid
+ ├── Lesson2.rid
+ └── MyApp/
+      ├── main.rid
+      └── data.rid
+```
 
 ---
 
 ## Keyboard Shortcuts
 
-### General
-
-| Action | Shortcut |
-|--------|----------|
-| Run Code | F5 |
-| Save File | Ctrl+S |
-| New File | Ctrl+N |
-
-### Editor
-
-| Action | Shortcut |
-|--------|----------|
-| Indent | Tab |
-| Auto-complete Braces | { then Enter |
-| Close Tab | Click X on tab |
-
-### Navigation
-
-| Action | Method |
-|--------|--------|
-| Switch Tabs | Click tab |
-| Jump to Error | Click error in output |
-| Scroll Editor | Mouse wheel or scrollbar |
+| Action        | Shortcut  |
+| ------------- | --------- |
+| Run Code      | F5        |
+| Save File     | Ctrl + S  |
+| New File      | Ctrl + N  |
+| Close Tab     | Click X   |
+| Navigate Tabs | Click tab |
+| Indent        | Tab       |
 
 ---
 
 ## Interactive Tutorials
 
-RIDLEY includes six comprehensive tutorials covering all RID features.
+<div align="center">
+<img width="45%" alt="TUTORIALS_LIGHT" src="https://github.com/user-attachments/assets/d9a70f91-e881-49e6-ab7d-2d1e7acb2a12" />
+<img width="45%" alt="TUTORIALCARD_LIGHT" src="https://github.com/user-attachments/assets/b095d0f5-84b2-40da-b5ff-93e6b50b13ce" />
+<br>
+<sub><i>Interactive Tutorials — Overview and Card Sample</i></sub>
+</div>
 
-### Tutorial Structure
+### Topics
 
-Each lesson includes:
-- **Lesson Explanation**: Concepts and syntax
-- **Example Code**: Practical demonstrations
-- **Expected Output**: What to expect when running
-- **Navigation**: Previous and Next buttons
+1. Getting Started
+2. Variables & Types
+3. Conditionals
+4. Loops
+5. Functions
+6. Complete Projects
 
-### Tutorial Topics
-
-1. **Getting Started**
-   - Output with `out()` function
-   - Comments and basic syntax
-   - First program execution
-
-2. **Variables & Types**
-   - Variable declaration with `Let`
-   - Data types: strings, numbers, booleans
-   - Variable reassignment
-
-3. **Conditionals**
-   - Decision making with `agar`, `ya_fir`, `warna`
-   - Comparison operators
-   - Building conditional logic
-
-4. **Loops**
-   - Fixed-count loops with `Run(n)`
-   - Conditional loops with `Run while()`
-   - Loop control and iteration
-
-5. **Functions**
-   - Function definition with `func`
-   - Parameters and arguments
-   - Return values with `give`
-
-6. **Complete Projects**
-   - Number guessing game
-   - Combining all concepts
-   - Interactive programs
-
-### Accessing Tutorials
-
-1. Click "Start Learning" from home screen
-2. Select any tutorial card
-3. Read explanation and code
-4. Use navigation buttons to move between lessons
-5. Return to tutorial list or home anytime
+Each includes explanations, examples, and exercises.
 
 ---
 
 ## Troubleshooting
 
-### Common Issues
+| Issue                  | Possible Fix                         |
+| ---------------------- | ------------------------------------ |
+| **Code doesn’t run**   | Check syntax and matching braces     |
+| **File won’t save**    | Check permissions and valid filename |
+| **Output missing**     | Ensure code calls `out()` or `line`  |
+| **Input prompt stuck** | Press Enter after typing             |
 
-**Code Doesn't Run**
-
-- Check for syntax errors in output panel
-- Ensure all brackets and quotes are closed
-- Verify variable names are defined before use
-
-**File Won't Save**
-
-- Check disk space
-- Verify write permissions
-- Ensure filename contains no invalid characters
-
-**Output Not Appearing**
-
-- Check if code uses `out()` function
-- Verify code execution completed (no infinite loops)
-- Clear output panel and run again
-
-**Input Prompt Not Working**
-
-- Ensure you press Enter after typing
-- Check that `in()` function is used correctly
-- Verify prompt message is displayed
-
-### Error Messages
-
-**"Variable 'x' is not defined"**
-
-- Declare variable with `Let x = value` before use
-- Check spelling and capitalization
-
-**"Expected ')' to close function"**
-
-- Count opening and closing parentheses
-- Ensure proper syntax in function calls
-
-**"Line X: Syntax Error"**
-
-- Click error to jump to problematic line
-- Review syntax rules for that statement type
-
-### Performance Tips
-
-- Close unused tabs to free memory
-- Clear output panel periodically
-- Limit recursive function depth
-- Break large programs into functions
+**Performance Tips:**
+Close unused tabs, clear output, and split large code into functions.
 
 ---
 
@@ -641,107 +327,55 @@ Each lesson includes:
 
 ### Overview
 
-RIDLEY IDE is built using:
-- **Electron**: Cross-platform desktop framework
-- **Python**: RID language transpiler and execution engine
-- **HTML/CSS/JavaScript**: User interface and interaction
+RIDLEY is built using a **Python backend** (for RID execution) and **Electron frontend** (for the UI).
 
-### Frontend (Renderer Process)
+### Frontend (Renderer)
 
-**Technologies**:
-- Vanilla JavaScript (no frameworks)
-- CSS3 with custom properties (variables)
-- HTML5 semantic markup
-
-**Key Components**:
-- Multi-page architecture (Home, Tutorials, IDE)
-- Real-time editor with line numbers
-- Tab management system
-- Drag-and-drop file operations
-- Theme system with persistence
+* HTML, CSS, and Vanilla JS
+* Multi-page (Home, Tutorials, IDE)
+* Theme persistence and animations
 
 ### Backend (Python)
 
-**RID Transpiler**:
-- `lexer.py`: Tokenization of RID source code
-- `parser.py`: Syntax parsing and Python code generation
-- `main.py`: Execution coordinator
+* `lexer.py` → Tokenizer
+* `parser.py` → Syntax analyzer
+* `rid_backend.py` → Core execution
 
-**Execution Flow**:
-1. RID code sent from frontend via IPC
-2. Lexer tokenizes source code
-3. Parser generates Python AST
-4. Python code executed in isolated environment
-5. Output streamed back to frontend
-6. Interactive input handled bidirectionally
+**Execution Flow:**
+
+```
+Frontend → IPC → Python Transpiler → Execute → Stream Output → Frontend
+```
 
 ### Electron Main Process
 
-**Responsibilities**:
-- Window management and lifecycle
-- Python subprocess management
-- IPC communication bridge
-- File system operations
-- Project directory initialization
+* Window management
+* Subprocess control
+* Secure IPC bridge
 
-**Security**:
-- Context isolation enabled
-- Node integration disabled in renderer
-- Preload script exposes safe APIs only
+**Security:**
 
-### Inter-Process Communication
-
-**Frontend to Backend**:
-- Code execution requests
-- User input responses
-- File operations (save, load, delete)
-
-**Backend to Frontend**:
-- Execution output (streaming)
-- Input prompts
-- Error messages
-- Completion signals
+* Context isolation enabled
+* No Node.js access in renderer
 
 ### File Structure
 
 ```
 RIDLEY/
-├── src/                    # Frontend UI
-│   ├── index.html         # Main HTML shell
+├── src/
 │   ├── css/
-│   │   └── styles.css     # All styles
 │   ├── js/
-│   │   ├── animations.js  # Background effects
-│   │   ├── editor.js      # Editor logic
-│   │   ├── lessons.js     # Tutorial content
-│   │   ├── pages.js       # Navigation
-│   │   └── renderer.js    # Theme and window controls
-│   └── assets/            # Icons and images
-├── backend/               # Python transpiler
+│   ├── pages/
+│   └── assets/
+├── backend/
 │   ├── rid_transpiler/
-│   │   ├── lexer.py
-│   │   ├── parser.py
-│   │   └── __init__.py
-│   ├── rid_backend.py     # Entry point
-│   └── examples/          # Sample programs
-├── main.js                # Electron main process
-├── preload.js             # IPC bridge
-├── package.json           # Node dependencies
-└── forge.config.js        # Build configuration
+│   ├── rid_backend.py
+│   └── examples/
+├── main.js
+├── preload.js
+├── package.json
+└── forge.config.js
 ```
-
-### Packaging
-
-**Build Process**:
-1. Python transpiler bundled with PyInstaller
-2. Electron app packaged with Electron Forge
-3. Platform-specific installers generated
-4. ASAR archive for faster loading
-
-**Distribution**:
-- Windows: Squirrel installer (.exe)
-- macOS: DMG package
-- Linux: DEB package and ZIP archive
 
 ---
 
@@ -749,71 +383,42 @@ RIDLEY/
 
 ### Prerequisites
 
-- Node.js 14+ and npm
-- Python 3.7+
-- PyInstaller (for backend compilation)
+* Node.js 14+
+* Python 3.7+
+* PyInstaller
 
 ### Setup
 
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Run in development mode:
-   ```bash
-   npm start
-   ```
-
-### Building
-
-**Backend**:
 ```bash
-npm run build:backend
+npm install
+npm start
 ```
 
-**Full Application**:
+### Build
+
 ```bash
+npm run build:backend
 npm run make
 ```
 
-**Package Without Installer**:
+**Package Without Installer:**
+
 ```bash
 npm run package
 ```
-
-### Project Structure for Development
-
-- **src/**: Modify UI and frontend logic
-- **backend/rid_transpiler/**: Modify language implementation
-- **main.js**: Modify window management
-- **preload.js**: Modify IPC interface
-
-### Contributing
-
-Contributions are welcome. Please:
-1. Fork the repository
-2. Create a feature branch
-3. Submit pull request with clear description
-4. Include tests where applicable
-
-### License
-
-MIT License - See LICENSE file for details
 
 ---
 
 ## Additional Resources
 
-**RID Language Repository**: [github.com/Aloy17/RID-language](https://github.com/Aloy17/RID-language)
-
-**Issue Tracker**: Report bugs and request features through GitHub Issues
-
-**Author**: Ryane Bose
+* **RID Language Repository:** [RID-language](https://github.com/Aloy17/RID-language)
+* **Issue Tracker:** Use GitHub Issues for bugs or feature requests
+* **Author:** Ryane Bose
 
 ---
 
-**Version**: 1.0.0  
-**Last Updated**: 2025
+**Version:** 1.2.0
+**Last Updated:** 2025
+**License:** MIT
 
-For questions and support, please visit the GitHub repository or contact the maintainer.
+
