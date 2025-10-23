@@ -41,6 +41,34 @@ async function initializeProjectsFolder() {
     await fs.access(projectsPath);
   } catch {
     await fs.mkdir(projectsPath, { recursive: true });
+  }
+  
+  // Remove unnecessary folders and files
+  const unnecessaryFolders = ['hy', 'New Folder', 'random', 'stuff'];
+  try {
+    const items = await fs.readdir(projectsPath, { withFileTypes: true });
+    for (const item of items) {
+      if (item.isDirectory() && unnecessaryFolders.includes(item.name)) {
+        const folderPath = path.join(projectsPath, item.name);
+        try {
+          await fs.rm(folderPath, { recursive: true, force: true });
+          console.log(`Removed unnecessary folder: ${item.name}`);
+        } catch (err) {
+          console.error(`Error removing folder ${item.name}:`, err);
+        }
+      }
+    }
+  } catch (err) {
+    console.error('Error cleaning up unnecessary folders:', err);
+  }
+  
+  // Check if examples folder exists, if not create it and copy example files
+  const examplesFolderPath = path.join(projectsPath, 'examples');
+  try {
+    await fs.access(examplesFolderPath);
+  } catch {
+    // Examples folder doesn't exist, create it and copy files
+    await fs.mkdir(examplesFolderPath, { recursive: true });
     const examplesPath = app.isPackaged
       ? path.join(process.resourcesPath, 'examples')
       : path.join(__dirname, 'backend', 'examples');
@@ -49,13 +77,67 @@ async function initializeProjectsFolder() {
       for (const file of files) {
         if (file.endsWith('.rid')) {
           const sourcePath = path.join(examplesPath, file);
-          const destPath = path.join(projectsPath, file);
+          const destPath = path.join(examplesFolderPath, file);
           await fs.copyFile(sourcePath, destPath);
         }
       }
     } catch (err) {
       console.error('Error copying example files:', err);
     }
+  }
+  
+  // Clean up examples folder - remove files with 'test' or 'ryane' in their names
+  try {
+    const exampleFiles = await fs.readdir(examplesFolderPath, { withFileTypes: true });
+    for (const file of exampleFiles) {
+      if (!file.isDirectory() && file.name.endsWith('.rid')) {
+        const fileName = file.name.toLowerCase();
+        if (fileName.includes('test') || fileName.includes('ryane')) {
+          const filePath = path.join(examplesFolderPath, file.name);
+          try {
+            await fs.unlink(filePath);
+            console.log(`Removed test/ryane file: ${file.name}`);
+          } catch (err) {
+            console.error(`Error removing file ${file.name}:`, err);
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.error('Error cleaning up examples folder:', err);
+  }
+  
+  // Migrate any existing .rid files from root to examples folder (excluding test/ryane files)
+  try {
+    const items = await fs.readdir(projectsPath, { withFileTypes: true });
+    for (const item of items) {
+      if (!item.isDirectory() && item.name.endsWith('.rid')) {
+        const fileName = item.name.toLowerCase();
+        if (!fileName.includes('test') && !fileName.includes('ryane')) {
+          const sourcePath = path.join(projectsPath, item.name);
+          const destPath = path.join(examplesFolderPath, item.name);
+          try {
+            await fs.access(destPath);
+            // File already exists in examples, remove from root
+            await fs.unlink(sourcePath);
+          } catch {
+            // File doesn't exist in examples, move it there
+            await fs.rename(sourcePath, destPath);
+          }
+        } else {
+          // Remove test/ryane files from root
+          const sourcePath = path.join(projectsPath, item.name);
+          try {
+            await fs.unlink(sourcePath);
+            console.log(`Removed test/ryane file from root: ${item.name}`);
+          } catch (err) {
+            console.error(`Error removing file ${item.name}:`, err);
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.error('Error migrating existing files:', err);
   }
 }
 let currentProcess = null;

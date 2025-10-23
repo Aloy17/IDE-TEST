@@ -1,5 +1,12 @@
 let currentPage = 'loading-page';
 let currentLesson = 1;
+
+function scrollToTop() {
+    const tutorialDetailContent = document.querySelector('.tutorial-detail-content');
+    if (tutorialDetailContent) {
+        tutorialDetailContent.scrollTop = 0;
+    }
+}
 function showPage(pageId) {
     document.querySelectorAll('.page').forEach(page => {
         page.classList.remove('active');
@@ -65,7 +72,7 @@ function initNavigation() {
     const lessonBackBtn = document.getElementById('lesson-back-btn');
     if (lessonBackBtn) {
         lessonBackBtn.addEventListener('click', () => {
-            showPage('home-page');
+            showPage('tutorial-page');
         });
     }
     const prevLessonBtn = document.getElementById('prev-lesson-btn');
@@ -74,6 +81,7 @@ function initNavigation() {
         prevLessonBtn.addEventListener('click', () => {
             if (currentLesson > 1) {
                 loadLessonDetail(currentLesson - 1);
+                scrollToTop();
             }
         });
     }
@@ -81,6 +89,7 @@ function initNavigation() {
         nextLessonBtn.addEventListener('click', () => {
             if (currentLesson < 6) {
                 loadLessonDetail(currentLesson + 1);
+                scrollToTop();
             }
         });
     }

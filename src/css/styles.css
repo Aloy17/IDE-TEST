@@ -934,10 +934,18 @@ body.theme-dark-modern #theme-toggle .moon-icon {
 .file-item.folder {
     font-weight: 500;
     color: var(--color-text-secondary);
+    cursor: default;
 }
 .file-item.folder:hover {
     background-color: var(--color-hover-bg);
     color: var(--color-text-primary);
+    cursor: default;
+}
+.file-item:not(.folder) {
+    cursor: default;
+}
+.file-item:not(.folder):hover {
+    cursor: default;
 }
 .file-item.drag-over {
     background-color: var(--color-active-bg);
